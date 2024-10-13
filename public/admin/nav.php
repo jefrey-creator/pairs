@@ -22,7 +22,7 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a class="nav-link btn btn-light <?= ($page == "dashboard") ? 'active' : '' ?>"" href="index">
+                <a class="nav-link btn btn-light <?= ($page == "dashboard") ? 'active' : '' ?>" href="index">
                     <i class="bi bi-speedometer2"></i>
                     Dashboard
                 </a>

@@ -27,6 +27,15 @@
   padding-left: 20px;
 }
 
+.note-editor {
+  background-color: #fff !important; /* Set to white or your desired color */
+  opacity: 1 !important; /* Ensure full opacity */
+}
+
+.note-editable {
+  background-color: #fff !important; /* Set to white or your desired color */
+}
+
 
 :root,
 [data-bs-theme=light] {

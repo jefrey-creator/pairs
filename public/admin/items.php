@@ -58,11 +58,12 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="add-item">Add New</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link <?= (isset($_GET['v'])) ? 'active' : '' ?>" href="items?v=all">View All</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-current="page" href="add-item">Add New</a>
+                                </li>
+                               
                             </ul>
                         </form>
                     </div>

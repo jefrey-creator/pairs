@@ -273,7 +273,7 @@
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['table', ['table']],
                     ['insert',[ 'picture']],
-                    ['view', [, 'help']]
+                    ['view', ['fullscreen', 'help']]
                 ],
                
             });

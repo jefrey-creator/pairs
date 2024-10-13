@@ -575,7 +575,6 @@
             });
 
             $('#i_desc').summernote({
-                    tabsize: 2,
                     height: 280,
                     toolbar: [
                         // ['style', ['style']],
@@ -584,7 +583,7 @@
                         ['para', ['ul', 'ol', 'paragraph']],
                         ['table', ['table']],
                         ['insert',[ 'picture']],
-                        ['view', [, 'help']]
+                        ['view', ['fullscreen', 'help']]
                     ],
             });
 
