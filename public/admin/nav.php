@@ -33,9 +33,8 @@
                     Configurations
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Returned item remarks</a></li>
                     <li><a class="dropdown-item <?= ($page == "item-condition") ? 'active' : '' ?>" href="item-condition">Item condition</a></li>
-                    <li><a class="dropdown-item" href="#">Department</a></li>
+                    <li><a class="dropdown-item <?= ($page == "department") ? 'active' : '' ?>" href="department">Department</a></li>
                 </ul>
             </li>
             <li class="nav-item">
