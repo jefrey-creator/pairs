@@ -118,7 +118,7 @@
                             </a>
                         </li>
                         <li class="nav-item mb-1">
-                            <a href="#" class="nav-link" aria-current="page">
+                            <a href="user-management" class="nav-link <?= ($page == "user") ? 'active_link' : '' ?>" aria-current="page">
                                 <i class="bi bi-people"></i>
                                 User Management
                             </a>

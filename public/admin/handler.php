@@ -59,7 +59,7 @@
 
                         <div class="btn-group gap-2 w-100">
                             <button type="submit" class="btn btn-primary" id="addHandler">Save</button>
-                            <button class="btn btn-danger" type="button" id="btnCancel">Cancel</button>
+                            <button class="btn btn-danger" type="button" onclick="btnCancel()">Cancel</button>
                         </div>
                     </form>
                 </div>
