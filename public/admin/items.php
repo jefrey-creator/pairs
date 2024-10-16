@@ -27,9 +27,32 @@
         td:hover{
             cursor: pointer;
         }
+
+        #contextMenu {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+        }
+
+        .menuContainer a {
+            display: block; /* Make the link a block element */
+            width: 100%; /* Take full width of the container */
+            text-align: left; /* Center text (optional) */
+            padding: 10px; /* Add some padding */
+            text-decoration: none; /* Remove underline */
+            color: black; /* Default text color */
+        }
+
+        .menuContainer a:hover {
+            background-color: rgba(255, 255, 255, 0.2); 
+            border-radius: 5px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            backdrop-filter: blur(10px); /* Blurs the background behind the element */
+            color: #ffffff; /* Text color for better readability */
+        }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
     <?php include_once 'nav.php'; ?>
     <div class="container-fluid">
         <div class="row">
@@ -117,7 +140,7 @@
                                 
                                 foreach($selected_filter as $rn){
                                 ?>
-                                    <tr onmouseup="Option(<?= $rn->item_id; ?>)" data-bs-toggle="tooltip" title="Click to update">
+                                    <tr oncontextmenu="Option(<?= $rn->item_id; ?>)" data-bs-toggle="tooltip" title="Click to update">
                                         <td><?=$rn->item_name; ?></td>
                                         <td><?=$rn->item_desc; ?></td>
                                         <td><?=$rn->item_brand; ?></td>
@@ -156,9 +179,38 @@
             </div>
         </div>
     </div>
+    <!-- menu option  -->
+    <div class="modal" id="optionModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="modal-title text-center">Option</h5>
+                    <br />
+                    <div class="menuContainer">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a href="#" id="updateOption" class="fs-6 text-decoration-none text-primary">
+                                    <i class="bi bi-pencil"></i>
+                                    Update 
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a href="#" id="deleteOption" class="fs-6 text-decoration-none text-danger">
+                                    <i class="bi bi-trash"></i>
+                                    Delete 
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <script src="../../assets/js/theme.js"></script>
@@ -249,27 +301,33 @@
         });
 
         const Option = (uuid)=>{
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: "btn btn-success",
-                    cancelButton: "btn btn-danger"
-                },
-                buttonsStyling: true
-            });
-            swalWithBootstrapButtons.fire({
-                title: "Are you sure you want to update this item?",
-                icon: "info",
-                showCancelButton: true,
-                confirmButtonText: "Yes, edit it!",
-                cancelButtonText: "No, cancel!",
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    location.href = "update-item?id="+uuid
-                } else{
-                    result.dismiss === Swal.DismissReason.cancel
-                }
-            });
+            
+            $('#optionModal').modal('show');
+            const updateLink = document.getElementById('updateOption');
+            updateLink.href = "update-item?id="+uuid
+
+
+            // const swalWithBootstrapButtons = Swal.mixin({
+            //     customClass: {
+            //         confirmButton: "btn btn-success",
+            //         cancelButton: "btn btn-danger"
+            //     },
+            //     buttonsStyling: true
+            // });
+            // swalWithBootstrapButtons.fire({
+            //     title: "Are you sure you want to update this item?",
+            //     icon: "info",
+            //     showCancelButton: true,
+            //     confirmButtonText: "Yes, edit it!",
+            //     cancelButtonText: "No, cancel!",
+            //     reverseButtons: true
+            // }).then((result) => {
+            //     if (result.isConfirmed) {
+            //         location.href = "update-item?id="+uuid
+            //     } else{
+            //         result.dismiss === Swal.DismissReason.cancel
+            //     }
+            // });
         }
 
     </script>
