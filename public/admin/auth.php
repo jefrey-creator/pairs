@@ -23,9 +23,9 @@
                 header("location: ../../redirect/401");
             }
 
-            if($decoded->data->login_token == ""){
-                header("location: ../../redirect/401");
-            }
+            // if($decoded->data->login_token == ""){
+            //     header("location: ../../redirect/401");
+            // }
 
             // print_r($decoded);
 

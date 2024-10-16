@@ -31,49 +31,55 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-4 mt-3">
-          <div class="card card1">
-            <div class="card-body">
-              <div class="card-title">
-                <h3>
-                  <i class="bi bi-people"></i>
-                  Members
-                  <span class="float-end fw-bold">
-                    <?= $member_count->members; ?>
-                  </span>
-                </h3>
+          <a href="view-user" class="text-decoration-none">
+            <div class="card card1">
+              <div class="card-body">
+                <div class="card-title">
+                  <h3>
+                    <i class="bi bi-people"></i>
+                    Members
+                    <span class="float-end fw-bold">
+                      <?= $member_count->members; ?>
+                    </span>
+                  </h3>
+                </div>
               </div>
             </div>
-          </div>
+          </a>
         </div>
         <div class="col-sm-4 mt-3">
-          <div class="card card2">
-            <div class="card-body">
-              <div class="card-title">
-                <h3>
-                  <i class="bi bi-sd-card"></i>
-                  Rooms
-                  <span class="float-end fw-bold">
-                    <?= $room_count->rooms; ?>
-                  </span>
-                </h3>
+          <a href="storage-room" class="text-decoration-none">
+            <div class="card card2">
+              <div class="card-body">
+                <div class="card-title">
+                  <h3>
+                    <i class="bi bi-sd-card"></i>
+                    Storage Room
+                    <span class="float-end fw-bold">
+                      <?= $room_count->rooms; ?>
+                    </span>
+                  </h3>
+                </div>
               </div>
             </div>
-          </div>
+          </a>
         </div>
         <div class="col-sm-4 mt-3">
-          <div class="card card3">
-            <div class="card-body">
-              <div class="card-title">
-                <h3>
-                  <i class="bi bi-tools"></i>
-                  Items
-                  <span class="float-end fw-bold">
-                    <?= $item_count->items; ?>
-                  </span>
-                </h3>
+          <a href="items?v=all" class="text-decoration-none">
+            <div class="card card3">
+              <div class="card-body">
+                <div class="card-title">
+                  <h3>
+                    <i class="bi bi-tools"></i>
+                    Items
+                    <span class="float-end fw-bold">
+                      <?= $item_count->items; ?>
+                    </span>
+                  </h3>
+                </div>
               </div>
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </div>

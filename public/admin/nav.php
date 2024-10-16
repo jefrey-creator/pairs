@@ -123,6 +123,12 @@
                                 User Management
                             </a>
                         </li>
+                        <li class="nav-item mb-1">
+                            <a href="logs" class="nav-link <?= ($page == "log") ? 'active_link' : '' ?>" aria-current="page">
+                                <i class="bi bi-activity"></i>
+                                Activity Log
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
