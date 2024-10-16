@@ -36,13 +36,12 @@
                     <div class="card-body">
                         <ul class="nav nav-underline nav-fill">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="user-management">Add New</a>
+                                <a class="nav-link active" aria-current="page" href="<?= (isset($_GET['id'])) ? 'user-management?id='.$_GET['id'] : 'user-management'; ?>">
+                                    <?= (isset($_GET['id'])) ? 'Update account' : 'Add new' ?>
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="import-user">Import</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="view-user">View</a>
+                                <a class="nav-link" href="view-user">View Members</a>
                             </li>
                         </ul>
                     </div>
@@ -59,6 +58,8 @@
                     </div>
                     <div class="card-body">
                         <form method="post">
+                            <div id="msg"></div>
+                            <input type="hidden" id="acct_id" value="<?php echo trim($_GET['id']); ?>">
                             <div class="row mb-3">
                                 <h5>Account Details</h5>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
@@ -69,27 +70,27 @@
                                         <option value="1">Borrower</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-4">
+                                <div class="col-sm-12 col-md-12 col-lg-4 username">
                                     <label for="username">Username</label>
                                     <input type="text" id="username" class="form-control mb-3">
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-4">
+                                <div class="col-sm-12 col-md-12 col-lg-4 password">
                                     <label for="password">Password</label>
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <input type="password" id="password" class="form-control">
                                         <div class="input-group-text" style="cursor: pointer;">
                                             <span id="toggle-password" class="icon">👁️</span>
                                         </div>
                                     </div>
-                                    <a href="#" onclick="passwGen()" class="float-end">Generate Password</a>
+                                    <a href="#" onclick="passwGen()" class="float-end  mb-3">Generate Password</a>
                                 </div>
                             </div>
                             <hr>
                             <div class="row mb-3">
-                                <h5>Profile</h5>
+                                <h5>Profile Information</h5>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <label for="member_type">
-                                        Borrower Type
+                                        Member Type
                                     </label>
                                     <select id="member_type" class="form-control form-select mb-3">
                                         <option value="">--select--</option>
@@ -118,7 +119,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <label for="l_name">Middle Name (Optional)</label>
-                                    <input type="text" id="l_name" class="form-control mb-3">
+                                    <input type="text" id="m_name" class="form-control mb-3">
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <label for="l_name">Last Name</label>
@@ -137,17 +138,57 @@
                                     <label for="member_type">
                                         Department / Office / College
                                     </label>
-                                    <select id="department" class="form-control form-select mb-3">
-                                        <option value="">--select--</option>
-                                    </select>
+                                    <div class="input-group mb-3">
+                                        <select id="department" class="form-control form-select">
+                                            <option value="">--select--</option>
+                                        </select>
+                                        <div class="input-group-text" onclick="addDepartmentModal()">
+                                            <i class="bi bi-plus-circle" style="cursor:pointer;"></i>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
-                            <button class="btn btn-primary float-end" type="submit" id="saveAccount">
-                                Save account
-                            </button>
+                            
+                            <div class="btn-group gap-2 float-end">
+                                <input type="reset" value="Reset form" class="btn btn-danger resetFormBtn">
+                                <button class="btn btn-primary " type="submit" id="saveAccount">
+                                    <?= (isset($_GET['id'])) ? 'Update account' : 'Save account'; ?>
+                                </button>
+                            </div>
+                            
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addDepartmentModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Department</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-md-12">
+                                <label for="dept_head">Head (Optional)</label>
+                                <input type="text" class="form-control mb-3" id="department_head">
+                            </div>
+                            <div class="col-lg-12 col-sm-12 col-md-12">
+                                <label for="dept_head">Department</label>
+                                <input type="text" class="form-control mb-3" id="department_name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="saveDepartment">Save</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -159,10 +200,16 @@
     <script src="../../assets/js/theme.js"></script>
     <script src="../../assets/js/logout.js"></script>
 
+    <!-- sweet alert 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $(document).ready(function(){
 
             dropdownDepartment();
+            if($('#acct_id').val() != ""){
+                onUpdate();
+            }
 
             $('#toggle-password').on('click', function(){
 
@@ -186,7 +233,143 @@
                 }else{
                     $('.yr_level').css('display', 'block').fadeIn();
                 }
-            })
+            });
+
+            $('#saveDepartment').on('click', (e)=>{
+                e.preventDefault();
+                var department_head = $('#department_head').val();
+                var department_name = $('#department_name').val();
+
+                $.ajax({
+                    url: "add-department",
+                    method: "POST",
+                    data:{
+                        dept_head: department_head,
+                        dept_name: department_name,
+                    },
+                    dataType: "json",
+                    cache: false,
+                    beforeSend:function(){
+                        $('#saveDepartment').html(`
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">Saving...</span>
+                        `).prop('disabled', true);
+                    },
+                    success:function(data){
+
+                        if(data.success === false){
+
+                            Swal.fire({
+                                title: "Oops.",
+                                text: data.result,
+                                icon: "error",
+                            }).then( () => $('#saveDepartment').html('Save').prop('disabled', false) );
+
+                            return false;
+
+                        }
+
+                        if(data.success === true){
+
+                            Swal.fire({
+                                title: "Success",
+                                text: data.result,
+                                icon: "success",
+                            }).then( () => $('#saveDepartment').html('Save').prop('disabled', false))
+                            .then( () => {
+                                $('#department').html('');
+                                dropdownDepartment();
+                                $('#addDepartmentModal').modal('hide')
+                            });
+
+                            return false;
+                        }
+                    }
+                });
+            });
+
+            $('#saveAccount').on('click', (e)=>{
+
+                e.preventDefault();
+                var user_type = $('#user_type').val();
+                var username = $('#username').val();
+                var password = $('#password').val();
+                var member_type = $('#member_type').val();
+                var id_number = $('#id_number').val();
+                var sex = $('#sex').val();
+                var f_name = $('#f_name').val();
+                var m_name = $('#m_name').val();
+                var l_name = $('#l_name').val();
+                var yr_level = $('#yr_level').val();
+                var contact = $('#contact').val();
+                var department = $('#department').val();
+                var acct_id = $('#acct_id').val();
+
+                $.ajax({
+                    url: "add-account",
+                    method: "POST",
+                    data: {
+                        user_type: user_type,
+                        username: username,
+                        password: password,
+                        member_type: member_type,
+                        id_number: id_number,
+                        sex: sex,
+                        f_name: f_name,
+                        m_name: m_name,
+                        l_name: l_name,
+                        yr_level: yr_level,
+                        contact: contact,
+                        department: department,
+                        acct_id: acct_id,
+                    },
+                    dataType: "json",
+                    cache: false,
+                    beforeSend:function(){
+                        $('#saveAccount').html(`
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">Saving...</span>
+                        `).prop('disabled', true);
+                    },
+                    success:function(data){
+                        console.log(data);
+                        if(data.success === false){
+                            Swal.fire({
+                                title: "Oops!",
+                                text: data.result,
+                                icon: "error"
+                            }).then( ()=> {
+                                $('#saveAccount').html(`Save`).prop('disabled', false);
+                            });
+
+                            return false;
+                        }
+
+                        if(data.success === true){
+                            Swal.fire({
+                                title: "Success!",
+                                text: data.result,
+                                icon: "success"
+                            }).then( ()=> {
+                                $('#saveAccount').html(`Save`).prop('disabled', false);
+                                location.href = "view-user"
+                            });
+
+                            return false;
+                        }
+                    }
+                })
+                
+            });
+
+            $('.resetFormBtn').on('click', ()=>{
+            
+                if($('#acct_id').val() != ""){
+                    location.href = "user-management";
+                    $('#msg').css('display', 'none');
+                }
+                
+            });
         });
 
         const passwGen = () =>{
@@ -228,6 +411,46 @@
             })
         }
 
+        const addDepartmentModal = ()=>{
+            $('#addDepartmentModal').modal('show');
+        }
+
+        const onUpdate = ()=>{
+            var id = $('#acct_id').val();
+            $.ajax({
+                url: "select-member-by-id",
+                method: "GET",
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                cache: false,
+                success:function(data){
+                    
+                    if(data.success === false){
+                        $('#msg').html(data.result).addClass('alert alert-info');
+                        return false;
+                    }
+
+                    if(data.success === true){
+                        $('#user_type option[value="'+data.result.user_type+'"]').prop('selected', true);
+                        $('.username').css('display', 'none').fadeOut();
+                        $('.password').css('display', 'none').fadeOut();
+                        $('#member_type option[value="'+data.result.member_type+'"]').prop('selected', true);
+                        $('#id_number').val(data.result.id_number);
+                        $('#sex option[value="'+data.result.sex+'"]').prop('selected', true);
+                        $('#f_name').val(data.result.f_name);
+                        $('#m_name').val(data.result.m_name);
+                        $('#l_name').val(data.result.l_name);
+                        $('#yr_level').val(data.result.yr_level);
+                        $('#contact').val(data.result.contact);
+                        $('#department option[value="'+data.result.department_id+'"]').prop('selected', true);
+                        $('.resetFormBtn').val('Cancel');
+                        return false;
+                    }
+                }
+            })
+        }
     </script>
 </body>
 </html>

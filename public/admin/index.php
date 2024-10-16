@@ -2,6 +2,11 @@
   include_once 'auth.php';
   $page = "dashboard";
   
+  $dashboard = new Dashboard();
+
+  $member_count = $dashboard->count_members();
+  $item_count = $dashboard->count_items();
+  $room_count = $dashboard->count_rooms();
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -32,7 +37,9 @@
                 <h3>
                   <i class="bi bi-people"></i>
                   Members
-                  <span class="float-end fw-bold">200</span>
+                  <span class="float-end fw-bold">
+                    <?= $member_count->members; ?>
+                  </span>
                 </h3>
               </div>
             </div>
@@ -45,7 +52,9 @@
                 <h3>
                   <i class="bi bi-sd-card"></i>
                   Rooms
-                  <span class="float-end fw-bold">200</span>
+                  <span class="float-end fw-bold">
+                    <?= $room_count->rooms; ?>
+                  </span>
                 </h3>
               </div>
             </div>
@@ -58,7 +67,9 @@
                 <h3>
                   <i class="bi bi-tools"></i>
                   Items
-                  <span class="float-end fw-bold">200</span>
+                  <span class="float-end fw-bold">
+                    <?= $item_count->items; ?>
+                  </span>
                 </h3>
               </div>
             </div>
