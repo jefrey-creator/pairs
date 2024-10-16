@@ -184,8 +184,6 @@
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h5 class="modal-title text-center">Option</h5>
-                    <br />
                     <div class="menuContainer">
                         <div class="row">
                             <div class="col-sm-12">
