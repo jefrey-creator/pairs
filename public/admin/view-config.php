@@ -191,6 +191,11 @@
                                         title: "Error",
                                         text: data.result,
                                         icon: "error"
+                                    }).then(()=>{
+                                        $('#deleteOption').html(`
+                                            <i class="bi bi-trash"></i>
+                                            Delete 
+                                        `).prop('disabled', false);
                                     });
 
                                     return false;
