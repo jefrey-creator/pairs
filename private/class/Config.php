@@ -10,7 +10,7 @@
         }
 
         public function add_config($data){
-            $sql = "INSERT INTO tbl_email_config (tag, message, subject) VALUES (:tag, :message, :subject)";
+            $sql = "INSERT INTO tbl_email_config (tag, `message`, `subject`) VALUES (:tag, :message, :subject)";
             $res = $this->db->prepare($sql);
             $res->execute($data);
             return true;
@@ -43,7 +43,7 @@
 
 
         public function update_config($data){
-            $sql = "UPDATE tbl_email_config SET message = :message, subject = :subject WHERE config_id = :config_id";
+            $sql = "UPDATE tbl_email_config SET `message` = :message, `subject` = :subject WHERE config_id = :config_id";
             $res = $this->db->prepare($sql);
             $res->execute($data);
             return true;
@@ -57,5 +57,18 @@
             $res->execute();
 
             return true;
+        }
+
+        public function set_config($tag){
+            $sql = "SELECT * FROM tbl_email_config WHERE tag = :tag";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":tag", $tag, PDO::PARAM_STR);
+            $res->execute();
+
+            if($res->rowCount() > 0){
+                return $res->fetch(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
         }
     }

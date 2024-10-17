@@ -35,6 +35,20 @@
             }
         }
 
+        public function verify_uuid($email){
+            
+            $sql = "SELECT act_id, email_address FROM tbl_members WHERE email_address = :email";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":email", $email, PDO::PARAM_STR);
+            $res->execute();
+
+            if($res->rowCount() > 0){
+                return $res->fetch(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+        }
+
         public function add_account($data){
             $sql = "INSERT INTO tbl_acct (username, password, user_type, acct_uuid) VALUES (:username, :password, :user_type, :acct_uuid)";
             $res = $this->db->prepare($sql);
@@ -73,7 +87,7 @@
         public function select_user_by_id($id){
             $sql = "SELECT 
                             a.username, a.user_type, a.acct_status, a.acct_uuid, a.acct_id,
-                            m.id_number, m.member_type, m.f_name, m.m_name, m.l_name, m.sex, m.contact, m.yr_level,
+                            m.id_number, m.member_type, m.f_name, m.m_name, m.l_name, m.sex, m.contact, m.yr_level, m.email_address,
                             d.department_id
                     FROM  tbl_acct AS a
                     LEFT JOIN tbl_members AS m ON (a.acct_uuid=m.act_id)
@@ -108,7 +122,8 @@
                     sex = :sex, 
                     department = :department, 
                     contact = :contact, 
-                    yr_level = :yr_level
+                    yr_level = :yr_level,
+                    email_address = :email_address
             WHERE  act_id = :act_id";
             $res = $this->db->prepare($sql);
             $res->execute($data);

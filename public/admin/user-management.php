@@ -338,7 +338,8 @@
                         `).prop('disabled', true);
                     },
                     success:function(data){
-                        // console.log(data);
+                        console.log(data);
+                        $('#saveAccount').html(`Save`).prop('disabled', false);
                         if(data.success === false){
                             Swal.fire({
                                 title: "Oops!",
@@ -450,6 +451,7 @@
                         $('#l_name').val(data.result.l_name);
                         $('#yr_level').val(data.result.yr_level);
                         $('#contact').val(data.result.contact);
+                        $('#email').val(data.result.email_address);
                         $('#department option[value="'+data.result.department_id+'"]').prop('selected', true);
                         $('.resetFormBtn').val('Cancel');
                         return false;

@@ -30,7 +30,7 @@
 
         if($account->duplicate_username(strtolower($username)) === true){
             $result = "Username already exist.";
-        }elseif($account->duplicate_email($email) === true) {
+        }elseif($account->duplicate_email($email) === true ) {
             $result = "Email address already exist.";
         }
         elseif(empty($username) || strlen($username) <= 3){
@@ -61,6 +61,7 @@
             $result = "Invalid email address.";
         }
         else{
+
             $member_data = [
                 "act_id" =>  $uu_id, 
                 "id_number" => $id_number, 
@@ -82,14 +83,20 @@
                 "acct_uuid" => $uu_id, 
             ];
 
+            $config = new Config();
+            $conf = $config->set_config("acct_created");
+            $subject = $conf->subject;
+            $body = $conf->message;
+            $body1 = str_replace("[name]", $f_name, $body);
+            $body2 = str_replace("[username]", $username, $body1);
+            $body3 = str_replace("[password]", $password, $body2);
+
+            $mailer = new Mailer();
+            
             if($account->add_account($acct_data) === true){
                 if($account->add_member($member_data) === true){
-
-                    $subject = "Account Created.";
-                    $body = "";
-
-                    $mailer = new Mailer();
-                    if($mailer->send_mail($email, $f_name, $subject, $body) === true){
+                   
+                    if($mailer->send_mail($email, $f_name, $subject, $body3) === true){
                         $result = "Account successfully added.";
                         $success = true;
                     }else{
@@ -104,8 +111,12 @@
         }
     }else{
 
+        $verify_email = $account->verify_uuid($email);
+
         if(empty($member_type) || ($member_type > 2 && $member_type <= 0)){
             $result = "Invalid borrower type selected.";
+        }elseif(($account->duplicate_email($email) === true AND $verify_email->act_id != $acct_id)) {
+            $result = "Email address already exist.";
         }elseif(empty($id_number)){
             $result = "ID number is required.";
         }elseif(empty($sex)){
@@ -135,6 +146,7 @@
                 "department" => $department, 
                 "contact" => $contact, 
                 "yr_level" => $yr_level,
+                "email_address" => $email
             ];
     
             $acct_data = [
