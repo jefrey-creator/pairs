@@ -88,6 +88,10 @@
                             <hr>
                             <div class="row mb-3">
                                 <h5>Profile Information</h5>
+                                <div class="col-lg-12 col-sm-12 col-md-12">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" class="form-control mb-3">
+                                </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <label for="member_type">
                                         Member Type
@@ -304,6 +308,7 @@
                 var contact = $('#contact').val();
                 var department = $('#department').val();
                 var acct_id = $('#acct_id').val();
+                var email = $('#email').val();
 
                 $.ajax({
                     url: "add-account",
@@ -322,6 +327,7 @@
                         contact: contact,
                         department: department,
                         acct_id: acct_id,
+                        email: email
                     },
                     dataType: "json",
                     cache: false,
@@ -332,7 +338,7 @@
                         `).prop('disabled', true);
                     },
                     success:function(data){
-                        console.log(data);
+                        // console.log(data);
                         if(data.success === false){
                             Swal.fire({
                                 title: "Oops!",

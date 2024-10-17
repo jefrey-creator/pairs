@@ -21,6 +21,20 @@
             }
         }
 
+        public function duplicate_email($email){
+            
+            $sql = "SELECT email_address FROM tbl_members WHERE email_address = :email";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":email", $email, PDO::PARAM_STR);
+            $res->execute();
+
+            if($res->rowCount() > 0){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
         public function add_account($data){
             $sql = "INSERT INTO tbl_acct (username, password, user_type, acct_uuid) VALUES (:username, :password, :user_type, :acct_uuid)";
             $res = $this->db->prepare($sql);
@@ -29,8 +43,8 @@
         }
 
         public function add_member($data){
-            $sql = "INSERT INTO tbl_members (act_id, id_number, member_type, f_name, m_name, l_name, sex, department, contact, yr_level) 
-            VALUES (:act_id, :id_number, :member_type, :f_name, :m_name, :l_name, :sex, :department, :contact, :yr_level)";
+            $sql = "INSERT INTO tbl_members (email_address, act_id, id_number, member_type, f_name, m_name, l_name, sex, department, contact, yr_level) 
+            VALUES (:email_address, :act_id, :id_number, :member_type, :f_name, :m_name, :l_name, :sex, :department, :contact, :yr_level)";
             $res = $this->db->prepare($sql);
             $res->execute($data);
             return true;

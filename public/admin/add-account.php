@@ -1,9 +1,8 @@
 <?php 
-
-
     include_once 'auth.php';
 
     header("Content-Type: application/json");
+
     $success = false;
     $result = "";
 
@@ -22,6 +21,7 @@
     $contact = trim($_POST['contact']);
     $department = trim($_POST['department']);
     $acct_id = trim($_POST['acct_id']);
+    $email = trim($_POST['email']);
 
     $uu_id = md5(uniqid().time());
     $pattern = '/^[a-zA-Z0-9!@#$%^&*()]*$/';
@@ -30,7 +30,10 @@
 
         if($account->duplicate_username(strtolower($username)) === true){
             $result = "Username already exist.";
-        }elseif(empty($username) || strlen($username) <= 3){
+        }elseif($account->duplicate_email($email) === true) {
+            $result = "Email address already exist.";
+        }
+        elseif(empty($username) || strlen($username) <= 3){
             $result = "Username can't be empty and minimum of 3 characters long.";
         }elseif(strlen($password) <= 8){
             $result = "Password must be at least 8 characters long.";
@@ -54,7 +57,10 @@
             $result = "Please select a department.";
         }elseif(empty($user_type)){
             $result = "Please select a user type.";
-        }else{
+        }elseif(empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $result = "Invalid email address.";
+        }
+        else{
             $member_data = [
                 "act_id" =>  $uu_id, 
                 "id_number" => $id_number, 
@@ -66,6 +72,7 @@
                 "department" => $department, 
                 "contact" => $contact, 
                 "yr_level" => $yr_level,
+                "email_address" => $email
             ];
     
             $acct_data = [
@@ -77,8 +84,17 @@
 
             if($account->add_account($acct_data) === true){
                 if($account->add_member($member_data) === true){
-                    $result = "Account successfully added.";
-                    $success = true;
+
+                    $subject = "Account Created.";
+                    $body = "";
+
+                    $mailer = new Mailer();
+                    if($mailer->send_mail($email, $f_name, $subject, $body) === true){
+                        $result = "Account successfully added.";
+                        $success = true;
+                    }else{
+                        $result = "Failed to send email notification but the account successfully created.";
+                    }    
                 }else{
                     $result = "Profile not save";
                 }

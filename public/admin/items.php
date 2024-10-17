@@ -199,7 +199,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <a href="#" id="deleteOption" class="fs-6 text-decoration-none text-danger">
+                                <a href="javascript:void(0)" id="deleteOption" class="fs-6 text-decoration-none text-danger">
                                     <i class="bi bi-trash"></i>
                                     Delete 
                                 </a>

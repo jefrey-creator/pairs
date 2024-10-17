@@ -35,7 +35,7 @@
                                 <!-- <div class="separator"></div> -->
                                 <div class="login_form">
                                     <div class="mb-3">
-                                        <label for="username">Username / Email Address</label>
+                                        <label for="username">Username</label>
                                         <input type="text" class="form-control-lg form-control" id="username">
                                     </div>
                                     <div class="mb-1">
