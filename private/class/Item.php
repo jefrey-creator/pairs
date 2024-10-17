@@ -120,4 +120,12 @@
 
             return true;
         }
+
+        public function delete_item_by_uuid($uuid){
+            $sql = "DELETE FROM tbl_item WHERE item_uuid = :uu_id";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":uu_id", $uuid, PDO::PARAM_STR);
+            $res->execute();
+            return true;
+        }
     }

@@ -1,6 +1,8 @@
 <?php 
   include_once 'auth.php';
   $page = "item";
+
+  $uri = explode("/", $_SERVER['REQUEST_URI']);
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -185,6 +187,8 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="menuContainer">
+                        <input type="hidden" id="item_id">
+                        <input type="hidden" id="request_uri" value="<?= $uri[4]; ?>">
                         <div class="row">
                             <div class="col-sm-12">
                                 <a href="#" id="updateOption" class="fs-6 text-decoration-none text-primary">
@@ -232,6 +236,65 @@
         $(document).ready(()=>{
             room_dropdown();
             status_dropdown();
+
+            $('#deleteOption').on('click', ()=>{
+                var item_id = $('#item_id').val();
+                var request_uri = $('#request_uri').val();
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                            url: "delete-item",
+                            method: "post",
+                            data:{
+                                item_id: item_id,
+                            },
+                            dataType: "json",
+                            cache: false,
+                            beforeSend:function(){
+                                $('#deleteOption').html(`
+                                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                    <span role="status">Deleting...</span>
+                                `).prop('disabled', true);
+                            },
+                            success:function(data){
+
+                                // console.log(""); 
+
+                                if(data.success === false){
+
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: data.result,
+                                        icon: "error"
+                                    });
+
+                                    return false;
+                                }
+
+                                if(data.success === true){
+                                    Swal.fire({
+                                        title: "Success",
+                                        text: data.result,
+                                        icon: "success"
+                                    }).then(()=> location.href = request_uri);
+
+                                    return false;
+                                }
+                            }
+                        })
+                    }
+                });
+            })
         });
 
         const room_dropdown = () =>{
@@ -299,34 +362,13 @@
         });
 
         const Option = (uuid)=>{
-            
             $('#optionModal').modal('show');
             const updateLink = document.getElementById('updateOption');
             updateLink.href = "update-item?id="+uuid
-
-
-            // const swalWithBootstrapButtons = Swal.mixin({
-            //     customClass: {
-            //         confirmButton: "btn btn-success",
-            //         cancelButton: "btn btn-danger"
-            //     },
-            //     buttonsStyling: true
-            // });
-            // swalWithBootstrapButtons.fire({
-            //     title: "Are you sure you want to update this item?",
-            //     icon: "info",
-            //     showCancelButton: true,
-            //     confirmButtonText: "Yes, edit it!",
-            //     cancelButtonText: "No, cancel!",
-            //     reverseButtons: true
-            // }).then((result) => {
-            //     if (result.isConfirmed) {
-            //         location.href = "update-item?id="+uuid
-            //     } else{
-            //         result.dismiss === Swal.DismissReason.cancel
-            //     }
-            // });
+            $('#item_id').val(uuid);
         }
+
+        
 
     </script>
 </body>

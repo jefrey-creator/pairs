@@ -353,6 +353,7 @@
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     result.dismiss === Swal.DismissReason.cancel
+                                    location.href="add-item";
                                     $('#saveItem').html(`Save item`).removeAttr('disabled', 'disabled')
                                 }else{
                                     location.href="items";

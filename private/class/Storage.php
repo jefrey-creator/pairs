@@ -21,4 +21,12 @@
             $res->execute($data);
             return true;
         }
+
+        public function delete_stored_item($uuid){
+            $sql = "DELETE FROM tbl_storage WHERE item_uuid = :uu_id";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":uu_id", $uuid, PDO::PARAM_STR);
+            $res->execute();
+            return true;
+        }
     }
