@@ -43,7 +43,7 @@
 
 
         public function update_config($data){
-            $sql = "UPDATE tbl_email_config SET tag = :tag, message = :message, subject = :subject WHERE config_id = :config_id";
+            $sql = "UPDATE tbl_email_config SET message = :message, subject = :subject WHERE config_id = :config_id";
             $res = $this->db->prepare($sql);
             $res->execute($data);
             return true;

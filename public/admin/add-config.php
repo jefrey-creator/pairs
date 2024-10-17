@@ -37,7 +37,7 @@
             }
         }else{
             $data = [
-                "tag" => $tag, 
+                
                 "message" => $message, 
                 "subject" => $subject,
                 "config_id" => $config_id
