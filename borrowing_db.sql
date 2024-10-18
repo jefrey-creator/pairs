@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 17, 2024 at 09:32 PM
+-- Generation Time: Oct 18, 2024 at 02:32 PM
 -- Server version: 8.0.39-0ubuntu0.22.04.1
 -- PHP Version: 8.1.2-1ubuntu2.19
 
@@ -44,8 +44,9 @@ CREATE TABLE `tbl_acct` (
 --
 
 INSERT INTO `tbl_acct` (`acct_id`, `username`, `password`, `user_type`, `acct_status`, `reset_token`, `login_token`, `reg_token`, `acct_uuid`) VALUES
-(3, 'admin', '$2y$10$vkv.OniscGZnbkOzzQxNmu7mW100kgmB6kySYX.bhL6yQv9PXIHL2', 2, 0, NULL, '', NULL, '8c31980ab8641a4d5d0e5f9b347a1dd4'),
-(7, 'agbubulud', '$2y$10$QUpQKOFMIvGliLl7Q6XrceMevdsKTqmtpBemYClhxA9obkohjbc0u', 1, 0, NULL, '', NULL, '9abeb733ebcc6530f02c80e06bea0eee');
+(3, 'jefrey', '$2y$10$6h3oEwv/OLP4VHKOs5FBT..xEusIi1HhJ0GNIiQQO2WrxRzq7kv8C', 2, 0, NULL, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2JvcnJvd2luZy8iLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0L2JvcnJvd2luZy8iLCJleHAiOjYyMjUyMjY2MjQ4MDAsImRhdGEiOnsidXNlcm5hbWUiOiJqZWZyZXkiLCJ1c2VyX3R5cGUiOjIsImFjY3Rfc3RhdHVzIjowLCJsb2dpbl90b2tlbiI6IiIsImFjY3RfaWQiOjN9fQ.bw2R0tTe3UUafdIvZ4U6fEqo4tt7llI8XauQh0-Jbfk', NULL, '462e4d9dc4fa7aba0273bb45c94e1026'),
+(5, 'agbubulud', '$2y$10$1j2HsgG1rcZ7IpJJQIf/neIV7/.vwLJWhcEaZj4rKHvVErjF3aknq', 1, 0, NULL, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2JvcnJvd2luZy8iLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0L2JvcnJvd2luZy8iLCJleHAiOjYyMjUyMjYwNTYwMDAsImRhdGEiOnsidXNlcm5hbWUiOiJhZ2J1YnVsdWQiLCJ1c2VyX3R5cGUiOjEsImFjY3Rfc3RhdHVzIjowLCJsb2dpbl90b2tlbiI6IiIsImFjY3RfaWQiOjV9fQ.Zl8ylIkDfxGkw7qwW0H8d9_HjVv8QvCUeTZXDEyld-U', NULL, '75c63214b2b005fc6aa100f113171fff'),
+(6, 'pabulud', '$2y$10$ucz7Ulh56Ng2SHaj7txHa.y0b2V0QI30qGNWE3SJlEtupu9QAV2jq', 1, 0, NULL, '', NULL, '0800a72a8192884ee48b6315595e2053');
 
 -- --------------------------------------------------------
 
@@ -58,11 +59,19 @@ CREATE TABLE `tbl_borrow` (
   `borrower_id` int UNSIGNED NOT NULL,
   `date_borrowed` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_returned` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `item_id` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'array of items',
+  `item_id` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'array of items',
   `borrowed_qty` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'array of number of items borrowed',
   `remarks` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'array of id from remarks table',
-  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 = pending, 2 = approved, 3 = acquired, 4 = returned, 5 = declined | array so it will be per item approval'
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 = pending, 2 = approved, 3 = acquired, 4 = returned, 5 = declined | array so it will be per item approval',
+  `purpose` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_borrow`
+--
+
+INSERT INTO `tbl_borrow` (`borrow_id`, `borrower_id`, `date_borrowed`, `date_returned`, `item_id`, `borrowed_qty`, `remarks`, `status`, `purpose`) VALUES
+(1, 6, '2024-10-18 13:20:21', '2024-10-31', 'NjcxMWIxOTg0YTNhOTE3MjkyMTI4MjQ=', '1', NULL, 1, 'ee');
 
 -- --------------------------------------------------------
 
@@ -134,7 +143,8 @@ INSERT INTO `tbl_department` (`department_id`, `department`, `department_head`) 
 (4, 'CBEA', 'Jay Omotoy'),
 (5, 'CTED', 'Romar Banadero'),
 (6, 'REGISTRAR', 'Reymark Jay Sosa'),
-(7, 'UNIVERSITY MIS', 'Pao Roy');
+(7, 'PLANNING OFFICE', ''),
+(11, 'MIS', '');
 
 -- --------------------------------------------------------
 
@@ -144,7 +154,7 @@ INSERT INTO `tbl_department` (`department_id`, `department`, `department_head`) 
 
 CREATE TABLE `tbl_email_config` (
   `config_id` int NOT NULL,
-  `tag` varchar(255) NOT NULL,
+  `tag` varchar(100) NOT NULL,
   `message` longtext NOT NULL,
   `subject` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -154,7 +164,8 @@ CREATE TABLE `tbl_email_config` (
 --
 
 INSERT INTO `tbl_email_config` (`config_id`, `tag`, `message`, `subject`) VALUES
-(1, 'acct_created', '<h2 style=\"text-align: center; \" class=\"\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</h2><p style=\"text-align: left;\"><br></p><p style=\"text-align: left;\">Hi, [name]</p><p style=\"text-align: left;\"><font color=\"#00ff00\">You have successfully registered into our system.</font> Your login credentials below:</p><p style=\"text-align: left;\">Username: [username]</p><p style=\"text-align: left;\">Password: [password]</p><p style=\"text-align: left;\">System can be accessed thru this link:&nbsp;&nbsp;<a href=\"http://localhost/pairs\" target=\"_blank\">http://localhost/pairs</a><a href=\"http://localhost/pairs\" target=\"_blank\"></a></p><p style=\"text-align: left;\"><br></p><p style=\"text-align: left;\"><font color=\"#ff0000\">Note: This is a system generate e-mail, please do not reply.</font></p>', 'Account Created');
+(1, 'acct_created', '<h1 style=\"text-align: center; \" class=\"\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</h1><p style=\"text-align: center; \"></p><p style=\"text-align: justify;\">Hello,&nbsp; [name]</p><p style=\"text-align: justify;\"><font color=\"#6ba54a\">You have been successfully registered to our system. Below is your login credential.</font></p><p style=\"text-align: justify;\">Username: [username]</p><p style=\"text-align: justify;\">Password: [password]</p><p style=\"text-align: justify;\">The system can be accessible via this link:&nbsp;<a href=\"http://localhost/pairs\" target=\"_blank\">http://localhost/pairs</a><a href=\"http://localhost/pairs\" target=\"_blank\"></a></p><p style=\"text-align: justify;\"><br></p><p style=\"text-align: justify;\"><font color=\"#ff0000\">Note: This is a system generated e-mail, please do not reply.</font></p>', 'Account Created'),
+(5, 'borrow_item', '<h1 class=\"\" style=\"color: rgb(0, 0, 0); text-align: center;\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</h1><p style=\"text-align: center;\"></p><p>Dear System administrator,</p><p>I hope this message finds you well. I am writing to formally request the borrowing of the following item(s)/equipment:</p><table class=\"table table-bordered\"><tbody><tr><td>Item/Equipment Name</td><td>Quantity</td><td>Purpose of Use</td><td>Expected Date of Return</td></tr><tr><td>[item]</td><td>[qty]</td><td>[purpose]</td><td>[date_return]</td></tr></tbody></table><p>I assure you that I will handle the item(s) with care and return them in good condition. If needed, I am happy to complete any necessary forms or follow any specific procedures you may have for borrowing items.</p><p>Thank you for considering my request. I look forward to your prompt response.</p><p>Best regards,</p><p>[borrower_name]</p><p>[contact]</p>', 'Request to Borrow Item/Equipment');
 
 -- --------------------------------------------------------
 
@@ -194,10 +205,8 @@ CREATE TABLE `tbl_item` (
 --
 
 INSERT INTO `tbl_item` (`item_id`, `item_name`, `item_desc`, `item_brand`, `item_model`, `item_price`, `item_category`, `item_type`, `condition_id`, `acquired_by`, `date_acquired`, `item_uuid`) VALUES
-(18, 'LENOVO IdeaPad Slim 3 15IAH8 (83ER0023PH) Intel® Core™ i5 Laptop (Arctic Grey)', '<p><br></p><p><img src=\"https://pcx.com.ph/cdn/shop/files/LT-LENOVO-IP3-15IAH8-SLIM3-_83ER0023PH_-I5-OFFICE-1.jpg?v=1699240336&amp;width=600\" style=\"width: 104px; height: 104px; float: left;\" class=\"note-float-left\"></p><p>LENOVO<br>\n  IP3-15IAH8 SLIM3 (83ER0023PH) ARCTIC GREY INTEL CORE I5-12450H/16GB LPDDR5<br>\n  4800MHZ/512GB M.2 NVME PCIE SSD/INTEL UHD GRAPHICS/15.6\" FHD/WINDOWS 11<br>\n  HOME SL 64BIT/MS OFFICE HOME &amp; STUDENT 2021/WEBCAM/BACKLIT<br>\n  KB/WIFI/BT/AUDIO PORT/CARD READER/USB 3.0/<br></p>', 'LENOVO', '83ER0023PH', 'PHP 38,995.00', 1, '2', 1, 6, '2024-10-16', 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM='),
-(19, 'ACER Nitro V ANV15-51-519K GeForce RTX™ 2050 Intel® Core™ i5 Laptop (Obsidian Black)', '<p><img src=\"https://pcx.com.ph/cdn/shop/files/LT-ACER-NITRO-V-ANV15-51-519K-I5-RTX2050-OFFICE-1.jpg?v=1697002842&amp;width=600\" style=\"width: 115px; height: 115px; float: left;\" class=\"note-float-left\">ACER<br>\n  NITRO V ANV15-51-519K OBSIDIAN BLACK INTEL CORE I5-13420H/8GB DDR5/512GB M.2<br>\n  NVME PCIE SSD/NVIDIA GEFORCE RTX2050 4GB GDDR6/15.6\" FHD IPS<br>\n  144HZ/WINDOWS 11 HOME SL 64BIT/MS OFFICE HOME &amp; STUDENT<br>\n  2021/WEBCAM/BACKLIT KB/WIFI/BT/LAN/AUDIO PORT/USB 3.2/US<br></p>', 'ACER', 'ANV15-51-519K', 'PHP 39,999.00', 12, '2', 1, 5, '2024-10-16', 'NjcwZmMyYmZiZjUwYzE3MjkwODYxNDM='),
-(20, 'LENOVO IdeaPad Gaming 3 (82S9008YPH) GeForce RTX™ 3050 Ti Intel® Core™ i5 Laptop (Onyx Grey)', '<p><img src=\"https://pcx.com.ph/cdn/shop/products/1.LT-LENOVO-IDEAPAD-GAMING-3-82S9008YPH-I5-3050TI-1-1.webp?v=1688459205&amp;width=600\" style=\"width: 114px; height: 114px; float: left;\" class=\"note-float-left\"></p><p>LENOVO IDEAPAD GAMING 3-15IAH7 (82S9008YPH) ONYX GREY INTEL CORE \nI5-12500H/8GB DDR4/512GB M.2 NVME SSD/NVIDIA GEFORCE RTX3050TI 4GB \nGDDR6/15.6\" FHD 165HZ/WINDOWS 11 HOME SL 64BIT/WEBCAM/RGB BACKLIT \nKB/WIFI/BT/LAN/AUDIO PORT/USB 3.0/USB TYPE-C/HDMI/LENOVO<br></p>', 'LENOVO', '82S9008YPH', 'PHP 45,995.00', 1, '2', 1, 2, '2024-10-16', 'NjcwZmMzNTk4NmU2NDE3MjkwODYyOTc='),
-(21, 'ACER Aspire Lite 15 AL15-51M-773W Intel® Core™ i7 Laptop (Titanium Gray)', '<p><img src=\"https://pcx.com.ph/cdn/shop/files/LT-ACER-ASPIRE-LITE-15-AL15-51M-773W-I7-OFFICE-1.jpg?v=1704337290&amp;width=600\" style=\"width: 134px; height: 134px; float: left;\" class=\"note-float-left\"></p><p>ACER<br>\n  ASPIRE LITE 15 AL15-51M-773W TITANIUM GRAY INTEL CORE I7-1165G7/8GB DDR4<br>\n  3200MHZ/512GB M.2 NVME PCIE SSD/INTEL IRIS XE GRAPHICS/15.6\" FHD/WINDOWS<br>\n  11 HOME SL 64BIT/MS OFFICE HOME &amp; STUDENT 2021/WEBCAM/WIFI/BT/LAN/SIM<br>\n  SLOT/MSD SLOT/AUDIO PORT/USB PORT/<br></p>', 'ACER', 'AL15-51M-773W', 'PHP 38,999.00', 11, '2', 2, 9, '2024-10-16', 'NjcwZmMzYmM1MTExZjE3MjkwODYzOTY=');
+(18, 'ACER TC-1775 DT.BLQSP.001', '<p><img src=\"https://www.complink.com.ph/cdn/shop/files/000001_30705_1800x1800.png?v=1727677953\" style=\"width: 154px; height: 154px; float: left;\" class=\"note-float-left\"><strong>Specifications</strong></p><p>\n</p><ul>\n<li>Processor/CPU: I3-14100</li>\n<li>RAM: 8GB DDR5<br>\n</li>\n<li>Storage: 1TB + 256 SSD</li>\n<li>Graphics: INT<br>\n</li>\n<li>Operating System: Windows 11</li></ul>', 'ACER', 'TC-1775', 'PHP 41,999.00', 1, '2', 1, 5, '2024-10-18', 'NjcxMWIxOTg0YTNhOTE3MjkyMTI4MjQ='),
+(19, 'Acer PH16-72-73KK PREDATOR HELIOS 16 +H&S', '<p><img src=\"https://www.complink.com.ph/cdn/shop/files/000001_30472_1800x1800.png?v=1727764251\" style=\"width: 179px; float: left; height: 179px;\" class=\"note-float-left\"><strong style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align);\">Specifications</strong><br></p>\n<ul>\n<li>Processor: i7 14700HX<br>\n</li>\n<li>Memory: 16GB<br>\n</li>\n<li>Hard Drive: 512GB SSD<br>\n</li>\n<li>Graphics Card: 8GB RTX4070<br>\n</li>\n<li>Display: 16\" WQXGA 240Hz<br>\n</li>\n<li>Operating System: Windows 11</li></ul>', 'Acer', 'PH16-72-73KK', 'PHP 119,999.00', 1, '2', 1, 6, '2024-10-18', 'NjcxMWIyMDIxYjlhMzE3MjkyMTI5MzA=');
 
 -- --------------------------------------------------------
 
@@ -221,7 +230,8 @@ INSERT INTO `tbl_item_handler` (`handler_id`, `handler_name`) VALUES
 (6, 'BILL GATES'),
 (7, 'MARK ZUCKERBURG'),
 (8, 'KONG TV'),
-(9, 'JUNNY BOY');
+(9, 'JUNNY BOY'),
+(11, 'HELLO');
 
 -- --------------------------------------------------------
 
@@ -231,7 +241,7 @@ INSERT INTO `tbl_item_handler` (`handler_id`, `handler_name`) VALUES
 
 CREATE TABLE `tbl_members` (
   `member_id` bigint UNSIGNED NOT NULL,
-  `email_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_address` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `act_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `member_type` tinyint UNSIGNED NOT NULL COMMENT '1 = student, 2 = employee',
@@ -249,8 +259,9 @@ CREATE TABLE `tbl_members` (
 --
 
 INSERT INTO `tbl_members` (`member_id`, `email_address`, `act_id`, `id_number`, `member_type`, `f_name`, `m_name`, `l_name`, `sex`, `department`, `contact`, `yr_level`) VALUES
-(1, 'saplajeff16@gmail.com', '8c31980ab8641a4d5d0e5f9b347a1dd4', 'cos-123', 2, 'Jefrey', '', 'Quiniano', 1, 7, '092222', NULL),
-(5, 'jefrey.mis@csu.edu.ph', '9abeb733ebcc6530f02c80e06bea0eee', '443', 1, 'Agbubulud', '', 'Nak', 1, 5, '0922222', 1);
+(1, 'jefrey.mis@csu.edu.ph', '462e4d9dc4fa7aba0273bb45c94e1026', '123', 2, 'Jefrey', '', 'Quiniano', 1, 3, '0922222', NULL),
+(3, 'agbubulud@gmail.com', '75c63214b2b005fc6aa100f113171fff', '4545', 1, 'Agbubu', '', 'Lud', 1, 3, '0925555', 2),
+(4, 'saplajeff16@gmail.com', '0800a72a8192884ee48b6315595e2053', '344', 1, 'Buludek', '', 'Man', 1, 4, '092222', 3);
 
 -- --------------------------------------------------------
 
@@ -306,10 +317,8 @@ CREATE TABLE `tbl_storage` (
 --
 
 INSERT INTO `tbl_storage` (`storage_id`, `room_id`, `item_uuid`, `item_qty`) VALUES
-(5, 12, 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM=', 12),
-(6, 12, 'NjcwZmMyYmZiZjUwYzE3MjkwODYxNDM=', 3),
-(7, 7, 'NjcwZmMzNTk4NmU2NDE3MjkwODYyOTc=', 1),
-(8, 10, 'NjcwZmMzYmM1MTExZjE3MjkwODYzOTY=', 1);
+(5, 12, 'NjcxMWIxOTg0YTNhOTE3MjkyMTI4MjQ=', 20),
+(6, 12, 'NjcxMWIyMDIxYjlhMzE3MjkyMTI5MzA=', 5);
 
 --
 -- Indexes for dumped tables
@@ -396,7 +405,13 @@ ALTER TABLE `tbl_storage`
 -- AUTO_INCREMENT for table `tbl_acct`
 --
 ALTER TABLE `tbl_acct`
-  MODIFY `acct_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `acct_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tbl_borrow`
+--
+ALTER TABLE `tbl_borrow`
+  MODIFY `borrow_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_category`
@@ -414,31 +429,31 @@ ALTER TABLE `tbl_condition`
 -- AUTO_INCREMENT for table `tbl_department`
 --
 ALTER TABLE `tbl_department`
-  MODIFY `department_id` tinyint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `department_id` tinyint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_email_config`
 --
 ALTER TABLE `tbl_email_config`
-  MODIFY `config_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `config_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_item`
 --
 ALTER TABLE `tbl_item`
-  MODIFY `item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tbl_item_handler`
 --
 ALTER TABLE `tbl_item_handler`
-  MODIFY `handler_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `handler_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_members`
 --
 ALTER TABLE `tbl_members`
-  MODIFY `member_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `member_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_room`
@@ -450,7 +465,7 @@ ALTER TABLE `tbl_room`
 -- AUTO_INCREMENT for table `tbl_storage`
 --
 ALTER TABLE `tbl_storage`
-  MODIFY `storage_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `storage_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
