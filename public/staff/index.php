@@ -1,6 +1,6 @@
 <?php 
   include_once 'auth.php';
-  
+  $page = "dashboard";
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">

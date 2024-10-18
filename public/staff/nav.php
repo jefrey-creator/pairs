@@ -64,7 +64,7 @@
                             </a>
                         </li>
                         <li class="nav-item mb-1">
-                            <a href="" class="nav-link <?= ($page == "borrow") ? 'active_link' : '' ?>" aria-current="page">
+                            <a href="borrow" class="nav-link <?= ($page == "borrow") ? 'active_link' : '' ?>" aria-current="page">
                                 <i class="bi bi-journal-arrow-up"></i>
                                 Borrow Equipment
                             </a>
