@@ -41,7 +41,7 @@
             <li class="nav-item">
                 <a class="nav-link btn btn-light" href="#">
                     <i class="bi bi-share"></i>
-                    Barrowed <span class="badge text-bg-danger">4</span>
+                    Borrowed <span class="badge text-bg-danger">4</span>
                 </a>
             </li>
             <li class="nav-item dropdown">

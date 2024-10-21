@@ -21,8 +21,10 @@
     $arr_item_return_date = $_POST['arr_item_return_date'];
     $arr_purpose = $_POST['arr_purpose'];
     $date_borrowed = $borrow->get_server_time();
-    // $order_num = time();
-    $order_num = 1729488077;
+    $order_num = time();
+    // $order_num = 1729517444;
+    $date_created = date_create($date_borrowed->server_time);
+    $formatted_date_today = date_format($date_created, "Y-m-d");
 
     if(!intval($borrower_id) && empty($borrower_id)){
 
@@ -30,7 +32,9 @@
 
     }else{
 
-        for ($i = 0; $i < sizeof($arr_item_uuid); $i++) {
+        $admin_emails = $account->select_admins();
+
+        for ($i = 0; $i < count($arr_item_uuid); $i++) {
             
             if (empty($arr_item_uuid[$i])) {
     
@@ -48,7 +52,16 @@
     
                 $result = "You must provide a purpose for each requesting item.";
     
-            } else {
+            }
+            elseif(  $arr_item_return_date[$i] < $formatted_date_today ){
+                $result = "Invalid expected date of return.";
+            }
+            else {
+
+                $table_data = [];
+                $borrowing = [];
+                $email_conf = $config->set_config("borrow_item");
+                $mail_subject = $email_conf->subject;
                 
                 $borrow_data = [
                     [
@@ -56,80 +69,48 @@
                         "date_borrowed" => $date_borrowed->server_time,
                         "date_returned" => $arr_item_return_date[$i], 
                         "item_id" => $arr_item_uuid[$i], 
-                        "borrowed_qty" => $arr_item_qty[$i], 
+                        "borrowed_qty" => $arr_item_qty[$i],
                         "purpose" => $arr_purpose[$i],
                         "order_num" => $order_num,
                     ],
                 ];
 
+                $borrowing = $borrow->add_borrowing($borrow_data);
+
                 $get_borrowed_item = $storage->get_item_requested($borrower_id, $order_num);
-                $item_name = [];
-                $item_qty = [];
-                $item_purpose = [];
-                $item_returned = [];
-
-                $email_ad = [];
-                $admin_name = [];
-                $admin_emails = $account->select_admins();
-
-                $table_data = [];
-                $email_conf = $config->set_config("borrow_item");
-                $subject = $email_conf->subject;
-
-                $message = "";
-
-                foreach($get_borrowed_item as $item){
-
-                    $item_name[] = $item->item_name;
-                    $item_qty[] = $item->borrowed_qty;
-                    $item_purpose[] = $item->purpose;
-                    $item_returned[] = $item->date_returned;
-
-                    
-                    $table_data[] = '<td style="border: 1px solid black;">'.$item->item_name.'</td>
-                                        <td style="border: 1px solid black;">'.$item->borrowed_qty.'</td>
-                                        <td style="border: 1px solid black;">'.$item->purpose.'</td>
-                                        <td style="border: 1px solid black;">'.$item->date_returned.'</td>';
-                    // $body = str_replace("[item]", $item->item_name,  $email_conf->message);
-                    // $body1 = str_replace("[qty]", $item->borrowed_qty, $body);
-
-                    
-                    $body = str_replace("[name]", $borrower_name, $email_conf->message);
-                    $body1 = str_replace("[office]", $borrower_office, $body);
-                    $body2 = str_replace("[contact]", $borrower_contact, $body1);
-                    // $body3 = str_replace("<tr></tr>",  $table_data, $body2);
-                }     
-
-                // $message = str_replace("<tr></tr>", $table_data, $body2);
-                
                 
 
-                // foreach($admin_emails as $admin){
-                //     $email_ad[] = $admin->email_address;
-                //     $admin_name[] = $admin->full_name;
-                //     $mailer->send_mail($admin->email_address, $admin->full_name, $subject, $body6);
-                // }
-
-                // for ($item=0; $item < count($admin_emails); $item++) {
-                //     $mailer->send_mail($admin_emails[$i]->email_address, $admin_emails[$i]->full_name, $subject, $body6);
-                // }
-
-                // $mailer->send_mail(, , $subject, $body6);
+                foreach($get_borrowed_item as $item_key => $item_val){
+                    $table_data[] = '<tr><td style="border: 1px solid black;">'.$item_val->item_name.'</td>
+                    <td style="border: 1px solid black;">'.$item_val->borrowed_qty.'</td>
+                    <td style="border: 1px solid black;">'.$item_val->purpose.'</td>
+                    <td style="border: 1px solid black;">'.$item_val->date_returned.'</td></tr>';
+                }
                 
-                
-
-                // if($borrow->add_borrowing($borrow_data) === true){
-                //     $result = "Your item(s) have been successfully requested. Please hold on while the custodian processes your request. You will receive an email notification once it is approved.";
-                //     $success = true;
-                // }else{
-                //     $result = "Error connecting database.";
-                // }
-            }
+                $str_table_data = implode(", ", $table_data);
+                $body = str_replace("[name]", $borrower_name, $email_conf->message);
+                $body1 = str_replace("[office]", $borrower_office, $body);
+                $body2 = str_replace("[contact]", $borrower_contact, $body1);
+                $body3 = str_replace("<tr></tr>", str_replace(",", "", $str_table_data) , $body2);
+            } 
         }
+
+        foreach($admin_emails as $admin){
+            $mailer->send_mail($admin->email_address, $admin->full_name, $subject, $body3);
+        }
+
+        if($borrowing === true){
+            $result = "The item(s) you want to borrow have been successfully requested. Please hold on while the custodian processes your request. You will receive an email notification once it is approved.";
+            $success = true;
+
+        }else{
+            $result = "Error connecting database.";
+        }
+       
     }
 
     // Return a JSON response
     echo json_encode([
         "success" => $success,
-        "result" => $table_data
+        "result" => $result
     ]);

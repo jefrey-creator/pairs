@@ -34,10 +34,10 @@
                     <div class="card-body">
                         <ul class="nav nav-underline nav-fill">
                             <li class="nav-item">
-                                <a class="nav-link active" href="borrow">Borrow</a>
+                                <a class="nav-link active" href="borrow">Borrow Item(s)</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="borrowed-items">Borrowed</a>
+                                <a class="nav-link" href="requested-items">Requested Item(s)</a>
                             </li>
                         </ul>
                     </div>
@@ -187,27 +187,25 @@
                     },
                     success:function(data){
 
-                        console.log(data);
-                        $('#submitBorrowedItems').html(`Submit`).prop('disabled', false)
                         
-                        // if(data.success === false){
-                        //     Swal.fire({
-                        //         title: "Oops!",
-                        //         text: data.result,
-                        //         icon: "error"
-                        //     }).then( () => $('#submitBorrowedItems').html(`Submit`).prop('disabled', false));
-                        //     return false;
-                        // }   
+                        if(data.success === false){
+                            Swal.fire({
+                                title: "Oops!",
+                                text: data.result,
+                                icon: "error"
+                            }).then( () => $('#submitBorrowedItems').html(`Submit`).prop('disabled', false));
+                            return false;
+                        }   
 
-                        // if(data.success === true){
-                        //     Swal.fire({
-                        //         title: "Success",
-                        //         text: data.result,
-                        //         icon: "success"
-                        //     }).then( () => $('#submitBorrowedItems').html(`Submit`).prop('disabled', false))
-                        //     .then( () => location.href = "borrowed-items" );
-                        //     return false;
-                        // }
+                        if(data.success === true){
+                            Swal.fire({
+                                title: "Success",
+                                text: data.result,
+                                icon: "success"
+                            }).then( () => $('#submitBorrowedItems').html(`Submit`).prop('disabled', false))
+                            .then( () => location.href = "requested-items" );
+                            return false;
+                        }
                     }
                 })
                 

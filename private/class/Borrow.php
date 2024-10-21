@@ -44,4 +44,46 @@
 
             return $res->fetch(PDO::FETCH_OBJ);
         }
+
+        public function dropdown_status(){
+            $sql = "SELECT status FROM tbl_borrow";
+            $res = $this->db->prepare($sql);
+            $res->execute();
+
+            if($res->rowCount() > 0){
+                return $res->fethAll(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+        }
+
+
+        public function borrowed_item_by_order_num($borrower_id, $status){
+
+            $sql = "SELECT 
+                            `order_num`, 
+                            COUNT(`borrow_id`) AS total_borrows,
+                            MAX(`date_borrowed`) AS last_borrowed_date, 
+                            SUM(`borrowed_qty`) AS total_qty
+                        FROM 
+                            `tbl_borrow` 
+                        WHERE 
+                            `borrower_id` = :borrower_id AND status = :status
+                        GROUP BY 
+                            `order_num`
+                        ORDER BY 
+                            last_borrowed_date DESC";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":borrower_id", $borrower_id, PDO::PARAM_INT);
+            $res->bindParam(":status", $status, PDO::PARAM_INT);
+            $res->execute();
+
+
+            if($res->rowCount() > 0){
+                return $res->fetchAll(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+
+        }
     }
