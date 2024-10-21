@@ -96,7 +96,7 @@
         }
 
         foreach($admin_emails as $admin){
-            $mailer->send_mail($admin->email_address, $admin->full_name, $subject, $body3);
+            $mailer->send_mail($admin->email_address, $admin->full_name, $mail_subject, $body3);
         }
 
         if($borrowing === true){
