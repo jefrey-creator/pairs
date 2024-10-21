@@ -16,7 +16,7 @@
     $password = trim($_POST['password']);
 
     if(empty($username)){
-        $result = "Username / Email is required.";
+        $result = "Username is required.";
     }elseif(empty($password)){
         $result = "Incorrect password.";
     }elseif($login->user_login($username, $password) === false){
@@ -35,8 +35,8 @@
                 'username' => $username,
                 'user_type' =>  $data->user_type,
                 'acct_status' => $data->acct_status,
-                'login_token' => $data->login_token,
-                'acct_id' => $data->acct_id
+                'acct_id' => $data->acct_id,
+                "acct_uuid" => $data->acct_uuid
             )
         ];
 
@@ -47,12 +47,16 @@
             "acct_id" => $data->acct_id,
         ];
 
-        $login->update_login_token($data_val);
+        if($login->update_login_token($data_val)){
+            $_SESSION['token'] = $jwt;
 
-        $_SESSION['token'] = $jwt;
+            $success = true;
+            $result = "Successfully logged in.";
+        }else{
+            $result = "Login failed. Please try again.";
+        }
 
-        $success = true;
-        $result = "Successfully logged in.";
+        
     }
     echo json_encode([
         "result" => $result,

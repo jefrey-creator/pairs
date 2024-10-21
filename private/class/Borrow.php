@@ -27,8 +27,8 @@
 
         public function add_borrowing($data){
 
-            $sql = "INSERT INTO tbl_borrow(borrower_id, date_borrowed, date_returned, item_id, borrowed_qty, purpose) 
-                    VALUES (:borrower_id, :date_borrowed, :date_returned, :item_id, :borrowed_qty, :purpose)";
+            $sql = "INSERT INTO tbl_borrow(borrower_id, date_borrowed, date_returned, item_id, borrowed_qty, purpose, order_num) 
+                    VALUES (:borrower_id, :date_borrowed, :date_returned, :item_id, :borrowed_qty, :purpose, :order_num)";
             $res = $this->db->prepare($sql);
             foreach($data as $row){
                 $res->execute($row);

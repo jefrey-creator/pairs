@@ -123,7 +123,7 @@
                             </thead>
                             <tbody>
                             <?php 
-                                $selected_filter = "";
+                                $selected_filter = [];
                                 $room = new Room();
 
                                 $key = "";

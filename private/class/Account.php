@@ -147,4 +147,18 @@
             return true;
         }
 
+        public function select_admins(){
+            $sql = "SELECT  m.email_address, CONCAT(m.f_name, ' ', m.l_name) as full_name FROM tbl_members AS m 
+                            LEFT JOIN tbl_acct AS a ON (m.act_id=a.acct_uuid)
+                            WHERE a.user_type = 2";
+            $res = $this->db->prepare($sql);
+            $res->execute();
+
+            if($res->rowCount() > 0){
+                return $res->fetchAll(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+        }
+
     }

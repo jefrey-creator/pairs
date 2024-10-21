@@ -29,4 +29,22 @@
             $res->execute();
             return true;
         }
+
+        public function get_item_requested($borrower_id, $order_num) {
+            $sql = "SELECT  i.item_name, i.item_uuid,
+                            b.borrowed_qty, b.date_returned, b.purpose
+                    FROM  tbl_item AS i 
+                    LEFT JOIN tbl_borrow AS b ON (i.item_uuid=b.item_id)
+                    WHERE b.borrower_id = :borrower_id AND b.status = 1 AND b.order_num = :order_num";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":borrower_id", $borrower_id, PDO::PARAM_STR);
+            $res->bindParam(":order_num", $order_num, PDO::PARAM_STR);
+            $res->execute();
+
+            if($res->rowCount() > 0){
+                return $res->fetchAll(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+        }
     }
