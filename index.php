@@ -100,6 +100,8 @@
                         .attr('disabled', 'disabled');
                     },
                     success:function(data){
+
+                        // console.log(data);
                         if(data.success === false){
                             Swal.fire({
                                 title: "Error",

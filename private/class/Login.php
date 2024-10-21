@@ -31,7 +31,13 @@
 
         public function get_user_logged_in($username){
             
-            $sql = "SELECT acct_id, username, password, user_type, acct_status, login_token, reset_token, reg_token  FROM tbl_acct WHERE username = :username";
+            $sql = "SELECT  a.acct_id, a.username, a.password, a.user_type, a.acct_status, a.login_token, a.reset_token, a.reg_token, a.acct_uuid,
+                            CONCAT(m.f_name, ' ', m.m_name, ' ', m.l_name) as full_name, m.contact,
+                            d.department
+            FROM tbl_acct AS a
+            LEFT JOIN tbl_members AS m ON (a.acct_uuid=m.act_id)
+            LEFT JOIN tbl_department AS d ON (m.department=d.department_id)
+            WHERE a.username = :username";
             $res = $this->db->prepare($sql);
             $res->bindParam(':username', $username, PDO::PARAM_STR);
             $res->execute();

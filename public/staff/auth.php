@@ -19,14 +19,19 @@
 
             $key = API_KEY;
             $decoded = JWT::decode($_SESSION['token'], new Key($key, 'HS256'));
+            $login = new Login();
+
+            $user_details = $login->get_user_logged_in($decoded->data->username);
     
             if($decoded->data->user_type != 1){
                 header("location: ../../redirect/401");
             }
 
-            // if($decoded->data->login_token == ""){
-            //     header("location: ../../redirect/401");
-            // }
+            if($user_details->login_token == ""){
+                header("location: ../../redirect/401");
+            }
+
+            // echo $decoded->data->username;
 
         } catch (\Throwable $th) {
             error_log($th->getMessage(), 0);

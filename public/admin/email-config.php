@@ -118,7 +118,7 @@
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['table', ['table']],
                     ['insert',['link', 'picture']],
-                    ['view', ['fullscreen', 'help']]
+                    ['view', ['fullscreen', 'codeview', 'help']]
                 ],
             });
 

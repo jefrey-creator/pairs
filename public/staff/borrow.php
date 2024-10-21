@@ -186,25 +186,28 @@
                         `).prop('disabled', true);
                     },
                     success:function(data){
-                        
-                        if(data.success === false){
-                            Swal.fire({
-                                title: "Oops!",
-                                text: data.result,
-                                icon: "error"
-                            }).then( () => $('#submitBorrowedItems').html(`Submit`).prop('disabled', false));
-                            return false;
-                        }   
 
-                        if(data.success === true){
-                            Swal.fire({
-                                title: "Success",
-                                text: data.result,
-                                icon: "success"
-                            }).then( () => $('#submitBorrowedItems').html(`Submit`).prop('disabled', false))
-                            .then( () => location.href = "borrowed-items" );
-                            return false;
-                        }
+                        console.log(data);
+                        $('#submitBorrowedItems').html(`Submit`).prop('disabled', false)
+                        
+                        // if(data.success === false){
+                        //     Swal.fire({
+                        //         title: "Oops!",
+                        //         text: data.result,
+                        //         icon: "error"
+                        //     }).then( () => $('#submitBorrowedItems').html(`Submit`).prop('disabled', false));
+                        //     return false;
+                        // }   
+
+                        // if(data.success === true){
+                        //     Swal.fire({
+                        //         title: "Success",
+                        //         text: data.result,
+                        //         icon: "success"
+                        //     }).then( () => $('#submitBorrowedItems').html(`Submit`).prop('disabled', false))
+                        //     .then( () => location.href = "borrowed-items" );
+                        //     return false;
+                        // }
                     }
                 })
                 
