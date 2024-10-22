@@ -187,7 +187,7 @@
                     },
                     success:function(data){
 
-                        
+                        // $('#submitBorrowedItems').html(`Submit`).prop('disabled', false)
                         if(data.success === false){
                             Swal.fire({
                                 title: "Oops!",
@@ -229,7 +229,7 @@
                                 
                                 
                                 $('.item_uuid'+counter).append(`
-                                    <option value="${item.item_uuid}">${item.item_name}</option>
+                                    <option value="${item.item_uuid}"> ( ${item.item_qty} ) - ${item.item_name}</option>
                                 `);
                             })
                             
@@ -255,7 +255,7 @@
                             data.result.map( (item, index)=> {
                                 
                                 $('#item_uuid').append(`
-                                    <option value="${item.item_uuid}">${item.item_name}</option>
+                                    <option value="${item.item_uuid}">( ${item.item_qty} ) - ${item.item_name}</option>
                                 `);
 
                                 

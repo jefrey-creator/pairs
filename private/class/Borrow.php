@@ -13,7 +13,7 @@
 
             $sql = "SELECT i.item_name, s.item_uuid, s.item_qty FROM tbl_item AS i
                     LEFT JOIN tbl_storage AS s ON(i.item_uuid=s.item_uuid)
-                    WHERE i.condition_id = 1";
+                    WHERE i.condition_id = 1 AND s.item_qty > 0";
             $res = $this->db->prepare($sql);
             $res->execute();
 
@@ -85,5 +85,19 @@
                 return false;
             }
 
+        }
+
+        public function list_borrowed_items($order_num){
+            $sql = "select i.item_name, b.borrowed_qty, b.status FROM tbl_borrow AS b 
+                    LEFT JOIN tbl_item AS i ON (b.item_id=i.item_uuid) WHERE b.order_num = :order_num";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":order_num", $order_num, PDO::PARAM_INT);
+            $res->execute();
+
+            if($res->rowCount() > 0){
+                return $res->fetchAll(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
         }
     }

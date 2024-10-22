@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 22, 2024 at 06:58 AM
+-- Generation Time: Oct 22, 2024 at 10:37 PM
 -- Server version: 8.0.39-0ubuntu0.22.04.1
 -- PHP Version: 8.1.2-1ubuntu2.19
 
@@ -44,7 +44,7 @@ CREATE TABLE `tbl_acct` (
 --
 
 INSERT INTO `tbl_acct` (`acct_id`, `username`, `password`, `user_type`, `acct_status`, `reset_token`, `login_token`, `reg_token`, `acct_uuid`) VALUES
-(3, 'admin', '$2y$10$QUpQKOFMIvGliLl7Q6XrceMevdsKTqmtpBemYClhxA9obkohjbc0u', 2, 0, NULL, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3BhaXJzLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvcGFpcnMvIiwiZXhwIjo2MjI2MjY0Njg0ODAwLCJkYXRhIjp7InVzZXJuYW1lIjoiYWRtaW4iLCJ1c2VyX3R5cGUiOjIsImFjY3Rfc3RhdHVzIjowLCJhY2N0X2lkIjozLCJhY2N0X3V1aWQiOiI4YzMxOTgwYWI4NjQxYTRkNWQwZTVmOWIzNDdhMWRkNCJ9fQ.JbuFSc5WVb7rg5AIitoHOngMlvVJ8BNIWAnlp47DFJQ', NULL, '8c31980ab8641a4d5d0e5f9b347a1dd4'),
+(3, 'admin', '$2y$10$QUpQKOFMIvGliLl7Q6XrceMevdsKTqmtpBemYClhxA9obkohjbc0u', 2, 0, NULL, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3BhaXJzLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvcGFpcnMvIiwiZXhwIjo2MjI2NTg0OTg0MDAwLCJkYXRhIjp7InVzZXJuYW1lIjoiYWRtaW4iLCJ1c2VyX3R5cGUiOjIsImFjY3Rfc3RhdHVzIjowLCJhY2N0X2lkIjozLCJhY2N0X3V1aWQiOiI4YzMxOTgwYWI4NjQxYTRkNWQwZTVmOWIzNDdhMWRkNCJ9fQ.yy8ES3Pvg4hqgRam19ySa_w2FDldIQMnj12Y_jd3ups', NULL, '8c31980ab8641a4d5d0e5f9b347a1dd4'),
 (7, 'agbubulud', '$2y$10$QUpQKOFMIvGliLl7Q6XrceMevdsKTqmtpBemYClhxA9obkohjbc0u', 1, 0, NULL, '', NULL, '9abeb733ebcc6530f02c80e06bea0eee');
 
 -- --------------------------------------------------------
@@ -71,12 +71,9 @@ CREATE TABLE `tbl_borrow` (
 --
 
 INSERT INTO `tbl_borrow` (`borrow_id`, `borrower_id`, `date_borrowed`, `date_returned`, `item_id`, `borrowed_qty`, `remarks`, `status`, `order_num`, `purpose`) VALUES
-(37, 7, '2024-10-21 21:37:47', '2024-11-03', 'NjcwZmMzNTk4NmU2NDE3MjkwODYyOTc=', '3', NULL, 1, '1729517867', '3'),
-(38, 7, '2024-10-21 21:37:47', '2024-11-02', 'NjcwZmMyYmZiZjUwYzE3MjkwODYxNDM=', '2', NULL, 1, '1729517867', '2'),
-(39, 7, '2024-10-21 21:37:47', '2024-11-01', 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM=', '1', NULL, 1, '1729517867', '1'),
-(40, 7, '2024-10-21 21:38:59', '2024-11-03', 'NjcwZmMzNTk4NmU2NDE3MjkwODYyOTc=', '3', NULL, 1, '1729517939', 'testing 3'),
-(41, 7, '2024-10-21 21:38:59', '2024-11-02', 'NjcwZmMyYmZiZjUwYzE3MjkwODYxNDM=', '2', NULL, 1, '1729517939', 'testing 2'),
-(42, 7, '2024-10-21 21:38:59', '2024-11-01', 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM=', '1', NULL, 1, '1729517939', 'testing 1');
+(16, 7, '2024-10-22 21:49:07', '2024-10-30', 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM=', '12', NULL, 1, '1729604947', '12'),
+(17, 7, '2024-10-22 21:49:07', '2024-11-07', 'NjcwZmMzNTk4NmU2NDE3MjkwODYyOTc=', '1', NULL, 1, '1729604947', 'rrr'),
+(18, 7, '2024-10-22 22:15:24', '2024-10-22', 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM=', '1', NULL, 1, '1729606524', 'test');
 
 -- --------------------------------------------------------
 
@@ -168,7 +165,8 @@ CREATE TABLE `tbl_email_config` (
 --
 
 INSERT INTO `tbl_email_config` (`config_id`, `tag`, `message`, `subject`) VALUES
-(4, 'borrow_item', '<h2 align=\"center\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</h2><br>\n<p>Dear System administrator,</p><br>\n\n<p>I hope this message finds you well. I am [name], from [office] writing to formally request the borrowing of the following item(s)/equipment:</p>\n\n<table style=\"\\&quot;border-collapse:\" collapse\\\"=\"\"><thead><tr><th>Item</th><th>Quantity</th><th>Purpose</th><th><p>Expected Date of Return</p></th></tr></thead><tbody><tr></tr></tbody></table>\n\n<p><br></p><p></p><p></p><p><br></p><p></p>I assure you that I will handle the item(s) with care and return them in good condition. If needed, I am happy to complete any necessary forms or follow any specific procedures you may have for borrowing items.<br><div>Thank you for considering my request. I look forward to your prompt response.</div><br><div>Best regards,</div><br><div>[name]</div><br><div>[contact]</div><div><br></div><div>To process the request, please click <a href=\"http://localhost/pairs\" target=\"_blank\">here</a> to login.<br></div><p></p><br>', 'Request to Borrow Item/Equipment');
+(4, 'borrow_item', '<h2 align=\"center\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</h2><br>\n<p>Dear System administrator,</p><br>\n\n<p>I hope this message finds you well. I am [name], from [office] writing to formally request the borrowing of the following item(s)/equipment:</p>\n\n<table style=\"\\&quot;border-collapse:\" collapse\\\"=\"\"><thead><tr><th>Item</th><th>Quantity</th><th>Purpose</th><th><p>Expected Date of Return</p></th></tr></thead><tbody><tr></tr></tbody></table>\n\n<p><br></p><p></p><p></p><p><br></p><p></p>I assure you that I will handle the item(s) with care and return them in good condition. If needed, I am happy to complete any necessary forms or follow any specific procedures you may have for borrowing items.<br><div>Thank you for considering my request. I look forward to your prompt response.</div><br><div>Best regards,</div><br><div>[name]</div><br><div>[contact]</div><div><br></div><div>To process the request, please click <a href=\"http://localhost/pairs\" target=\"_blank\">here</a> to login.<br></div><p></p><br>', 'Request to Borrow Item/Equipment'),
+(5, 'acct_created', '<h2 style=\"text-align: center; \" class=\"\"><span style=\"text-align: var(--bs-body-text-align);\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</span><span style=\"text-align: var(--bs-body-text-align);\">S</span></h2><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\">Dear [name<span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">],</span></p><p style=\"text-align: left;\" class=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\"><br></span></p><p style=\"text-align: left;\" class=\"\">We are excited to inform you that your account has been successfully created!&nbsp;</p><p style=\"text-align: left;\" class=\"\">You can now enjoy all the features and benefits our platform has to offer.</p><p style=\"text-align: left;\" class=\"\"> Here are some details to get you started:</p><p style=\"\" class=\"\"><b>Username: </b>[username]</p><p style=\"\" class=\"\"><b>Password: </b>[password]</p><p>To log in, please visit our website at&nbsp;<a href=\"http://localhost/pairs\" target=\"_blank\">http://localhost/pairs</a> and enter your credentials.</p><p class=\"\"></p><p></p><p></p><p>Thank you for joining us! We look forward to serving you.</p><p><b>Reminders:</b> <font color=\"#ce0000\">For you account security, change your password immediately after login.&nbsp;<span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Do not share this message to anyone.</span></font></p><p style=\"text-align: left;\" class=\"\"><br></p>', 'Account Created');
 
 -- --------------------------------------------------------
 
@@ -416,7 +414,7 @@ ALTER TABLE `tbl_acct`
 -- AUTO_INCREMENT for table `tbl_borrow`
 --
 ALTER TABLE `tbl_borrow`
-  MODIFY `borrow_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `borrow_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `tbl_category`
@@ -440,7 +438,7 @@ ALTER TABLE `tbl_department`
 -- AUTO_INCREMENT for table `tbl_email_config`
 --
 ALTER TABLE `tbl_email_config`
-  MODIFY `config_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `config_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_item`

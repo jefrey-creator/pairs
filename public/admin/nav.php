@@ -39,7 +39,7 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a class="nav-link btn btn-light" href="#">
+                <a class="nav-link btn btn-light <?= ($page == "request") ? 'active' : '' ?>" href="borrow-request">
                     <i class="bi bi-share"></i>
                     Borrowed <span class="badge text-bg-danger">4</span>
                 </a>

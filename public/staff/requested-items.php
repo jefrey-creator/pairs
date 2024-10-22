@@ -131,7 +131,7 @@
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
                                         <div class="accordion-item">
                                             <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne${item.order_num}" aria-expanded="false" aria-controls="flush-collapseOne">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne${item.order_num}" aria-expanded="false" aria-controls="flush-collapseOne" onclick="getItems(${item.order_num})" id="btnAccordion${item.order_num}">
                                                     ${item.order_num} (${item.total_borrows})
                                                 </button>
                                             </h2>
@@ -141,10 +141,11 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Item</th>
-                                                                <th>Qty</th>
-                                                                <th>Status</th>
+                                                                <th>Borrowed Quantity</th>
+                                                                <th>Request Status</th>
                                                             </tr>
                                                         </thead>
+                                                        <tbody id="itemResult${item.order_num}"></tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -160,7 +161,71 @@
                     }
                 })
             })
-        })
+        });
+
+        const getItems = (order_num) =>{
+            $.ajax({
+                url: "get-ordered-item",
+                method: "GET",
+                data: { order_num: order_num},
+                dataType: "json",
+                cache:false,
+                beforeSend:function(){
+                    $('#btnAccordion'+order_num).html(`
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <span role="status"> Loading...</span>
+                    `)
+                },
+                success:function(data){
+
+                    if(data.success === false){
+                        $('#btnAccordion'+order_num).html(data.result);
+                        return false;
+                    }
+
+                    if(data.success === true){
+                        $('#itemResult'+order_num).html(``);
+
+                        Array.isArray(data.result) ? data.result.map((item, index) => {
+                            
+                            $('#btnAccordion'+order_num).html(order_num);
+
+                            let status = "";
+                            let badge = "";
+
+                            if(item.status == 1){
+                                status = "Pending";
+                                badge = "bg-warning"
+                            }else if(item.status == 2){
+                                status = "Approved"
+                                badge = "bg-success"
+                            }else if(item.status == 3){
+                                status = "Acquired"
+                                badge = "bg-primary"
+                            }else if(item.status == 4){
+                                status = "Returned"
+                                badge = "bg-secondary"
+                            }else if(item.status == 5){
+                                status = "Declined"
+                                badge = "bg-danger"
+                            }else{
+                                status = "Not available";
+                            }
+                            
+                            $('#itemResult'+order_num).append(`
+                                <tr>
+                                    <td>${item.item_name}</td>
+                                    <td>${item.borrowed_qty}</td>
+                                    <td> <div class="badge ${badge}"> ${status} </div></td>
+                                </tr>
+                            `)
+                        }) 
+                        
+                        : '';
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>

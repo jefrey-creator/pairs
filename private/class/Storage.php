@@ -47,4 +47,17 @@
                 return false;
             }
         }
+
+        public function check_available_qty($item_uuid) {
+            $sql = "SELECT s.item_qty FROM  tbl_storage AS s WHERE s.item_uuid = :item_uuid";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":item_uuid", $item_uuid, PDO::PARAM_STR);
+            $res->execute();
+
+            if($res->rowCount() > 0){
+                return $res->fetch(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+        }
     }
