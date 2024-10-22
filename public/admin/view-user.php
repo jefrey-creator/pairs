@@ -78,7 +78,7 @@
 
                                     $members = $account->select_all_user();
                                     foreach($members as $member){
-                                        $name = $member->l_name . ", " . $member->f_name . " " . $member->m_namne;
+                                        $name = $member->l_name . ", " . $member->f_name . " " . $member->m_name;
                                     ?>
                                     <tr class="<?= ($member->acct_status == 1) ? 'table-danger' : ''; ?>">
                                         <td class="text-start"><?= $member->id_number; ?></td>

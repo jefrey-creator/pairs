@@ -43,8 +43,6 @@
             $result = "Invalid borrower type selected.";
         }elseif(empty($id_number)){
             $result = "ID number is required.";
-        }elseif(empty($sex)){
-            $result = "Please select a gender preference.";
         }elseif ($sex > 1 && $sex < 0) {
             $result = "Invalid sex preference selected.";
         }elseif (empty($f_name) || strlen($f_name) < 2) {

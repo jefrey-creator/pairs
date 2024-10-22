@@ -59,7 +59,7 @@
                     <div class="card-body">
                         <form method="post">
                             <div id="msg"></div>
-                            <input type="hidden" id="acct_id" value="<?php echo trim($_GET['id']); ?>">
+                            <input type="hidden" id="acct_id" value="<?= (isset($_GET['id'])) ? trim($_GET['id']) : ''; ?>">
                             <div class="row mb-3">
                                 <h5>Account Details</h5>
                                 <div class="col-sm-12 col-md-12 col-lg-4">

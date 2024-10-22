@@ -22,7 +22,6 @@
     $arr_purpose = $_POST['arr_purpose'];
     $date_borrowed = $borrow->get_server_time();
     $order_num = time();
-    // $order_num = 1729517444;
     $date_created = date_create($date_borrowed->server_time);
     $formatted_date_today = date_format($date_created, "Y-m-d");
 
@@ -30,7 +29,7 @@
 
         $result = "You must login first, before borrowing any item/equipment.";
 
-    }else{
+    }elseif(count($arr_item_uuid) > 0){
 
         $admin_emails = $account->select_admins();
 
@@ -92,22 +91,23 @@
                 $body1 = str_replace("[office]", $borrower_office, $body);
                 $body2 = str_replace("[contact]", $borrower_contact, $body1);
                 $body3 = str_replace("<tr></tr>", str_replace(",", "", $str_table_data) , $body2);
+
+                if($borrowing === true){
+
+                    foreach($admin_emails as $admin){
+                        $mailer->send_mail($admin->email_address, $admin->full_name, $mail_subject, $body3);
+                    }
+                    
+                    $result = "The item(s) you want to borrow have been successfully requested. Please hold on while the custodian processes your request. You will receive an email notification once it is approved.";
+                    $success = true;
+        
+                }
             } 
         }
-
-        foreach($admin_emails as $admin){
-            $mailer->send_mail($admin->email_address, $admin->full_name, $mail_subject, $body3);
-        }
-
-        if($borrowing === true){
-            $result = "The item(s) you want to borrow have been successfully requested. Please hold on while the custodian processes your request. You will receive an email notification once it is approved.";
-            $success = true;
-
-        }else{
-            $result = "Error connecting database.";
-        }
-       
     }
+    // else{
+    //     $result = "Error connecting database.";
+    // }
 
     // Return a JSON response
     echo json_encode([

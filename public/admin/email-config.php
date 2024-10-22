@@ -55,7 +55,7 @@
                     </div>
                     <div class="card-body">
                         <form method="post">
-                            <input type="hidden" id="config_id" value="<?= $_GET['id']; ?>">
+                            <input type="hidden" id="config_id" value="<?= isset($_GET['id']) ? $_GET['id'] : ''; ?>">
                             <div class="row">
                                 <div class="col-lg-6 col-sm-12 col-md-12">
                                     <label for="subject">Subject</label>
