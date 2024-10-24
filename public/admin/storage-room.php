@@ -199,10 +199,6 @@
                               <i class="bi bi-three-dots-vertical fs-2"></i>
                             </button>
                             <ul class="dropdown-menu">
-                              <a class="dropdown-item" href="view-item?rm_id=${item.room_id}">
-                                <i class="bi bi-search"></i> View Items
-                              </a>
-
                               <a class="dropdown-item" href="#" onclick="updateRoom(${item.room_id})">
                                 <i class="bi bi-pencil"></i> Update
                               </a>
