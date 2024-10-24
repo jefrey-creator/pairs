@@ -195,7 +195,7 @@
 
                             if(item.status == 1){
                                 status = "Pending";
-                                badge = "bg-warning"
+                                badge = "bg-secondary"
                             }else if(item.status == 2){
                                 status = "Approved"
                                 badge = "bg-success"
@@ -204,7 +204,7 @@
                                 badge = "bg-primary"
                             }else if(item.status == 4){
                                 status = "Returned"
-                                badge = "bg-secondary"
+                                badge = "bg-info"
                             }else if(item.status == 5){
                                 status = "Declined"
                                 badge = "bg-danger"

@@ -29,13 +29,13 @@
             <div class="card-body">
               <ul class="nav nav-underline nav-fill">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="borrow-request">Pending</a>
+                  <a class="nav-link" aria-current="page" href="borrow-request">Pending</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="approved-request">Approved</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="acquired-item">Acquired / Delivered</a>
+                  <a class="nav-link active" href="acquired-item">Acquired / Delivered</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="returned-item">Returned</a>
@@ -55,27 +55,6 @@
     </div>
   </div>
 
-  <!-- declined modal  -->
-  <div class="modal" id="declinedModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Confirm to decline</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" id="order_number">
-          <h4>Enter the reason for declining the request.</h4>
-          <textarea id="reason" class="form-control" rows="2" cols="2"></textarea>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" id="declinedBtn">Submit</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -88,7 +67,7 @@
   <script>
     $(document).ready(function(){
 
-      getPendingOderNumber();
+      getAcquiredOderNumber();
 
       $('#declinedBtn').on('click', ()=>{
 
@@ -146,13 +125,11 @@
         })
 
       }); //end decline button
-
-
     });
 
-    const getPendingOderNumber = ()=>{
+    const getAcquiredOderNumber = ()=>{
       $.ajax({
-        url: "get-pending-order-number",
+        url: "get-acquired-order-number",
         method: "GET",
         dataType: "json",
         cache: false,
@@ -194,27 +171,23 @@
                             </div>
                             <div class="card-body">
                               <div class="row">
-                                <h4>Select item to approve</h4>
+                                <h4>Select item to return</h4>
                                 <table class="table table-bordered">
                                   <thead>
                                     <tr>
                                       <th>Item</th>
                                       <th>Expected Date of Return</th>
                                       <th>Purpose</th>
-                                      <th>Borrowed Qty</th>
-                                      <th>Available Item</th>
+                                       <th>Borrowed</th>
+                                      <th>Return</th>
                                     </tr>
                                   </thead>
                                   <tbody id="item_details${item.order_num}"></tbody>
                                 </table>
                               </div>
                               <div class="float-end">
-                                <button class="btn btn-danger" type="button" onclick="declinedItem(${item.order_num})" id="declinedItem${item.order_num}">
-                                  Decline
-                                </button>
-
                                 <button class="btn btn-primary" type="button" onclick="approvedItem(${item.order_num})" id="approvedItem${item.order_num}">
-                                  Approve
+                                  Return Item
                                 </button>
                               </div>
                             </div>
@@ -238,7 +211,7 @@
 
       // console.log(order_num);
       $.ajax({
-        url: "list-item-by-order-num",
+        url: "list-acquired-item-by-order-num",
         method: "GET",
         data: { order_num: order_num },
         dataType: "json",
@@ -250,6 +223,7 @@
             </div>
           `)
         },
+
         success:function(data){
 
           if(data.success === false){
@@ -279,10 +253,10 @@
                       </td>
                       <td>${item.date_returned}</td>
                       <td>${item.purpose}</td>
+                      <td>${item.approved_qty}</td>
                       <td>
-                        <input type="number" class="form-control" id="borrowed_qty${order_num}" name="borrowed_qty${order_num}[]" value="${item.borrowed_qty}" min="1">
+                        <input type="number" class="form-control" id="borrowed_qty${order_num}" name="borrowed_qty${order_num}[]" value="${item.approved_qty}" min="1">
                       </td>
-                      <td>${item.item_qty}</td>
                     </tr>
                 `)
               } )
@@ -357,7 +331,7 @@
                   text: data.result,
                   icon: "success"
                 }).then( ()=> $('#approvedItem'+order_num).html(`Aprrove`).prop('disabled', false) )
-                .then( () => location.href="approved-request" );
+                .then( () => location.href="borrow-request" );
 
                 return false;
               }
@@ -371,6 +345,7 @@
 
       $('#declinedModal').modal('show');
       $('#order_number').val(order_num);
+
     }
   </script>
 </body>

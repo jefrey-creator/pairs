@@ -161,4 +161,41 @@
             }
         }
 
+        public function select_user_by_acct_id($acct_id){
+            $sql = "SELECT 
+                            a.username, a.user_type, a.acct_status, a.acct_uuid, a.acct_id,
+                            m.id_number, m.member_type, m.f_name, m.m_name, m.l_name, m.sex, m.contact, m.yr_level, m.email_address,
+                            d.department_id
+                    FROM  tbl_acct AS a
+                    LEFT JOIN tbl_members AS m ON (a.acct_uuid=m.act_id)
+                    LEFT JOIN tbl_department AS d ON (m.department=d.department_id)
+                    WHERE a.acct_uuid = :id
+                    ";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":id", $id, PDO::PARAM_STR);
+            $res->execute();
+
+            if($res->rowCount() > 0) {
+                return $res->fetch(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+        }
+
+        public function get_borrower_details($borrower_id){
+            $sql = "SELECT CONCAT(m.f_name, ' ', m.m_name, ' ', m.l_name) as borrower_name, m.email_address FROM tbl_members AS m
+                    LEFT JOIN tbl_acct AS a ON (m.act_id=a.acct_uuid)
+                    LEFT JOIN tbl_borrow AS b ON (a.acct_id=b.borrower_id)
+                    WHERE b.borrower_id = :borrower_id";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":borrower_id", $borrower_id, PDO::PARAM_INT);
+            $res->execute();
+
+            if($res->rowCount() > 0) {
+                return $res->fetch(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+        }
+
     }

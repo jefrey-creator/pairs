@@ -29,7 +29,7 @@
             <div class="card-body">
               <ul class="nav nav-underline nav-fill">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="borrow-request">Pending</a>
+                  <a class="nav-link " aria-current="page" href="borrow-request">Pending</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="approved-request">Approved</a>
@@ -41,7 +41,7 @@
                   <a class="nav-link" href="returned-item">Returned</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="declined-request">Declined</a>
+                  <a class="nav-link active" href="declined-request">Declined</a>
                 </li>
               </ul>
             </div>
@@ -51,27 +51,6 @@
     <div class="row mb-3">
       <div class="col-lg-12 col-sm-12 col-md-12">
         <div id="pendingOrder"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- declined modal  -->
-  <div class="modal" id="declinedModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Confirm to decline</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" id="order_number">
-          <h4>Enter the reason for declining the request.</h4>
-          <textarea id="reason" class="form-control" rows="2" cols="2"></textarea>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" id="declinedBtn">Submit</button>
-        </div>
       </div>
     </div>
   </div>
@@ -88,71 +67,13 @@
   <script>
     $(document).ready(function(){
 
-      getPendingOderNumber();
-
-      $('#declinedBtn').on('click', ()=>{
-
-        var reason = $('#reason').val();
-        var order_number = $('#order_number').val();
-        var selectedItem = [];
-        const borrower_id = $('#borrower_id').val();
-
-        $(`input[name="${order_number}selectedItem[]"]:checked`).each(function(){
-          selectedItem.push($(this).val());
-        });
-
-        $.ajax({
-          url: "decline-item",
-          method: "POST",
-          data: {
-            selectedItem: selectedItem,
-            order_number: order_number,
-            borrower_id: borrower_id,
-            reason: reason,
-          },
-          dataType:"json",
-          cache: false,
-          beforeSend:function(){
-            $('#declinedBtn').html(`
-              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-              <span role="status">Processing...</span>
-            `).prop('disabled', true);
-          },
-          success:function(data){
-            // $('#approvedItem'+order_num).html(`Aprrove`).prop('disabled', false)
-            if(data.success === false){
-
-              Swal.fire({
-                title: "Error",
-                text: data.result,
-                icon: "info"
-              }).then( ()=> $('#declinedBtn').html(`Aprrove`).prop('disabled', false) );
-
-              return false;
-            }
-
-            if(data.success === true){
-
-              Swal.fire({
-                title: "Success",
-                text: data.result,
-                icon: "success"
-              }).then( ()=> $('#declinedBtn').html(`Aprrove`).prop('disabled', false) )
-              .then( () => location.href="borrow-request" );
-
-              return false;
-            }
-          }
-        })
-
-      }); //end decline button
-
+        getDeclinedOderNumber();
 
     });
 
-    const getPendingOderNumber = ()=>{
+    const getDeclinedOderNumber = ()=>{
       $.ajax({
-        url: "get-pending-order-number",
+        url: "get-declined-order-number",
         method: "GET",
         dataType: "json",
         cache: false,
@@ -180,7 +101,7 @@
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button class="accordion-button collapsed bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne${item.order_num}" aria-expanded="true" aria-controls="collapseOne" onclick="getItem(${item.order_num})">
-                          <div class="badge bg-primary">
+                          <div class="badge bg-danger">
                             Order Number:&nbsp;${item.order_num} <br /><br /> Number of Item:&nbsp;${item.total_borrows}
                           </div>
                         </button>
@@ -194,7 +115,7 @@
                             </div>
                             <div class="card-body">
                               <div class="row">
-                                <h4>Select item to approve</h4>
+                                
                                 <table class="table table-bordered">
                                   <thead>
                                     <tr>
@@ -207,15 +128,6 @@
                                   </thead>
                                   <tbody id="item_details${item.order_num}"></tbody>
                                 </table>
-                              </div>
-                              <div class="float-end">
-                                <button class="btn btn-danger" type="button" onclick="declinedItem(${item.order_num})" id="declinedItem${item.order_num}">
-                                  Decline
-                                </button>
-
-                                <button class="btn btn-primary" type="button" onclick="approvedItem(${item.order_num})" id="approvedItem${item.order_num}">
-                                  Approve
-                                </button>
                               </div>
                             </div>
                           </div>
@@ -238,7 +150,7 @@
 
       // console.log(order_num);
       $.ajax({
-        url: "list-item-by-order-num",
+        url: "list-declined-item-by-order-num",
         method: "GET",
         data: { order_num: order_num },
         dataType: "json",
@@ -269,18 +181,12 @@
                 $('#item_details'+order_num).append(`
                     <tr>
                       <td>
-                        <div class="form-check">
-                          <input type="hidden" value="${item.borrower_id}" id="borrower_id"/>
-                          <input class="form-check-input" type="checkbox" id="approvedItem${item.borrow_id}" name="${order_num}selectedItem[]" value="${item.borrow_id}" data-index="${counter++}">
-                          <label class="form-check-label" for="approvedItem${item.borrow_id}">
-                            ${item.item_name}
-                          </label>
-                        </div>
+                        ${item.item_name}
                       </td>
                       <td>${item.date_returned}</td>
                       <td>${item.purpose}</td>
                       <td>
-                        <input type="number" class="form-control" id="borrowed_qty${order_num}" name="borrowed_qty${order_num}[]" value="${item.borrowed_qty}" min="1">
+                        ${item.borrowed_qty}
                       </td>
                       <td>${item.item_qty}</td>
                     </tr>
@@ -293,85 +199,6 @@
       })
     }
 
-    const approvedItem = (order_num) => {
-      // console.log(order_num);
-
-      var selectedItem = [];
-      var selectedQty = [];
-      const borrower_id = $('#borrower_id').val();
-      $(`input[name="${order_num}selectedItem[]"]:checked`).each(function(){
-
-        const index = $(this).data('index'); 
-        const inputQty = $('input[name="borrowed_qty'+order_num+'[]"').eq(index).val();
-        selectedQty.push(inputQty);
-
-        selectedItem.push($(this).val());
-
-      });
-
-      Swal.fire({
-        title: "Approve selected item(s)?",
-        text: "You won't be able to revert this. Do you wish to continue? ",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes",
-        cancelButtonText: "No"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          $.ajax({
-            url: "approved-item",
-            method: "POST",
-            data: {
-              selectedItem: selectedItem,
-              selectedQty: selectedQty,
-              order_num: order_num,
-              borrower_id: borrower_id
-            },
-            dataType:"json",
-            cache: false,
-            beforeSend:function(){
-              $('#approvedItem'+order_num).html(`
-                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                <span role="status">Processing...</span>
-              `).prop('disabled', true);
-            },
-            success:function(data){
-              // $('#approvedItem'+order_num).html(`Aprrove`).prop('disabled', false)
-              if(data.success === false){
-
-                Swal.fire({
-                  title: "Error",
-                  text: data.result,
-                  icon: "info"
-                }).then( ()=> $('#approvedItem'+order_num).html(`Aprrove`).prop('disabled', false) );
-
-                return false;
-              }
-
-              if(data.success === true){
-
-                Swal.fire({
-                  title: "Success",
-                  text: data.result,
-                  icon: "success"
-                }).then( ()=> $('#approvedItem'+order_num).html(`Aprrove`).prop('disabled', false) )
-                .then( () => location.href="approved-request" );
-
-                return false;
-              }
-            }
-          })
-        }
-      });
-    }
-
-    const declinedItem = (order_num) => {
-
-      $('#declinedModal').modal('show');
-      $('#order_number').val(order_num);
-    }
   </script>
 </body>
 </html>

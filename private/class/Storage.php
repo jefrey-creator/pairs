@@ -60,4 +60,49 @@
                 return false;
             }
         }
+
+        public function check_item_availability($borrow_id){
+            $sql = "SELECT s.item_qty as max_qty, s.item_uuid FROM  tbl_storage AS s 
+                    LEFT JOIN tbl_borrow AS b ON (s.item_uuid=b.item_id)
+                    WHERE b.borrow_id = :borrow_id";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(':borrow_id', $borrow_id, PDO::PARAM_INT);
+            $res->execute();
+            
+            if($res->rowCount() > 0){
+                return $res->fetch(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+        }
+
+        public function update_qty($data){
+
+            $sql = "UPDATE tbl_storage SET item_qty = :item_qty WHERE item_uuid = :item_uuid";
+            $res = $this->db->prepare($sql);
+
+            foreach($data as $row){
+                $res->execute($row);
+            }
+          
+
+            return true;
+        }
+
+        public function get_approved_item_requested($borrow_id) {
+            $sql = "SELECT  i.item_name, i.item_uuid,
+                            b.borrowed_qty, b.date_returned, b.purpose, b.approved_qty
+                    FROM  tbl_item AS i 
+                    LEFT JOIN tbl_borrow AS b ON (i.item_uuid=b.item_id)
+                    WHERE b.borrow_id IN (:borrow_id)";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":borrow_id", $borrow_id, PDO::PARAM_STR);
+            $res->execute();
+
+            if($res->rowCount() > 0){
+                return $res->fetchAll(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+        }
     }
