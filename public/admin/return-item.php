@@ -15,11 +15,14 @@
 
     $selectedItem = $_POST['selectedItem'];
     $selectedQty = $_POST['selectedQty'];
-    $oder_number = trim($_POST['order_num']);
+    $selectedRemarks = $_POST['selectedRemarks'];
+    $order_number = trim($_POST['order_num']);
     $borrower_id = trim($_POST['borrower_id']);
+    $qty = [];
 
+    $email_conf = $config->set_config("item_returned");
 
-    $email_conf = $config->set_config("req_approved");
+    $req_status = [];
     
 
     if(!isset($_POST['selectedItem'])){
@@ -28,15 +31,17 @@
 
     }else{
 
-        $order_tbl = [];
+        $approved_item = [];
+        $remaining_item_to_be_returned = 0;
 
         for($i = 0; $i < count($selectedItem); $i++){
 
             $available_qty = $storage->check_item_availability($selectedItem[$i]);
+            $remaining_item_to_be_returned = $available_qty->approved_qty - $available_qty->returned_qty;
 
-            if($selectedQty[$i] > $available_qty->max_qty){
+            if($selectedQty[$i] > $remaining_item_to_be_returned){
 
-                $result = "Maximum quantity entered has exceeded for an item.";
+                $result = "Returning item should not be greater than the borrowed item.";
                 $success = false;
                 break;
 
@@ -52,9 +57,14 @@
                 $success = false;
                 break;
 
-            }else{
+            }elseif (strlen($selectedRemarks[$i]) < 5) {
+                $result = "Enter at least 5 character remarks for returned item.";
+                $success = false;
+                break;
+            }
+            else{
 
-                $result = "Selected item was approved successfully.";
+                $result = "Selected item was successfully returned.";
                 $success = true;
                 
             }
@@ -64,38 +74,44 @@
     if($success === true){
 
         $approved_item = [];
-
+        
         for($i = 0; $i < count($selectedItem); $i++){
 
             $available_qty = $storage->check_item_availability($selectedItem[$i]);
+            $total_qty_stored[] =  $selectedQty[$i] + $available_qty->max_qty;
+            $returned_qty[] = $selectedQty[$i] + $available_qty->returned_qty;
 
-            $total_qty[] = $available_qty->max_qty - $selectedQty[$i];
+            $req_status[] = ($returned_qty[$i] == $available_qty->approved_qty) ? 4 : 3;
+           
             $borrow_data = [
                 [
-                    "status" => 2,
+                    "status" => $req_status[$i],
                     "borrow_id" => $selectedItem[$i],
-                    "approved_qty" => $selectedQty[$i]
+                    "returned_qty" => $returned_qty[$i],
+                    "actual_date_returned" => date('Y-m-d'),
+                    "remarks" => $selectedRemarks[$i],
                 ],
             ];
 
             $storage_data = [
                 [
-                    "item_qty" => $total_qty[$i],
-                    "item_uuid" => $available_qty->item_uuid
+                    "item_qty" => $total_qty_stored[$i],
+                    "item_uuid" => $available_qty->item_uuid,
                 ],
             ];
 
-            $borrow->update_borrow($borrow_data);
+            $borrow->returned_item($borrow_data);
             $storage->update_qty($storage_data);
 
             $get_borrowed_item = $storage->get_approved_item_requested($selectedItem[$i]);
 
             foreach($get_borrowed_item as $item_key => $item_val){
                 $approved_item[] = '<tr><td style="border: 1px solid black;">'.$item_val->item_name.'</td>
-                <td style="border: 1px solid black;">'.$item_val->borrowed_qty.'</td>
+                <td style="border: 1px solid black;">'.$item_val->approved_qty.'</td>
                 <td style="border: 1px solid black;">'.$selectedQty[$i].'</td>
-                <td style="border: 1px solid black;">'.$item_val->purpose.'</td>
-                <td style="border: 1px solid black;">'.$item_val->date_returned.'</td></tr>';
+                <td style="border: 1px solid black;">'.$item_val->date_returned.'</td>
+                <td style="border: 1px solid black;">'.date('Y-m-d').'</td>
+                <td style="border: 1px solid black;">'.$selectedRemarks[$i].'</td></tr>';
             }
         }
 
@@ -104,13 +120,12 @@
         $mail_subject = $email_conf->subject;
 
         $body = str_replace("[name]", ucwords(strtolower($borrower_details->borrower_name)), $email_conf->message);
-        $body2 = str_replace("[office]", strtoupper($borrower_details->department), $body);
-        $body3 = str_replace("[order_num]", $oder_number, $body2); 
+        $body2 = str_replace("[order_num]", $order_number, $body);
         $str_table_data = implode(", ", $approved_item);
         $clean_row = str_replace(", ", " ", $str_table_data);
-        $body4 = str_replace("<tr></tr>", $clean_row, $body3);
+        $body3 = str_replace("<tr></tr>", $clean_row, $body2);
         
-        $mailer->send_mail($borrower_details->email_address, ucwords(strtolower($borrower_details->borrower_name)), $mail_subject, $body4);
+        $mailer->send_mail($borrower_details->email_address, ucwords(strtolower($borrower_details->borrower_name)), $mail_subject, $body3);
 
         echo json_encode([
             "success" => $success,

@@ -68,63 +68,6 @@
     $(document).ready(function(){
 
       getAcquiredOderNumber();
-
-      $('#declinedBtn').on('click', ()=>{
-
-        var reason = $('#reason').val();
-        var order_number = $('#order_number').val();
-        var selectedItem = [];
-        const borrower_id = $('#borrower_id').val();
-
-        $(`input[name="${order_number}selectedItem[]"]:checked`).each(function(){
-          selectedItem.push($(this).val());
-        });
-
-        $.ajax({
-          url: "decline-item",
-          method: "POST",
-          data: {
-            selectedItem: selectedItem,
-            order_number: order_number,
-            borrower_id: borrower_id,
-            reason: reason,
-          },
-          dataType:"json",
-          cache: false,
-          beforeSend:function(){
-            $('#declinedBtn').html(`
-              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-              <span role="status">Processing...</span>
-            `).prop('disabled', true);
-          },
-          success:function(data){
-            // $('#approvedItem'+order_num).html(`Aprrove`).prop('disabled', false)
-            if(data.success === false){
-
-              Swal.fire({
-                title: "Error",
-                text: data.result,
-                icon: "info"
-              }).then( ()=> $('#declinedBtn').html(`Aprrove`).prop('disabled', false) );
-
-              return false;
-            }
-
-            if(data.success === true){
-
-              Swal.fire({
-                title: "Success",
-                text: data.result,
-                icon: "success"
-              }).then( ()=> $('#declinedBtn').html(`Aprrove`).prop('disabled', false) )
-              .then( () => location.href="borrow-request" );
-
-              return false;
-            }
-          }
-        })
-
-      }); //end decline button
     });
 
     const getAcquiredOderNumber = ()=>{
@@ -177,16 +120,16 @@
                                     <tr>
                                       <th>Item</th>
                                       <th>Expected Date of Return</th>
-                                      <th>Purpose</th>
-                                       <th>Borrowed</th>
+                                      <th>Borrowed</th>
                                       <th>Return</th>
+                                      <th>Remarks</th>
                                     </tr>
                                   </thead>
                                   <tbody id="item_details${item.order_num}"></tbody>
                                 </table>
                               </div>
                               <div class="float-end">
-                                <button class="btn btn-primary" type="button" onclick="approvedItem(${item.order_num})" id="approvedItem${item.order_num}">
+                                <button class="btn btn-primary" type="button" onclick="returnItem(${item.order_num})" id="returnItem${item.order_num}">
                                   Return Item
                                 </button>
                               </div>
@@ -237,12 +180,17 @@
             Array.isArray( data.result ) ? 
 
               data.result.map( (item, index)=>{
+
+                var approved_qty = parseInt(item.approved_qty)
+                var returned_qty = parseInt(item.returned_qty)
+                var not_returned_qty = approved_qty - returned_qty
+
                 $('#date_borrowed'+order_num).html(`<i class="bi bi-calendar-check"></i> Date Requested: `+item.date_borrowed);
                 $('#borrower_name'+order_num).html(`<i class="bi bi-person"></i>`+item.borrower_name.toUpperCase());
 
                 $('#item_details'+order_num).append(`
                     <tr>
-                      <td>
+                      <td class="text-wrap">
                         <div class="form-check">
                           <input type="hidden" value="${item.borrower_id}" id="borrower_id"/>
                           <input class="form-check-input" type="checkbox" id="approvedItem${item.borrow_id}" name="${order_num}selectedItem[]" value="${item.borrow_id}" data-index="${counter++}">
@@ -252,10 +200,12 @@
                         </div>
                       </td>
                       <td>${item.date_returned}</td>
-                      <td>${item.purpose}</td>
                       <td>${item.approved_qty}</td>
                       <td>
-                        <input type="number" class="form-control" id="borrowed_qty${order_num}" name="borrowed_qty${order_num}[]" value="${item.approved_qty}" min="1">
+                        <input type="number" class="form-control" id="borrowed_qty${order_num}" name="borrowed_qty${order_num}[]" value="${not_returned_qty}" min="1">
+                      </td>
+                      <td>
+                        <textarea class="form-control" id="remarks${order_num}" name="remarks${order_num}[]"></textarea>
                       </td>
                     </tr>
                 `)
@@ -267,24 +217,29 @@
       })
     }
 
-    const approvedItem = (order_num) => {
-      // console.log(order_num);
+    const returnItem = (order_num) => {
+      
 
       var selectedItem = [];
       var selectedQty = [];
+      var selectedRemarks = [];
       const borrower_id = $('#borrower_id').val();
+
       $(`input[name="${order_num}selectedItem[]"]:checked`).each(function(){
 
         const index = $(this).data('index'); 
         const inputQty = $('input[name="borrowed_qty'+order_num+'[]"').eq(index).val();
         selectedQty.push(inputQty);
 
+        const remarkInput = $('textarea[name="remarks'+order_num+'[]"').eq(index).val();
+        selectedRemarks.push(remarkInput);
+
         selectedItem.push($(this).val());
 
       });
 
       Swal.fire({
-        title: "Approve selected item(s)?",
+        title: "Return selected item(s)?",
         text: "You won't be able to revert this. Do you wish to continue? ",
         icon: "question",
         showCancelButton: true,
@@ -295,46 +250,48 @@
       }).then((result) => {
         if (result.isConfirmed) {
           $.ajax({
-            url: "approved-item",
+            url: "return-item",
             method: "POST",
             data: {
               selectedItem: selectedItem,
               selectedQty: selectedQty,
+              selectedRemarks: selectedRemarks,
               order_num: order_num,
               borrower_id: borrower_id
             },
             dataType:"json",
             cache: false,
             beforeSend:function(){
-              $('#approvedItem'+order_num).html(`
+              $('#returnItem'+order_num).html(`
                 <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                 <span role="status">Processing...</span>
               `).prop('disabled', true);
             },
             success:function(data){
-              // $('#approvedItem'+order_num).html(`Aprrove`).prop('disabled', false)
-              if(data.success === false){
+              // console.log(data);
+              $('#returnItem'+order_num).html(`Return Item`).prop('disabled', false)
+              // if(data.success === false){
 
-                Swal.fire({
-                  title: "Error",
-                  text: data.result,
-                  icon: "info"
-                }).then( ()=> $('#approvedItem'+order_num).html(`Aprrove`).prop('disabled', false) );
+              //   Swal.fire({
+              //     title: "Error",
+              //     text: data.result,
+              //     icon: "info"
+              //   }).then( ()=> $('#returnItem'+order_num).html(`Return Item`).prop('disabled', false) );
 
-                return false;
-              }
+              //   return false;
+              // }
 
-              if(data.success === true){
+              // if(data.success === true){
 
-                Swal.fire({
-                  title: "Success",
-                  text: data.result,
-                  icon: "success"
-                }).then( ()=> $('#approvedItem'+order_num).html(`Aprrove`).prop('disabled', false) )
-                .then( () => location.href="borrow-request" );
+              //   Swal.fire({
+              //     title: "Success",
+              //     text: data.result,
+              //     icon: "success"
+              //   }).then( ()=> $('#returnItem'+order_num).html(`Return Item`).prop('disabled', false) )
+              //   .then( () => location.href="returned-item" );
 
-                return false;
-              }
+              //   return false;
+              // }
             }
           })
         }

@@ -180,7 +180,7 @@
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button class="accordion-button collapsed bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne${item.order_num}" aria-expanded="true" aria-controls="collapseOne" onclick="getItem(${item.order_num})">
-                          <div class="badge bg-primary">
+                          <div class="badge bg-secondary">
                             Order Number:&nbsp;${item.order_num} <br /><br /> Number of Item:&nbsp;${item.total_borrows}
                           </div>
                         </button>
@@ -201,8 +201,8 @@
                                       <th>Item</th>
                                       <th>Expected Date of Return</th>
                                       <th>Purpose</th>
-                                      <th>Borrowed Qty</th>
                                       <th>Available Item</th>
+                                      <th>Borrowed Qty</th>
                                     </tr>
                                   </thead>
                                   <tbody id="item_details${item.order_num}"></tbody>
@@ -279,10 +279,11 @@
                       </td>
                       <td>${item.date_returned}</td>
                       <td>${item.purpose}</td>
+                      
+                      <td>${item.item_qty}</td>
                       <td>
                         <input type="number" class="form-control" id="borrowed_qty${order_num}" name="borrowed_qty${order_num}[]" value="${item.borrowed_qty}" min="1">
                       </td>
-                      <td>${item.item_qty}</td>
                     </tr>
                 `)
               } )

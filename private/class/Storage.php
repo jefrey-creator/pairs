@@ -62,7 +62,9 @@
         }
 
         public function check_item_availability($borrow_id){
-            $sql = "SELECT s.item_qty as max_qty, s.item_uuid FROM  tbl_storage AS s 
+            $sql = "SELECT s.item_qty as max_qty, s.item_uuid, 
+                            b.approved_qty, s.item_uuid as store_uuid, b.item_id as borrow_uuid, b.approved_qty, b.returned_qty
+                    FROM  tbl_storage AS s 
                     LEFT JOIN tbl_borrow AS b ON (s.item_uuid=b.item_id)
                     WHERE b.borrow_id = :borrow_id";
             $res = $this->db->prepare($sql);
@@ -91,7 +93,7 @@
 
         public function get_approved_item_requested($borrow_id) {
             $sql = "SELECT  i.item_name, i.item_uuid,
-                            b.borrowed_qty, b.date_returned, b.purpose, b.approved_qty
+                            b.borrowed_qty, b.date_returned, b.purpose, b.approved_qty, b.remarks
                     FROM  tbl_item AS i 
                     LEFT JOIN tbl_borrow AS b ON (i.item_uuid=b.item_id)
                     WHERE b.borrow_id IN (:borrow_id)";

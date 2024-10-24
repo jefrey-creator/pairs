@@ -30,10 +30,18 @@
     $email_conf = $config->set_config("borrow_item");
     $mail_subject = $email_conf->subject;
     $table_data = [];
+    $hasDuplicate = [];
 
     for ($i = 0; $i < count($arr_item_uuid); $i++) {
 
         $available_qty = $storage->check_available_qty($arr_item_uuid[$i]);
+
+        if(in_array($arr_item_uuid[$i], $hasDuplicate)){
+            $result = "You cannot request the same item at once.";
+            $success = false;
+            break;
+        }
+        $hasDuplicate[] = $arr_item_uuid[$i];
 
         if($arr_item_qty[$i] > $available_qty->item_qty){
             $result = "The maximun number of item available to borrow exceeded. Available: ( $available_qty->item_qty )";
@@ -50,7 +58,7 @@
         }
         elseif (empty($arr_item_uuid[$i])) {
 
-            $result = "S elect an item first.";
+            $result = "Select an item first.";
             $success = false;
             break;
             

@@ -113,7 +113,7 @@
 
         public function view_borrowed_item($order_num, $status){
             $sql = "SELECT 	i.item_name, i.item_uuid, i.item_id,
-                            b.purpose, b.date_returned, b.date_borrowed, b.borrowed_qty, b.order_num, b.borrow_id, b.borrower_id, b.approved_qty,
+                            b.purpose, b.date_returned, b.date_borrowed, b.borrowed_qty, b.order_num, b.borrow_id, b.borrower_id, b.approved_qty, b.actual_date_returned, b.returned_qty, b.remarks,
                             CONCAT(m.f_name, ' ', m.m_name, ' ', m.l_name) as borrower_name,
                             s.item_qty
                     FROM tbl_item         AS i 
@@ -164,6 +164,19 @@
         public function update_borrow($data){
 
             $sql = "UPDATE tbl_borrow SET status = :status, approved_qty = :approved_qty WHERE borrow_id = :borrow_id";
+            $res = $this->db->prepare($sql);
+            foreach($data as $row){
+                $res->execute($row);
+            }
+
+            return true;
+        }
+
+        public function returned_item($data){
+            $sql = "UPDATE tbl_borrow SET status = :status, returned_qty = :returned_qty, 
+                    actual_date_returned = :actual_date_returned,
+                    remarks = :remarks 
+                    WHERE borrow_id = :borrow_id";
             $res = $this->db->prepare($sql);
             foreach($data as $row){
                 $res->execute($row);

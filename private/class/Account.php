@@ -183,9 +183,12 @@
         }
 
         public function get_borrower_details($borrower_id){
-            $sql = "SELECT CONCAT(m.f_name, ' ', m.m_name, ' ', m.l_name) as borrower_name, m.email_address FROM tbl_members AS m
+            $sql = "SELECT CONCAT(m.f_name, ' ', m.m_name, ' ', m.l_name) as borrower_name, m.email_address,
+                            d.department
+                     FROM tbl_members AS m
                     LEFT JOIN tbl_acct AS a ON (m.act_id=a.acct_uuid)
                     LEFT JOIN tbl_borrow AS b ON (a.acct_id=b.borrower_id)
+                    LEFT JOIN tbl_department AS d ON (m.department=d.department_id)
                     WHERE b.borrower_id = :borrower_id";
             $res = $this->db->prepare($sql);
             $res->bindParam(":borrower_id", $borrower_id, PDO::PARAM_INT);

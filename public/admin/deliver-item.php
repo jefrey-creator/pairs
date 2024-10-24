@@ -27,7 +27,7 @@
         $result = "Select an item first.";
 
     }else{
-        $result = "Selected item was successfully deliverd to the client.";
+        $result = "Selected item was successfully delivered to the client.";
         $success = true;
 
     }
@@ -52,8 +52,8 @@
 
             foreach($get_borrowed_item as $item_key => $item_val){
                 $approved_item[] = '<tr><td style="border: 1px solid black;">'.$item_val->item_name.'</td>
+                <td style="border: 1px solid black;">'.$item_val->borrowed_qty.'</td>
                 <td style="border: 1px solid black;">'.$item_val->approved_qty.'</td>
-                <td style="border: 1px solid black;">'.$item_val->purpose.'</td>
                 <td style="border: 1px solid black;">'.$item_val->date_returned.'</td></tr>';
             }
         }

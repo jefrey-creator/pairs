@@ -29,19 +29,19 @@
             <div class="card-body">
               <ul class="nav nav-underline nav-fill">
                 <li class="nav-item">
-                  <a class="nav-link " aria-current="page" href="borrow-request">Pending</a>
+                  <a class="nav-link" aria-current="page" href="borrow-request">Pending</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link active" href="approved-request">Approved</a>
+                  <a class="nav-link" href="approved-request">Approved</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="acquired-item">Acquired / Delivered</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="returned-item">Returned</a>
+                  <a class="nav-link active" href="returned-item">Returned</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link " href="declined-request">Declined</a>
+                  <a class="nav-link" href="declined-request">Declined</a>
                 </li>
               </ul>
             </div>
@@ -67,13 +67,69 @@
   <script>
     $(document).ready(function(){
 
-        getDeclinedOderNumber();
+      getReturnedOderNumber();
 
+      $('#declinedBtn').on('click', ()=>{
+
+        var reason = $('#reason').val();
+        var order_number = $('#order_number').val();
+        var selectedItem = [];
+        const borrower_id = $('#borrower_id').val();
+
+        $(`input[name="${order_number}selectedItem[]"]:checked`).each(function(){
+          selectedItem.push($(this).val());
+        });
+
+        $.ajax({
+          url: "decline-item",
+          method: "POST",
+          data: {
+            selectedItem: selectedItem,
+            order_number: order_number,
+            borrower_id: borrower_id,
+            reason: reason,
+          },
+          dataType:"json",
+          cache: false,
+          beforeSend:function(){
+            $('#declinedBtn').html(`
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+              <span role="status">Processing...</span>
+            `).prop('disabled', true);
+          },
+          success:function(data){
+            // $('#approvedItem'+order_num).html(`Approve`).prop('disabled', false)
+            if(data.success === false){
+
+              Swal.fire({
+                title: "Error",
+                text: data.result,
+                icon: "info"
+              }).then( ()=> $('#declinedBtn').html(`Approve`).prop('disabled', false) );
+
+              return false;
+            }
+
+            if(data.success === true){
+
+              Swal.fire({
+                title: "Success",
+                text: data.result,
+                icon: "success"
+              }).then( ()=> $('#declinedBtn').html(`Approve`).prop('disabled', false) )
+              .then( () => location.href="borrow-request" );
+
+              return false;
+            }
+          }
+        })
+
+      }); //end decline button
     });
 
-    const getDeclinedOderNumber = ()=>{
+    const getReturnedOderNumber = ()=>{
       $.ajax({
-        url: "get-approved-order-number",
+        url: "get-returned-order-number",
         method: "GET",
         dataType: "json",
         cache: false,
@@ -101,7 +157,7 @@
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button class="accordion-button collapsed bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne${item.order_num}" aria-expanded="true" aria-controls="collapseOne" onclick="getItem(${item.order_num})">
-                          <div class="badge bg-success">
+                          <div class="badge bg-info">
                             Order Number:&nbsp;${item.order_num} <br /><br /> Number of Item:&nbsp;${item.total_borrows}
                           </div>
                         </button>
@@ -115,24 +171,20 @@
                             </div>
                             <div class="card-body">
                               <div class="row">
-                                
+                                <h4>Select item to return</h4>
                                 <table class="table table-bordered">
                                   <thead>
                                     <tr>
                                       <th>Item</th>
                                       <th>Expected Date of Return</th>
-                                      <th>Purpose</th>
-                                      <th>Borrowed Qty</th>
-                                      <th>Available Item</th>
+                                      <th>Date Returned</th>
+                                      <th>Borrowed</th>
+                                      <th>Returned</th>
+                                      <th>Remarks</th>
                                     </tr>
                                   </thead>
                                   <tbody id="item_details${item.order_num}"></tbody>
                                 </table>
-                              </div>
-                              <div class="float-end">
-                                <button class="btn btn-primary" type="button" onclick="deliveredItem(${item.order_num})" id="deliveredItem${item.order_num}">
-                                  Deliver Item
-                                </button>
                               </div>
                             </div>
                           </div>
@@ -151,86 +203,11 @@
       })
     }
 
-    const deliveredItem = (order_num) => {
-      // console.log(order_num);
-
-      var selectedItem = [];
-      var selectedQty = [];
-      const borrower_id = $('#borrower_id').val();
-     
-      $(`input[name="${order_num}selectedItem[]"]:checked`).each(function(){
-
-        const index = $(this).data('index'); 
-        const inputQty = $('input[name="borrowed_qty'+order_num+'[]"').eq(index).val();
-        selectedQty.push(inputQty);
-
-        selectedItem.push($(this).val());
-
-      });
-
-      Swal.fire({
-        title: "Deliver selected item(s)?",
-        text: "You won't be able to revert this. Do you wish to continue? ",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes",
-        cancelButtonText: "No"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          $.ajax({
-            url: "deliver-item",
-            method: "POST",
-            data: {
-              selectedItem: selectedItem,
-              borrower_id: borrower_id,
-              order_num: order_num,
-              selectedQty: selectedQty
-            },
-            dataType:"json",
-            cache: false,
-            beforeSend:function(){
-              $('#deliveredItem'+order_num).html(`
-                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                <span role="status">Processing...</span>
-              `).prop('disabled', true);
-            },
-            success:function(data){
-              // $('#approvedItem'+order_num).html(`Approve`).prop('disabled', false)
-              if(data.success === false){
-
-                Swal.fire({
-                  title: "Error",
-                  text: data.result,
-                  icon: "info"
-                }).then( ()=> $('#deliveredItem'+order_num).html(`Approve`).prop('disabled', false) );
-
-                return false;
-              }
-
-              if(data.success === true){
-
-                Swal.fire({
-                  title: "Success",
-                  text: data.result,
-                  icon: "success"
-                }).then( ()=> $('#deliveredItem'+order_num).html(`Approve`).prop('disabled', false) )
-                .then( () => location.href="acquired-item" );
-
-                return false;
-              }
-            }
-          })
-        }
-      });
-    }
-
     const getItem = (order_num) =>{
 
       // console.log(order_num);
       $.ajax({
-        url: "list-approved-item-by-order-num",
+        url: "list-returned-item-by-order-num",
         method: "GET",
         data: { order_num: order_num },
         dataType: "json",
@@ -242,6 +219,7 @@
             </div>
           `)
         },
+
         success:function(data){
 
           if(data.success === false){
@@ -255,27 +233,24 @@
             Array.isArray( data.result ) ? 
 
               data.result.map( (item, index)=>{
+                
                 $('#date_borrowed'+order_num).html(`<i class="bi bi-calendar-check"></i> Date Requested: `+item.date_borrowed);
                 $('#borrower_name'+order_num).html(`<i class="bi bi-person"></i>`+item.borrower_name.toUpperCase());
 
                 $('#item_details'+order_num).append(`
                     <tr>
-                      <td>
-                        <div class="form-check">
-                          <input type="hidden" value="${item.borrower_id}" id="borrower_id"/>
-                          <input class="form-check-input" type="checkbox" id="approvedItem${item.borrow_id}" name="${order_num}selectedItem[]" value="${item.borrow_id}" data-index="${counter++}">
-                          <label class="form-check-label" for="approvedItem${item.borrow_id}">
-                            ${item.item_name}
-                          </label>
-                        </div>
+                      <td class="text-wrap">
+                        ${item.item_name}
                       </td>
                       <td>${item.date_returned}</td>
-                      <td>${item.purpose}</td>
+                      <td>${item.actual_date_returned}</td>
+                      <td>${item.approved_qty}</td>
                       <td>
-                        <input type="hidden" class="form-control" id="borrowed_qty${order_num}" name="borrowed_qty${order_num}[]" value="${item.approved_qty}" min="1">
-                        ${item.approved_qty}
+                        ${ item.returned_qty }
                       </td>
-                      <td>${item.item_qty}</td>
+                      <td>
+                        ${ item.remarks }
+                      </td>
                     </tr>
                 `)
               } )
@@ -286,6 +261,97 @@
       })
     }
 
+    const returnItem = (order_num) => {
+      
+
+      var selectedItem = [];
+      var selectedQty = [];
+      var selectedRemarks = [];
+      const borrower_id = $('#borrower_id').val();
+
+      $(`input[name="${order_num}selectedItem[]"]:checked`).each(function(){
+
+        const index = $(this).data('index'); 
+        const inputQty = $('input[name="borrowed_qty'+order_num+'[]"').eq(index).val();
+        selectedQty.push(inputQty);
+
+        const remarkInput = $('textarea[name="remarks'+order_num+'[]"').eq(index).val();
+        selectedRemarks.push(remarkInput);
+
+        selectedItem.push($(this).val());
+
+      });
+
+      // console.log(selectedRemarks);
+
+      // return false;
+
+      Swal.fire({
+        title: "Return selected item(s)?",
+        text: "You won't be able to revert this. Do you wish to continue? ",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: "return-item",
+            method: "POST",
+            data: {
+              selectedItem: selectedItem,
+              selectedQty: selectedQty,
+              selectedRemarks: selectedRemarks,
+              order_num: order_num,
+              borrower_id: borrower_id
+            },
+            dataType:"json",
+            cache: false,
+            beforeSend:function(){
+              $('#returnItem'+order_num).html(`
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                <span role="status">Processing...</span>
+              `).prop('disabled', true);
+            },
+            success:function(data){
+              // console.log(data);
+              // $('#returnItem'+order_num).html(`Return Item`).prop('disabled', false)
+              if(data.success === false){
+
+                Swal.fire({
+                  title: "Error",
+                  text: data.result,
+                  icon: "info"
+                }).then( ()=> $('#returnItem'+order_num).html(`Return Item`).prop('disabled', false) );
+
+                return false;
+              }
+
+              if(data.success === true){
+
+                Swal.fire({
+                  title: "Success",
+                  text: data.result,
+                  icon: "success"
+                }).then( ()=> $('#returnItem'+order_num).html(`Return Item`).prop('disabled', false) )
+                .then( () => location.href="returned-item" );
+
+                return false;
+              }
+            }
+          })
+        }
+      });
+    }
+
+    const declinedItem = (order_num) => {
+
+      $('#declinedModal').modal('show');
+      $('#order_number').val(order_num);
+
+    }
   </script>
 </body>
 </html>
