@@ -104,7 +104,7 @@
         $mail_subject = $email_conf->subject;
 
         $body = str_replace("[name]", ucwords(strtolower($borrower_details->borrower_name)), $email_conf->message);
-        $body2 = str_replace("[office]", strtoupper($borrower_details->department), $body);
+        $body2 = str_replace("[office]", strtoupper($user_details->department), $body);
         $body3 = str_replace("[order_num]", $oder_number, $body2); 
         $str_table_data = implode(", ", $approved_item);
         $clean_row = str_replace(", ", " ", $str_table_data);

@@ -1,3 +1,4 @@
+
 <?php 
 
     include_once 'auth.php';
@@ -9,13 +10,22 @@
     $success = false;
     $result = "";
     $status = 1;
+    $page = trim($_GET['page']);
+    $itemPerPage = ITEM_PER_PAGE;
+    $offset = ($page-1) * $itemPerPage;
 
-    if($borrow->order_number($status) === false){
-        $result = "No data available.";
+    if(!intval($page) || $page < 1){
+        $result = "Page number not found.";
     }else{
-        $success = true;
-        $result = $borrow->order_number($status);
+        if($borrow->order_number($status, $offset, $itemPerPage) === false){
+            $result = "No data available.";
+        }else{
+            $success = true;
+            $result = $borrow->order_number($status, $offset, $itemPerPage);
+        }
     }
+
+   
     
     echo json_encode([
         "success" => $success,

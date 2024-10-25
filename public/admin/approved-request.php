@@ -48,9 +48,27 @@
           </div>
         </div>
     </div>
+
+    <div class="row mb-3">
+      <div class="col-lg-4 col-sm-12 col-md-12">
+        <div class="input-group">
+          <div class="input-group-text">
+            <i class="bi bi-search"></i>
+          </div>
+          <div class="form-floating">
+            <input type="number" class="form-control" id="reference_number" placeholder="reference number">
+            <label for="reference_number">Reference Number</label>
+          </div>
+        </div>
+        <span class="badge bg-primary text-wrap float-end" id="loader">Press enter to search</span>
+      </div>
+    </div>
+
     <div class="row mb-3">
       <div class="col-lg-12 col-sm-12 col-md-12">
         <div id="pendingOrder"></div>
+        <hr>
+        <button class="btn btn-primary float-end" type="button" id="loadMore">Load More</button>
       </div>
     </div>
   </div>
@@ -67,32 +85,132 @@
   <script>
     $(document).ready(function(){
 
-        getDeclinedOderNumber();
+      page = 1;
+      getApprovedOderNumber(page);
+
+      $('#loadMore').on('click', ()=>{
+        page++;
+        getApprovedOderNumber(page);
+      });
+
+      $('#reference_number').on('keydown', function(event){
+
+        if(event.key === 'Enter'){
+          event.preventDefault();
+          var reference_number = $('#reference_number').val();
+
+          if(reference_number == ''){
+            $('#pendingOrder').html('')
+            page = 1;
+            getApprovedOderNumber(page);
+            return false;
+          }
+
+          $.ajax({
+            url: "search-order-number",
+            method: "GET",
+            data: {
+              reference_number: reference_number,
+              status: 2
+            },
+            dataType: "json",
+            cache: false,
+            beforeSend:function(){
+              $('#loader').html(`
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              `);
+            },
+            success:function(data){
+
+              if(data.success === false){
+
+                $('#loader').html(`Press enter to search`);
+
+                $('#pendingOrder').html(data.result);
+
+                return false;
+              }
+
+              if(data.success === true){
+
+                $('#loader').html(`Press enter to search`);
+
+                $('#pendingOrder').html('');
+                Array.isArray(data.result) ? 
+                  data.result.map((item, index)=>{
+                    $('#pendingOrder').append(`
+                      <div class="accordion mb-3" id="accordionExample">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header">
+                            <button class="accordion-button collapsed bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne${item.order_num}" aria-expanded="true" aria-controls="collapseOne" onclick="getItem(${item.order_num})">
+                              <div class="badge bg-success">
+                                Order Number:&nbsp;${item.order_num} <br /><br /> Number of Item:&nbsp;${item.total_borrows}
+                              </div>
+                            </button>
+                          </h2>
+                          <div id="collapseOne${item.order_num}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                              <h3 class="text-bold" id="borrower_name${item.order_num}"></h3>
+                              <small id="date_borrowed${item.order_num}">Date Borrowed</small>
+                              <hr>
+                              <div class="table-responsive">
+                                <h4>Select item to deliver</h4>
+                                <table class="table table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th>Item</th>
+                                      <th>Expected Date of Return</th>
+                                      <th>Purpose</th>
+                                      <th>Borrowed Qty</th>
+                                      <th>Available Item</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="item_details${item.order_num}"></tbody>
+                                </table>
+                              </div>
+                              <div class="text-end">
+                                <button class="btn btn-primary" type="button" onclick="deliveredItem(${item.order_num})" id="deliveredItem${item.order_num}">
+                                  Deliver Item
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    `)
+                  }): '';
+                return false;
+              }
+            }
+          })
+        }
+      });
 
     });
 
-    const getDeclinedOderNumber = ()=>{
+    const getApprovedOderNumber = (page)=>{
       $.ajax({
         url: "get-approved-order-number",
         method: "GET",
+        data:{page: page},
         dataType: "json",
         cache: false,
         beforeSend:function(){
-          $('#pendingOrder').html(`
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          `)
+          $('#loadMore').html(`
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+              <span role="status">Loading...</span>
+          `).prop('disabled', true)
         },
         success:function(data){
           if(data.success === false){
-            $('#pendingOrder').html(data.result);
+            $('#loadMore').html(data.result).prop('disabled', true)
             return false;
           }
 
           if(data.success === true){
-            $('#pendingOrder').html('');
-
+            $('#loadMore').html('Load More').prop('disabled', false)
             Array.isArray(data.result) ? 
 
               data.result.map((item, index)=>{
@@ -108,33 +226,28 @@
                       </h2>
                       <div id="collapseOne${item.order_num}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                          <div class="card">
-                            <div class="card-header">
-                              <h3 class="card-title" id="borrower_name${item.order_num}"></h3>
-                              <small id="date_borrowed${item.order_num}">Date Borrowed</small>
-                            </div>
-                            <div class="card-body">
-                              <div class="row">
-                                
-                                <table class="table table-bordered">
-                                  <thead>
-                                    <tr>
-                                      <th>Item</th>
-                                      <th>Expected Date of Return</th>
-                                      <th>Purpose</th>
-                                      <th>Borrowed Qty</th>
-                                      <th>Available Item</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody id="item_details${item.order_num}"></tbody>
-                                </table>
-                              </div>
-                              <div class="float-end">
-                                <button class="btn btn-primary" type="button" onclick="deliveredItem(${item.order_num})" id="deliveredItem${item.order_num}">
-                                  Deliver Item
-                                </button>
-                              </div>
-                            </div>
+                          <h3 class="text-bold" id="borrower_name${item.order_num}"></h3>
+                          <small id="date_borrowed${item.order_num}">Date Borrowed</small>
+                          <hr>
+                          <div class="table-responsive">
+                            <h4>Select item to deliver</h4>
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th>Item</th>
+                                  <th>Expected Date of Return</th>
+                                  <th>Purpose</th>
+                                  <th>Borrowed Qty</th>
+                                  <th>Available Item</th>
+                                </tr>
+                              </thead>
+                              <tbody id="item_details${item.order_num}"></tbody>
+                            </table>
+                          </div>
+                          <div class="text-end">
+                            <button class="btn btn-primary" type="button" onclick="deliveredItem(${item.order_num})" id="deliveredItem${item.order_num}">
+                              Deliver Item
+                            </button>
                           </div>
                         </div>
                       </div>

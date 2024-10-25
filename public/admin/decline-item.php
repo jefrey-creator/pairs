@@ -48,7 +48,7 @@
                 [
                     "status" => 5,
                     "borrow_id" => $selectedItem[$i],
-                    "approved_qty" => NULL
+                    "approved_qty" => 0
                 ],
             ];
 

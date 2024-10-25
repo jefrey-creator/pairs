@@ -135,7 +135,7 @@
             }
         }
 
-        public function order_number($status){
+        public function order_number($status, $offset, $itemPerPage){
             $sql = "SELECT 
                             `order_num`, 
                             COUNT(`borrow_id`) AS total_borrows,
@@ -148,9 +148,39 @@
                     GROUP BY 
                         `order_num`
                     ORDER BY 
+                            last_borrowed_date DESC 
+                    LIMIT :offset, :itemPerPage";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":status", $status, PDO::PARAM_INT);
+            $res->bindParam(":offset", $offset, PDO::PARAM_INT);
+            $res->bindParam(":itemPerPage", $itemPerPage, PDO::PARAM_INT);
+            $res->execute();
+
+
+            if($res->rowCount() > 0){
+                return $res->fetchAll(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+        }
+
+        public function search_order_number($status, $order_num){
+            $sql = "SELECT 
+                            `order_num`, 
+                            COUNT(`borrow_id`) AS total_borrows,
+                            MAX(`date_borrowed`) AS last_borrowed_date, 
+                            SUM(`borrowed_qty`) AS total_qty
+                    FROM 
+                        `tbl_borrow` 
+                    WHERE 
+                        `status` = :status AND order_num = :order_num
+                    GROUP BY 
+                        `order_num`
+                    ORDER BY 
                             last_borrowed_date DESC";
             $res = $this->db->prepare($sql);
             $res->bindParam(":status", $status, PDO::PARAM_INT);
+            $res->bindParam(":order_num", $order_num, PDO::PARAM_INT);
             $res->execute();
 
 

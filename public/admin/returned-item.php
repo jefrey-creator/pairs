@@ -23,6 +23,7 @@
 <body>
   <?php include_once 'nav.php'; ?>
   <div class="container">
+    
     <div class="row mb-3">
         <div class="col-sm-12 col-lg-12 col-md-12">
           <div class="card">
@@ -48,9 +49,27 @@
           </div>
         </div>
     </div>
+
+    <div class="row mb-3">
+      <div class="col-lg-4 col-sm-12 col-md-12">
+        <div class="input-group">
+          <div class="input-group-text">
+            <i class="bi bi-search"></i>
+          </div>
+          <div class="form-floating">
+            <input type="number" class="form-control" id="reference_number" placeholder="reference number">
+            <label for="reference_number">Reference Number</label>
+          </div>
+        </div>
+        <span class="badge bg-primary text-wrap float-end" id="loader">Press enter to search</span>
+      </div>
+    </div>
+
     <div class="row mb-3">
       <div class="col-lg-12 col-sm-12 col-md-12">
         <div id="pendingOrder"></div>
+        <hr>
+        <button class="btn btn-primary float-end" type="button" id="loadMore">Load More</button>
       </div>
     </div>
   </div>
@@ -67,111 +86,79 @@
   <script>
     $(document).ready(function(){
 
-      getReturnedOderNumber();
+      page = 1;
+      getReturnedOderNumber(page);
 
-      $('#declinedBtn').on('click', ()=>{
+      $('#loadMore').on('click', ()=>{
+        page++;
+        getReturnedOderNumber(page);
+      });
 
-        var reason = $('#reason').val();
-        var order_number = $('#order_number').val();
-        var selectedItem = [];
-        const borrower_id = $('#borrower_id').val();
+      $('#reference_number').on('keydown', function(event){
 
-        $(`input[name="${order_number}selectedItem[]"]:checked`).each(function(){
-          selectedItem.push($(this).val());
-        });
+        if(event.key === 'Enter'){
+          event.preventDefault();
+          var reference_number = $('#reference_number').val();
 
-        $.ajax({
-          url: "decline-item",
-          method: "POST",
-          data: {
-            selectedItem: selectedItem,
-            order_number: order_number,
-            borrower_id: borrower_id,
-            reason: reason,
-          },
-          dataType:"json",
-          cache: false,
-          beforeSend:function(){
-            $('#declinedBtn').html(`
-              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-              <span role="status">Processing...</span>
-            `).prop('disabled', true);
-          },
-          success:function(data){
-            // $('#approvedItem'+order_num).html(`Approve`).prop('disabled', false)
-            if(data.success === false){
-
-              Swal.fire({
-                title: "Error",
-                text: data.result,
-                icon: "info"
-              }).then( ()=> $('#declinedBtn').html(`Approve`).prop('disabled', false) );
-
-              return false;
-            }
-
-            if(data.success === true){
-
-              Swal.fire({
-                title: "Success",
-                text: data.result,
-                icon: "success"
-              }).then( ()=> $('#declinedBtn').html(`Approve`).prop('disabled', false) )
-              .then( () => location.href="borrow-request" );
-
-              return false;
-            }
-          }
-        })
-
-      }); //end decline button
-    });
-
-    const getReturnedOderNumber = ()=>{
-      $.ajax({
-        url: "get-returned-order-number",
-        method: "GET",
-        dataType: "json",
-        cache: false,
-        beforeSend:function(){
-          $('#pendingOrder').html(`
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          `)
-        },
-        success:function(data){
-          if(data.success === false){
-            $('#pendingOrder').html(data.result);
+          if(reference_number == ''){
+            $('#pendingOrder').html('');
+            page = 1
+            getReturnedOderNumber(page);
             return false;
           }
 
-          if(data.success === true){
-            $('#pendingOrder').html('');
+          $.ajax({
+            url: "search-order-number",
+            method: "GET",
+            data: {
+              reference_number: reference_number,
+              status: 4
+            },
+            dataType: "json",
+            cache: false,
+            beforeSend:function(){
+              $('#loader').html(`
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              `);
+            },
+            success:function(data){
 
-            Array.isArray(data.result) ? 
+              if(data.success === false){
 
-              data.result.map((item, index)=>{
-                $('#pendingOrder').append(`
-                  <div class="accordion mb-3" id="accordionExample">
-                    <div class="accordion-item">
-                      <h2 class="accordion-header">
-                        <button class="accordion-button collapsed bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne${item.order_num}" aria-expanded="true" aria-controls="collapseOne" onclick="getItem(${item.order_num})">
-                          <div class="badge bg-info">
-                            Order Number:&nbsp;${item.order_num} <br /><br /> Number of Item:&nbsp;${item.total_borrows}
-                          </div>
-                        </button>
-                      </h2>
-                      <div id="collapseOne${item.order_num}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                          <div class="card">
-                            <div class="card-header">
-                              <h3 class="card-title" id="borrower_name${item.order_num}"></h3>
+                $('#loader').html(`Press enter to search`);
+
+                $('#pendingOrder').html(data.result);
+
+                return false;
+              }
+
+              if(data.success === true){
+
+                $('#loader').html(`Press enter to search`);
+
+                $('#pendingOrder').html('');
+
+                Array.isArray(data.result) ? 
+                  data.result.map((item, index) => {
+                    $('#pendingOrder').append(`
+                      <div class="accordion mb-3 " id="accordionExample">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header">
+                            <button class="accordion-button collapsed bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne${item.order_num}" aria-expanded="true" aria-controls="collapseOne" onclick="getItem(${item.order_num})">
+                              <div class="badge bg-info">
+                                Order Number:&nbsp;${item.order_num} <br /><br /> Number of Item:&nbsp;${item.total_borrows}
+                              </div>
+                            </button>
+                          </h2>
+                          <div id="collapseOne${item.order_num}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                              <h3 class="text-bold" id="borrower_name${item.order_num}"></h3>
                               <small id="date_borrowed${item.order_num}">Date Borrowed</small>
-                            </div>
-                            <div class="card-body">
-                              <div class="row">
-                                <h4>Select item to return</h4>
+                              <hr>
+                              <div class="table-responsive">
+                                <h4>Returned Items</h4>
                                 <table class="table table-bordered">
                                   <thead>
                                     <tr>
@@ -187,6 +174,76 @@
                                 </table>
                               </div>
                             </div>
+                          </div>
+                        </div>
+                      </div>
+                    `)
+                  }) : '';
+
+                return false;
+              }
+            }
+          })
+        }
+      });
+    });
+
+    const getReturnedOderNumber = (page)=>{
+      $.ajax({
+        url: "get-returned-order-number",
+        method: "GET",
+        data:{page:page},
+        dataType: "json",
+        cache: false,
+        beforeSend:function(){
+          $('#loadMore').html(`
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+              <span role="status">Loading...</span>
+          `).prop('disabled', true)
+        },
+        success:function(data){
+
+          if(data.success === false){
+            $('#loadMore').html(data.result).prop('disabled', true)
+            return false;
+          }
+
+          if(data.success === true){
+            $('#loadMore').html('Load More').prop('disabled', false)
+
+            Array.isArray(data.result) ? 
+
+              data.result.map((item, index)=>{
+                $('#pendingOrder').append(`
+                  <div class="accordion mb-3 " id="accordionExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne${item.order_num}" aria-expanded="true" aria-controls="collapseOne" onclick="getItem(${item.order_num})">
+                          <div class="badge bg-info">
+                            Order Number:&nbsp;${item.order_num} <br /><br /> Number of Item:&nbsp;${item.total_borrows}
+                          </div>
+                        </button>
+                      </h2>
+                      <div id="collapseOne${item.order_num}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          <h3 class="text-bold" id="borrower_name${item.order_num}"></h3>
+                          <small id="date_borrowed${item.order_num}">Date Borrowed</small>
+                          <hr>
+                          <div class="table-responsive">
+                            <h4>Returned Items</h4>
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th>Item</th>
+                                  <th>Expected Date of Return</th>
+                                  <th>Date Returned</th>
+                                  <th>Borrowed</th>
+                                  <th>Returned</th>
+                                  <th>Remarks</th>
+                                </tr>
+                              </thead>
+                              <tbody id="item_details${item.order_num}"></tbody>
+                            </table>
                           </div>
                         </div>
                       </div>
@@ -344,13 +401,6 @@
           })
         }
       });
-    }
-
-    const declinedItem = (order_num) => {
-
-      $('#declinedModal').modal('show');
-      $('#order_number').val(order_num);
-
     }
   </script>
 </body>
