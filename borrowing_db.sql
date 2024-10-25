@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 24, 2024 at 09:59 PM
+-- Generation Time: Oct 25, 2024 at 01:55 PM
 -- Server version: 8.0.39-0ubuntu0.22.04.1
 -- PHP Version: 8.1.2-1ubuntu2.19
 
@@ -44,8 +44,8 @@ CREATE TABLE `tbl_acct` (
 --
 
 INSERT INTO `tbl_acct` (`acct_id`, `username`, `password`, `user_type`, `acct_status`, `reset_token`, `login_token`, `reg_token`, `acct_uuid`) VALUES
-(3, 'admin', '$2y$10$QUpQKOFMIvGliLl7Q6XrceMevdsKTqmtpBemYClhxA9obkohjbc0u', 2, 0, NULL, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3BhaXJzLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvcGFpcnMvIiwiZXhwIjo2MjI3MTY1Mzc5NjAwLCJkYXRhIjp7InVzZXJuYW1lIjoiYWRtaW4iLCJ1c2VyX3R5cGUiOjIsImFjY3Rfc3RhdHVzIjowLCJhY2N0X2lkIjozLCJhY2N0X3V1aWQiOiI4YzMxOTgwYWI4NjQxYTRkNWQwZTVmOWIzNDdhMWRkNCJ9fQ.EjmkxLhQeRFLQ_0bxNd83kGmvqMm8fzSP_8T2bOb5K8', NULL, '8c31980ab8641a4d5d0e5f9b347a1dd4'),
-(7, 'agbubulud', '$2y$10$QUpQKOFMIvGliLl7Q6XrceMevdsKTqmtpBemYClhxA9obkohjbc0u', 1, 0, NULL, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3BhaXJzLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvcGFpcnMvIiwiZXhwIjo2MjI3MTg2NTA4MDAwLCJkYXRhIjp7InVzZXJuYW1lIjoiYWdidWJ1bHVkIiwidXNlcl90eXBlIjoxLCJhY2N0X3N0YXR1cyI6MCwiYWNjdF9pZCI6NywiYWNjdF91dWlkIjoiOWFiZWI3MzNlYmNjNjUzMGYwMmM4MGUwNmJlYTBlZWUifX0.9m8gxy11aEvbbyk6FwkbvqDpIqC0uAAo8g7w4mkVi6A', NULL, '9abeb733ebcc6530f02c80e06bea0eee');
+(3, 'admin', '$2y$10$QUpQKOFMIvGliLl7Q6XrceMevdsKTqmtpBemYClhxA9obkohjbc0u', 2, 0, NULL, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3BhaXJzLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvcGFpcnMvIiwiZXhwIjo2MjI3MzMzMTkwMDAwLCJkYXRhIjp7InVzZXJuYW1lIjoiYWRtaW4iLCJ1c2VyX3R5cGUiOjIsImFjY3Rfc3RhdHVzIjowLCJhY2N0X2lkIjozLCJhY2N0X3V1aWQiOiI4YzMxOTgwYWI4NjQxYTRkNWQwZTVmOWIzNDdhMWRkNCJ9fQ.DBexfTyoKkLV_Mxc3rbMF4X8vKMvbWNmH6kRWv7O-6w', NULL, '8c31980ab8641a4d5d0e5f9b347a1dd4'),
+(7, 'agbubulud', '$2y$10$QUpQKOFMIvGliLl7Q6XrceMevdsKTqmtpBemYClhxA9obkohjbc0u', 1, 0, NULL, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3BhaXJzLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvcGFpcnMvIiwiZXhwIjo2MjI3MzY1MTA3NjAwLCJkYXRhIjp7InVzZXJuYW1lIjoiYWdidWJ1bHVkIiwidXNlcl90eXBlIjoxLCJhY2N0X3N0YXR1cyI6MCwiYWNjdF9pZCI6NywiYWNjdF91dWlkIjoiOWFiZWI3MzNlYmNjNjUzMGYwMmM4MGUwNmJlYTBlZWUifX0.OXfn0FUhGZTbAeeOGM0g4pTD9r9N68nQ6Gp82tW9Q20', NULL, '9abeb733ebcc6530f02c80e06bea0eee');
 
 -- --------------------------------------------------------
 
@@ -60,9 +60,9 @@ CREATE TABLE `tbl_borrow` (
   `date_returned` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `actual_date_returned` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   `item_id` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'array of items',
-  `borrowed_qty` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'array of number of items borrowed',
-  `approved_qty` int DEFAULT NULL,
-  `returned_qty` int DEFAULT NULL,
+  `borrowed_qty` int NOT NULL DEFAULT '0' COMMENT 'array of number of items borrowed',
+  `approved_qty` int NOT NULL DEFAULT '0',
+  `returned_qty` int NOT NULL DEFAULT '0',
   `remarks` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'array of id from remarks table',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 = pending\r\n2 = approved\r\n3 = acquired \r\n4 = returned\r\n5 = declined ',
   `order_num` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -74,9 +74,14 @@ CREATE TABLE `tbl_borrow` (
 --
 
 INSERT INTO `tbl_borrow` (`borrow_id`, `borrower_id`, `date_borrowed`, `date_returned`, `actual_date_returned`, `item_id`, `borrowed_qty`, `approved_qty`, `returned_qty`, `remarks`, `status`, `order_num`, `purpose`) VALUES
-(6, 7, '2024-10-24 21:29:05', '2024-11-01', '2024-10-24', 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM=', '2', 2, 2, 's  g d f sdfs sdf sdf', 4, '1729776545', 'eeee'),
-(7, 7, '2024-10-24 21:29:05', '2024-10-25', '2024-10-24', 'NjcwZmMyYmZiZjUwYzE3MjkwODYxNDM=', '10', 5, 5, 'dsfdfdf fds fdsf', 4, '1729776545', 'ddddd'),
-(8, 7, '2024-10-24 21:29:05', '2024-11-01', '2024-10-24', 'NjcwZmMzNTk4NmU2NDE3MjkwODYyOTc=', '2', 1, 1, 'all goods', 4, '1729776545', 'fffff');
+(6, 7, '2024-10-24 21:29:05', '2024-11-01', '2024-10-24', 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM=', 2, 2, 2, 's  g d f sdfs sdf sdf', 4, '1729776545', 'eeee'),
+(7, 7, '2024-10-24 21:29:05', '2024-10-25', '2024-10-24', 'NjcwZmMyYmZiZjUwYzE3MjkwODYxNDM=', 10, 5, 5, 'dsfdfdf fds fdsf', 4, '1729776545', 'ddddd'),
+(8, 7, '2024-10-24 21:29:05', '2024-11-01', '2024-10-24', 'NjcwZmMzNTk4NmU2NDE3MjkwODYyOTc=', 2, 1, 1, 'all goods', 4, '1729776545', 'fffff'),
+(9, 7, '2024-10-25 08:21:15', '2024-10-25', '2024-10-25', 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM=', 3, 3, 3, 'all goods', 4, '1729815675', 'test'),
+(10, 7, '2024-10-25 09:24:17', '2024-10-25', NULL, 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM=', 1, 2, 0, NULL, 3, '1729819457', 'test'),
+(11, 7, '2024-10-25 09:24:33', '2024-10-31', NULL, 'NjcwZmMyYmZiZjUwYzE3MjkwODYxNDM=', 2, 0, 0, NULL, 5, '1729819473', 'test'),
+(12, 7, '2024-10-25 10:34:21', '2024-10-26', NULL, 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM=', 1, 1, 0, NULL, 2, '1729823661', 'test'),
+(13, 7, '2024-10-25 10:34:21', '2024-10-26', NULL, 'NjcwZmMyYmZiZjUwYzE3MjkwODYxNDM=', 2, 0, 0, NULL, 1, '1729823661', 'test test');
 
 -- --------------------------------------------------------
 
@@ -170,7 +175,7 @@ CREATE TABLE `tbl_email_config` (
 INSERT INTO `tbl_email_config` (`config_id`, `tag`, `message`, `subject`) VALUES
 (4, 'borrow_item', '<h2 align=\"center\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</h2><br>\n<p>Dear System administrator,</p><br>\n\n<p>I hope this message finds you well. I am [name], from [office] writing to formally request the borrowing of the following item(s)/equipment:</p>\n\n<table style=\"\\&quot;border-collapse:\" collapse\\\"=\"\"><thead><tr><th>Item</th><th>Quantity</th><th>Purpose</th><th><p>Expected Date of Return</p></th></tr></thead><tbody><tr></tr></tbody></table>\n\n<p><br></p><p></p>I assure you that I will handle the item(s) with care and return them in good condition. If needed, I am happy to complete any necessary forms or follow any specific procedures you may have for borrowing items.<br><div>Thank you for considering my request. I look forward to your prompt response.</div><br><div><br></div><div><br></div><div>Best regards,</div><br><div>[name]</div><br><div>[contact]</div><div><br></div><div><br></div><div>To process the request, please click <a href=\"http://localhost/pairs\" target=\"_blank\">here</a> to login.<br></div><p></p><br>', 'Request to Borrow Item/Equipment'),
 (5, 'acct_created', '<h2 style=\"text-align: center; \" class=\"\"><span style=\"text-align: var(--bs-body-text-align);\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</span><span style=\"text-align: var(--bs-body-text-align);\">S</span></h2><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\">Dear [name<span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">],</span></p><p style=\"text-align: left;\" class=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\"><br></span></p><p style=\"text-align: left;\" class=\"\">We are excited to inform you that your account has been successfully created!&nbsp;</p><p style=\"text-align: left;\" class=\"\">You can now enjoy all the features and benefits our platform has to offer.</p><p style=\"text-align: left;\" class=\"\"> Here are some details to get you started:</p><p style=\"\" class=\"\"><b>Username: </b>[username]</p><p style=\"\" class=\"\"><b>Password: </b>[password]</p><p>To log in, please visit our website at&nbsp;<a href=\"http://localhost/pairs\" target=\"_blank\">http://localhost/pairs</a> and enter your credentials.</p><p class=\"\"></p><p></p><p></p><p>Thank you for joining us! We look forward to serving you.</p><p><b>Reminders:</b> <font color=\"#ce0000\">For you account security, change your password immediately after login.&nbsp;<span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Do not share this message to anyone.</span></font></p><p style=\"text-align: left;\" class=\"\"><br></p>', 'Account Created'),
-(6, 'req_approved', '<h2 align=\"center\" style=\"\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</h2><p style=\"color: rgb(0, 0, 0);\"><br></p><p style=\"\">Dear [name],</p><p style=\"\"><br></p><p style=\"\"><br></p><p style=\"\">We are pleased to inform you that your request for the item&nbsp;<span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">with reference number<font color=\"#6ba54a\">&nbsp;</font></span><span style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align); font-weight: bolder;\">[order_num]&nbsp;</span><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">has been approved.</span></p>\n\n<table style=\"\\&quot;border-collapse:\" collapse\\\"=\"\"><thead><tr><th>Item</th><th>Requested Quantity</th><th>Approved Quantity</th><th>Purpose</th><th><p>Expected Date of Return</p></th></tr></thead><tbody><tr></tr></tbody></table><p style=\"\"><b style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align);\"><br></b></p><p style=\"\">You may now pickup the item(s) at the [office]. If you have any questions or need further assistance, feel free to reach out.</p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\"><br></span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Thank you for your request.</span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\"><br></span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align);\"><b>Note: Please show this email to the management as evidence.</b></span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Best Regards,</span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">- PAIRS Management</span></p>', 'Your Item Request Has Been Approved!'),
+(6, 'req_approved', '<h2 align=\"center\" style=\"\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</h2><p style=\"color: rgb(0, 0, 0);\"><br></p><p style=\"\">Dear [name],</p><p style=\"\"><br></p><p style=\"\"><br></p><p style=\"\">We are pleased to inform you that your request for the item&nbsp;<span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">with reference number<font color=\"#6ba54a\">&nbsp;</font></span><span style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align); font-weight: bolder;\">[order_num]&nbsp;</span><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">has been approved.</span></p>\n\n<table style=\"\\&quot;border-collapse:\" collapse\\\"=\"\"><thead><tr><th>Item</th><th>Requested Quantity</th><th>Approved Quantity</th><th>Purpose</th><th><p>Expected Date of Return</p></th></tr></thead><tbody><tr></tr></tbody></table><p style=\"\"><b style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align);\"><br></b></p><p style=\"\">You may now pickup the item(s) at the [office] office. If you have any questions or need further assistance, feel free to reach out.</p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\"><br></span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Thank you for your request.</span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\"><br></span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align);\"><b>Note: Please show this email to the management as evidence.</b></span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Best Regards,</span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">- PAIRS Management</span></p>', 'Your Item Request Has Been Approved!'),
 (7, 'req_denied', '<h2 class=\"\" style=\"text-align: center; \"><span style=\"text-align: var(--bs-body-text-align);\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</span><span style=\"text-align: var(--bs-body-text-align);\">S</span></h2><h2 class=\"\" style=\"text-align: left;\"><span style=\"text-align: var(--bs-body-text-align);\"><br></span></h2><p style=\"text-align: left;\" class=\"\"><span style=\"text-align: var(--bs-body-text-align);\">Dear [name],</span></p><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\">Thank you for your recent item request. Request number <b>[order_num]</b>.&nbsp;</p><p style=\"text-align: left;\" class=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">After careful consideration, we regret to inform you that your request has been declined.</span></p><p style=\"text-align: left;\" class=\"\">This decision was made due to [reason].</p><p style=\"text-align: left;\" class=\"\"><br></p><p>We appreciate your understanding and encourage you to reach out if you have any questions or if there\'s anything else we can assist you with.</p><p>Thank you for your interest.</p><p><br></p><p><br></p><p style=\"text-align: left;\" class=\"\">Best regards,</p><p style=\"text-align: left;\" class=\"\">- PAIRS Management</p>', 'Update on Your Item Request'),
 (8, 'item_delivered', '<p></p><h2 class=\"\" style=\"text-align: center; \"><span style=\"text-align: var(--bs-body-text-align);\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</span><span style=\"text-align: var(--bs-body-text-align);\">S</span></h2><p style=\"text-align: left;\" class=\"\"><span style=\"text-align: var(--bs-body-text-align);\"><br></span></p><p style=\"text-align: left;\" class=\"\">Dear [name],</p><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\">Your item request with a reference number&nbsp;<span style=\"font-weight: 700; font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align);\">[order_num]&nbsp;</span><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">&nbsp;has been successfully delivered.</span></p><table style=\"\\&quot;border-collapse:\" collapse\\\"=\"\"><thead><tr><th>Item</th><th>Borrowed Qty</th><th>Approved Qty</th><th><p>Expected Date of Return</p></th></tr></thead><tbody><tr></tr></tbody></table>\n\n\n<p></p><p><br></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Thank you!</span></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\"><br></span></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Best regards,</span></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">- PAIRS Management</span></p>', 'Item Delivered'),
 (9, 'item_returned', '<p></p><h2 class=\"\" style=\"text-align: center; \"><span style=\"text-align: var(--bs-body-text-align);\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</span><span style=\"text-align: var(--bs-body-text-align);\">S</span></h2><p style=\"text-align: left;\" class=\"\"><span style=\"text-align: var(--bs-body-text-align);\"><br></span></p><p style=\"text-align: left;\" class=\"\"><span style=\"text-align: var(--bs-body-text-align);\">Dear [name],</span></p><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\">We are writing to confirm that the item<span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">&nbsp;you borrowed&nbsp;</span><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">with reference number&nbsp;</span><span style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align); font-weight: 700;\">[order_num]</span><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">&nbsp;</span><span style=\"text-align: var(--bs-body-text-align); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">has been successfully returned.</span></p>\n\n\n<table style=\"\\&quot;border-collapse:\" collapse\\\"=\"\"><thead><tr><th>Item</th><th>Borrowed</th><th>Returned</th><th><p>Expected Date of Return</p></th><td><span style=\"font-weight: 700;\">Date of Return</span></td><td><span style=\"font-weight: 700;\">Remarks</span></td></tr></thead><tbody><tr></tr></tbody></table>\n\n<p></p><p><br></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Thank you!</span></p><p><br></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Best regards,</span></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">- PAIRS Management</span></p>', 'Item Returned');
@@ -241,6 +246,21 @@ INSERT INTO `tbl_item_handler` (`handler_id`, `handler_name`) VALUES
 (7, 'MARK ZUCKERBURG'),
 (8, 'KONG TV'),
 (9, 'JUNNY BOY');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_logs`
+--
+
+CREATE TABLE `tbl_logs` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `action` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ip_address` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -325,7 +345,7 @@ CREATE TABLE `tbl_storage` (
 --
 
 INSERT INTO `tbl_storage` (`storage_id`, `room_id`, `item_uuid`, `item_qty`) VALUES
-(5, 12, 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM=', 7),
+(5, 12, 'NjcwZmMyNWI4ZTkxYzE3MjkwODYwNDM=', 4),
 (6, 12, 'NjcwZmMyYmZiZjUwYzE3MjkwODYxNDM=', 13),
 (7, 7, 'NjcwZmMzNTk4NmU2NDE3MjkwODYyOTc=', 2),
 (8, 10, 'NjcwZmMzYmM1MTExZjE3MjkwODYzOTY=', 1);
@@ -390,6 +410,12 @@ ALTER TABLE `tbl_item_handler`
   ADD PRIMARY KEY (`handler_id`);
 
 --
+-- Indexes for table `tbl_logs`
+--
+ALTER TABLE `tbl_logs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_members`
 --
 ALTER TABLE `tbl_members`
@@ -421,7 +447,7 @@ ALTER TABLE `tbl_acct`
 -- AUTO_INCREMENT for table `tbl_borrow`
 --
 ALTER TABLE `tbl_borrow`
-  MODIFY `borrow_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `borrow_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tbl_category`
@@ -458,6 +484,12 @@ ALTER TABLE `tbl_item`
 --
 ALTER TABLE `tbl_item_handler`
   MODIFY `handler_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `tbl_logs`
+--
+ALTER TABLE `tbl_logs`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_members`
