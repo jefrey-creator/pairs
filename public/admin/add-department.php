@@ -6,6 +6,8 @@
 
     header("Content-Type: application/json");
 
+    $logs = new Logs();
+
     $success = false;
     $result = "";
 
@@ -55,6 +57,15 @@
         }
 
     }
+
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => (empty($dept_id)) ? "Add department" : "Update department", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => (empty($dept_id)) ? $result . " Head:".$dept_head. " Dept:".$dept_name : $result . " Head:".$dept_head. " Dept:".$dept_name . " ID: ".$dept_id
+    ];
+
+    $logs->insert_log($act_data);
 
     echo json_encode([
         "success" => $success,

@@ -9,6 +9,7 @@
     $config = new Config();
     $account = new Account();
     $mailer = new Mailer();
+    $logs = new Logs();
 
     $success = false;
     $result = "";
@@ -140,3 +141,12 @@
         ]);
 
     }
+
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => "Item returned.", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => $result . "[Reference Number:" .$order_number. "][Success:"  . $success. "]"
+    ];
+
+    $logs->insert_log($act_data);

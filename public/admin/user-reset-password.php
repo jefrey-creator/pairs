@@ -5,6 +5,9 @@
     header("Content-Type: application/json");
     $success = false;
     $result = "";
+
+    $logs = new Logs();
+    $account = new Account();
     
     $acct_id = trim($_POST['acct_id']);
     $password = trim($_POST['password']);
@@ -26,13 +29,22 @@
             "acct_id" => $acct_id,
             "password" => password_hash($password, PASSWORD_DEFAULT),
         ];        
-        $account = new Account();
-
+        
         if($account->reset_password($data) === true){
             $success = true;
             $result = "Account password successfully reset.";
         }
     }
+
+
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => "Password Reset", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => $result . "[ID: ".$acct_id."][Success: ".$success."]"
+    ];
+
+    $logs->insert_log($act_data);
 
 
     echo json_encode([

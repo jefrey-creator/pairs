@@ -5,6 +5,7 @@
 
     $success = false;
     $result = "";
+    $logs = new Logs();
 
     $subject = trim($_POST['subject']);
     $tag = trim($_POST['tag']);
@@ -50,9 +51,16 @@
                 $result = "Configuration not updated.";
             }
         }
-
-        
     }
+
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => (empty($config_id)) ? "Add email config" : "Update email config", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => (empty($config_id)) ? "Data:[ Subject: " .$subject . "]" : "Data: [ID: " .$config_id. "]"
+    ];
+
+    $logs->insert_log($act_data);
 
 
     echo json_encode([

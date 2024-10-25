@@ -9,6 +9,7 @@
     use Firebase\JWT\Key;
 
     $login = new Login();
+    $logs = new Logs();
     $success = false;
     $result = "";
 
@@ -56,8 +57,18 @@
             $result = "Login failed. Please try again.";
         }
 
-        
     }
+
+    $act_data = [
+        "user_id" => $username, 
+        "action" => "Log in", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'], 
+        "details" => $result
+    ];
+
+    $logs->insert_log($act_data);
+
+
     echo json_encode([
         "result" => $result,
         "success" => $success

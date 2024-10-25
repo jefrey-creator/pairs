@@ -2,6 +2,9 @@
 
     include_once 'auth.php';
 
+    $logs = new Logs();
+    $item = new Item();
+
     header("Content-Type: application/json");
     $success = false;
     $result = "";
@@ -20,7 +23,9 @@
     $i_type = trim($_POST['i_type']);
     $item_id = trim($_POST['item_id']);
     $item_uuid = (isset($_POST['item_uuid'])) ? trim($_POST['item_uuid']) : base64_encode(uniqid().time());
-
+    
+    $old_item = $item->get_item_old_data($item_uuid);
+    $old_item_name = $old_item->item_name;
 
     if($i_qty == ""){
         $result = "Quantity must be at least 1.";
@@ -48,7 +53,6 @@
         $result = "Please select an item type.";
     }else{
 
-        $item = new Item();
         $storage = new Storage();
 
         $item_data = [
@@ -72,6 +76,8 @@
         ];
 
         if(isset($_POST['item_uuid'])){
+
+           
             // update
             if($item->update_item($item_data) === true){
                 if($storage->update_stored_item($storage_data) === true){
@@ -85,6 +91,7 @@
             }
         }else{
             //insert
+           
             if($item->add_item($item_data) === true){
                 if($storage->store_item($storage_data) === true){
                     $success = true;
@@ -98,8 +105,16 @@
 
         }
 
-        
     }
+
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => (isset($_POST['item_uuid'])) ? "Update Item" : "Add Item", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => (isset($_POST['item_uuid'])) ? $result . "[ID: ".$item_uuid."] [Old: " .$old_item_name. "][New: " .$i_name. "][Success:"  . $success. "]"  : $result . "[Item: " .$i_name. "][Success:"  . $success. "]"
+    ];
+
+    $logs->insert_log($act_data);
 
 
     echo json_encode([

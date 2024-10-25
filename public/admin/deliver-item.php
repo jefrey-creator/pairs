@@ -9,13 +9,14 @@
     $config = new Config();
     $account = new Account();
     $mailer = new Mailer();
+    $logs = new Logs();
 
     $success = false;
     $result = "";
 
     $selectedItem = $_POST['selectedItem'];
     $selectedQty = $_POST['selectedQty'];
-    $oder_number = trim($_POST['order_num']);
+    $order_number = trim($_POST['order_num']);
     $borrower_id = trim($_POST['borrower_id']);
     
 
@@ -29,7 +30,6 @@
     }else{
         $result = "Selected item was successfully delivered to the client.";
         $success = true;
-
     }
 
     if($success === true){
@@ -63,7 +63,7 @@
         $mail_subject = $email_conf->subject;
 
         $body = str_replace("[name]", ucwords(strtolower($borrower_details->borrower_name)), $email_conf->message);
-        $body2 = str_replace("[order_num]", $oder_number, $body);
+        $body2 = str_replace("[order_num]", $order_number, $body);
         $str_table_data = implode(", ", $approved_item);
         $clean_row = str_replace(", ", " ", $str_table_data);
         $body3 = str_replace("<tr></tr>", $clean_row, $body2);
@@ -83,3 +83,12 @@
         ]);
 
     }
+
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => "Item delivered.", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => $result . "[Reference Number:" .$order_number. "][Success:"  . $success. "]"
+    ];
+
+    $logs->insert_log($act_data);

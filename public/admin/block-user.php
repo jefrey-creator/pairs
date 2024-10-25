@@ -6,9 +6,9 @@
     header("Content-Type: application/json");
     $success = false;
     $result = "";
+
+    $logs = new Logs();
     
-
-
     $acct_id = trim($_POST['acct_id']);
     $acct_status = trim($_POST['acct_status']);
 
@@ -44,6 +44,15 @@
             $result = "Error connecting to database.";
         }
     }
+
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => ($acct_status == 1) ? "User account unblocked" : "User account blocked", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => $result . "[ID: ".$acct_id."][Success: ".$success."]"
+    ];
+
+    $logs->insert_log($act_data);
 
 
     echo json_encode([

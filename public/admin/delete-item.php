@@ -7,6 +7,8 @@
     $success = false;
     $result = "";
 
+    $logs = new Logs();
+
     $item_id = trim($_POST['item_id']);
     if(empty($item_id)){
 
@@ -40,6 +42,15 @@
         }
 
     }
+
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => "Delete Item", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => $result . "[Item ID:" .$item_id. "][Success:"  . $success. "]"
+    ];
+
+    $logs->insert_log($act_data);
 
     echo json_encode([
         "success" => $success,

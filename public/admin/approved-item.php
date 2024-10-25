@@ -9,13 +9,14 @@
     $config = new Config();
     $account = new Account();
     $mailer = new Mailer();
+    $logs = new Logs();
 
     $success = false;
     $result = "";
 
     $selectedItem = $_POST['selectedItem'];
     $selectedQty = $_POST['selectedQty'];
-    $oder_number = trim($_POST['order_num']);
+    $order_number = trim($_POST['order_num']);
     $borrower_id = trim($_POST['borrower_id']);
 
 
@@ -105,7 +106,7 @@
 
         $body = str_replace("[name]", ucwords(strtolower($borrower_details->borrower_name)), $email_conf->message);
         $body2 = str_replace("[office]", strtoupper($user_details->department), $body);
-        $body3 = str_replace("[order_num]", $oder_number, $body2); 
+        $body3 = str_replace("[order_num]", $order_number, $body2); 
         $str_table_data = implode(", ", $approved_item);
         $clean_row = str_replace(", ", " ", $str_table_data);
         $body4 = str_replace("<tr></tr>", $clean_row, $body3);
@@ -125,3 +126,12 @@
         ]);
 
     }
+
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => "Approved Item Request", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => $result . "[Reference Number:" .$order_number. "][Success:"  . $success. "]"
+    ];
+
+    $logs->insert_log($act_data);

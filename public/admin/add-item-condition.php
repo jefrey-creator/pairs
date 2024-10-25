@@ -4,6 +4,7 @@
 
     header("Content-Type: application/json");
     $item = new Item();
+    $logs = new Logs();
     $success = false;
     $result = "";
 
@@ -22,6 +23,14 @@
         }
     }
 
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => "Add Item Condition", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => $result . "Data: [" . $item_condition ."]"
+    ];
+
+    $logs->insert_log($act_data);
 
     echo json_encode([
         "result" => $result,

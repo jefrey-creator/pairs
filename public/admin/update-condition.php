@@ -4,6 +4,7 @@
 
     header("Content-Type: application/json");
     $item = new Item();
+    $logs = new Logs();
     $success = false;
     $result = "";
 
@@ -11,6 +12,9 @@
 
         $id = trim($_POST['condition_id']);
         $condition = trim($_POST['condition']);
+
+        $get_item = $item->get_item_condition_by_id($id);
+        $old_item_name = $get_item->condition;
 
         $data = [
             "id" => intval($id),
@@ -36,6 +40,14 @@
         $result = "Unauthorized request.";
     }
 
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => "Update Item Condition", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => $result . "[new data:" . $condition . " id:" . $id."][old data: ". $old_item_name ."]"
+    ];
+
+    $logs->insert_log($act_data);
 
     echo json_encode([
         "result" => $result,

@@ -7,6 +7,7 @@
     $result = "";
 
     $account = new Account();
+    $logs = new Logs();
 
     $user_type = trim($_POST['user_type']);
     $username = trim($_POST['username']);
@@ -164,6 +165,16 @@
             }
         }
     }
+
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => (!empty($acct_id)) ? "Update user account" : "Add user account", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => (!empty($acct_id)) ? $result . "[ID: ".$acct_id."][Success: ".$success."]" : $result . "[Data: ". $email ."][Success: ".$success."]"
+    ];
+
+    $logs->insert_log($act_data);
+    
 
 
     echo json_encode([

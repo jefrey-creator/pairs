@@ -128,4 +128,17 @@
             $res->execute();
             return true;
         }
+
+        public function get_item_old_data($item_uuid){
+            $sql = "SELECT * FROM tbl_item WHERE item_uuid = :item_uuid";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":item_uuid", $item_uuid, PDO::PARAM_STR);
+            $res->execute();
+            if($res->rowCount() > 0){
+                return $res->fetch(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+
+        }
     }

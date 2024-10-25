@@ -5,6 +5,7 @@
 
     $success = false;
     $result = "";
+    $logs = new Logs();
 
     $config_id = trim($_POST['config_id']);
 
@@ -16,12 +17,20 @@
 
         if($config->delete_config($config_id) === true){
             $success = true;
-            $result = "Configuration successfully updated.";
+            $result = "Configuration successfully deleted.";
         }else{
             $result = "Configuration not deleted.";
         }
-
     }
+
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => "Delete email config", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => $result . " [ID:" .$config_id. "]"
+    ];
+
+    $logs->insert_log($act_data);
 
     echo json_encode([
         "success" => $success,
