@@ -49,11 +49,12 @@
                 [
                     "status" => 5,
                     "borrow_id" => $selectedItem[$i],
-                    "approved_qty" => 0
+                    "approved_qty" => 0,
+                    "reason_to_declined" => $reason
                 ],
             ];
 
-            $borrow->update_borrow($borrow_data);
+            $borrow->declined_request($borrow_data);
 
         }
 

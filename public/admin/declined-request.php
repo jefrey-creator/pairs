@@ -163,6 +163,7 @@
                                       <th>Purpose</th>
                                       <th>Borrowed Qty</th>
                                       <th>Available Item</th>
+                                      <th>Remarks</th>
                                     </tr>
                                   </thead>
                                   <tbody id="item_details${item.order_num}"></tbody>
@@ -235,6 +236,7 @@
                                   <th>Purpose</th>
                                   <th>Borrowed Qty</th>
                                   <th>Available Item</th>
+                                  <th>Remarks</th>
                                 </tr>
                               </thead>
                               <tbody id="item_details${item.order_num}"></tbody>
@@ -284,6 +286,9 @@
             Array.isArray( data.result ) ? 
 
               data.result.map( (item, index)=>{
+
+                let remarks = (item.reason_to_declined == null) ? '' : item.reason_to_declined
+
                 $('#date_borrowed'+order_num).html(`<i class="bi bi-calendar-check"></i> Date Requested: `+item.date_borrowed);
                 $('#borrower_name'+order_num).html(`<i class="bi bi-person"></i>`+item.borrower_name.toUpperCase());
 
@@ -298,6 +303,7 @@
                         ${item.borrowed_qty}
                       </td>
                       <td>${item.item_qty}</td>
+                      <td>${remarks}</td>
                     </tr>
                 `)
               } )

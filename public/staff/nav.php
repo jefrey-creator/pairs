@@ -29,8 +29,11 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link btn btn-primary" href="#">
-                        Notifications <span class="badge text-bg-secondary">4</span>
+                    <a class="nav-link btn btn-primary  <?= ($page == "notif") ? 'active' : '' ?>" href="notification">
+                        Notifications 
+                        <span class="badge text-bg-danger">
+                            <span id="notif_counter">0</span>
+                        </span>
                     </a>
                 </li>
             </ul>
@@ -69,16 +72,18 @@
                                 Borrow Equipment
                             </a>
                         </li>
+                       
                         <li class="nav-item mb-1">
-                            <a href="" class="nav-link <?= ($page == "returned") ? 'active_link' : '' ?>" aria-current="page">
-                                <i class="bi bi-ui-checks"></i>
-                                Returned Equipment
+                            <a href="change-password" class="nav-link <?= ($page == "password") ? 'active_link' : '' ?>" aria-current="page">
+                                <i class="bi bi-shield-lock"></i>
+                                Change Password
                             </a>
                         </li>
+
                         <li class="nav-item mb-1">
-                            <a href="" class="nav-link <?= ($page == "log") ? 'active_link' : '' ?>" aria-current="page">
-                                <i class="bi bi-activity"></i>
-                                Activity Log
+                            <a href="account" class="nav-link <?= ($page == "account") ? 'active_link' : '' ?>" aria-current="page">
+                                <i class="bi bi-person"></i>
+                                Account
                             </a>
                         </li>
                     </ul>

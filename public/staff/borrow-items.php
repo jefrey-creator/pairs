@@ -8,6 +8,7 @@
     $config = new Config();
     $storage = new Storage();
     $account = new Account();
+    $logs = new Logs();
     
     $result = "";
     $success = false;
@@ -145,8 +146,16 @@
             "success" => $success,
             "result" => $result
         ]);
-
     }
+
+    $act_data = [
+        "user_id" => $decoded->data->username, 
+        "action" => "Request Item", 
+        "ip_address" => $_SERVER['REMOTE_ADDR'],
+        "details" => $result. " [Reference Number:". $order_num ."] [Success: ".$success."]"
+    ];
+
+    $logs->insert_log($act_data);
     
    
 

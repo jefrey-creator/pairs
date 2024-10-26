@@ -69,7 +69,7 @@
 
                         <div class="row mb-3 result" style="display: none">
                             <div class="col-lg-12 col-sm-12 col-md-12 mb-3">
-                                <h6>Click order number to show item(s) borrowed</h6>
+                                <h6>Click the reference number to show item(s) requested</h6>
                                 <div id="order_number"></div>
                             </div>
                         </div>
@@ -137,16 +137,18 @@
                                             </h2>
                                             <div id="flush-collapseOne${item.order_num}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Item</th>
-                                                                <th>Borrowed Quantity</th>
-                                                                <th>Request Status</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="itemResult${item.order_num}"></tbody>
-                                                    </table>
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Item</th>
+                                                                    <th>Borrowed Quantity</th>
+                                                                    <th>Request Status</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="itemResult${item.order_num}"></tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

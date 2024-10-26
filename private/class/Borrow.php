@@ -113,7 +113,7 @@
 
         public function view_borrowed_item($order_num, $status){
             $sql = "SELECT 	i.item_name, i.item_uuid, i.item_id,
-                            b.purpose, b.date_returned, b.date_borrowed, b.borrowed_qty, b.order_num, b.borrow_id, b.borrower_id, b.approved_qty, b.actual_date_returned, b.returned_qty, b.remarks,
+                            b.purpose, b.date_returned, b.date_borrowed, b.borrowed_qty, b.order_num, b.borrow_id, b.borrower_id, b.approved_qty, b.actual_date_returned, b.returned_qty, b.remarks, b.reason_to_declined,
                             CONCAT(m.f_name, ' ', m.m_name, ' ', m.l_name) as borrower_name,
                             s.item_qty
                     FROM tbl_item         AS i 
@@ -202,6 +202,18 @@
             return true;
         }
 
+
+        public function declined_request($data){
+            
+            $sql = "UPDATE tbl_borrow SET status = :status, approved_qty = :approved_qty, reason_to_declined = :reason_to_declined WHERE borrow_id = :borrow_id";
+            $res = $this->db->prepare($sql);
+            foreach($data as $row){
+                $res->execute($row);
+            }
+
+            return true;
+        }
+
         public function returned_item($data){
             $sql = "UPDATE tbl_borrow SET status = :status, returned_qty = :returned_qty, 
                     actual_date_returned = :actual_date_returned,
@@ -213,5 +225,74 @@
             }
 
             return true;
+        }
+
+        public function count_approved_item($status, $borrower_id){
+            
+            $sql = "SELECT distinct(order_num) FROM tbl_borrow WHERE status = :status AND borrower_id = :borrower_id";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":status", $status, PDO::PARAM_INT);
+            $res->bindParam(":borrower_id", $borrower_id, PDO::PARAM_INT);
+            $res->execute();
+
+            return $res->rowCount();
+        }
+
+        public function my_order_number($status, $borrower_id, $offset, $itemPerPage){
+            $sql = "SELECT 
+                            `order_num`, 
+                            COUNT(`borrow_id`) AS total_borrows,
+                            MAX(`date_borrowed`) AS last_borrowed_date, 
+                            SUM(`borrowed_qty`) AS total_qty
+                    FROM 
+                        `tbl_borrow` 
+                    WHERE 
+                        `status` = :status AND borrower_id = :borrower_id
+                    GROUP BY 
+                        `order_num`
+                    ORDER BY 
+                            last_borrowed_date DESC 
+                    LIMIT :offset, :itemPerPage";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":status", $status, PDO::PARAM_INT);
+            $res->bindParam(":borrower_id", $borrower_id, PDO::PARAM_INT);
+            $res->bindParam(":offset", $offset, PDO::PARAM_INT);
+            $res->bindParam(":itemPerPage", $itemPerPage, PDO::PARAM_INT);
+            $res->execute();
+
+
+            if($res->rowCount() > 0){
+                return $res->fetchAll(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+        }
+
+        public function search_my_order_number($status, $order_num, $borrower_id){
+            $sql = "SELECT 
+                            `order_num`, 
+                            COUNT(`borrow_id`) AS total_borrows,
+                            MAX(`date_borrowed`) AS last_borrowed_date, 
+                            SUM(`borrowed_qty`) AS total_qty
+                    FROM 
+                        `tbl_borrow` 
+                    WHERE 
+                        `status` = :status AND order_num = :order_num AND borrower_id = :borrower_id
+                    GROUP BY 
+                        `order_num`
+                    ORDER BY 
+                            last_borrowed_date DESC";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":status", $status, PDO::PARAM_INT);
+            $res->bindParam(":order_num", $order_num, PDO::PARAM_INT);
+            $res->bindParam(":borrower_id", $borrower_id, PDO::PARAM_INT);
+            $res->execute();
+
+
+            if($res->rowCount() > 0){
+                return $res->fetchAll(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
         }
     }

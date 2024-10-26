@@ -88,7 +88,7 @@
             $sql = "SELECT 
                             a.username, a.user_type, a.acct_status, a.acct_uuid, a.acct_id,
                             m.id_number, m.member_type, m.f_name, m.m_name, m.l_name, m.sex, m.contact, m.yr_level, m.email_address,
-                            d.department_id
+                            d.department_id, d.department
                     FROM  tbl_acct AS a
                     LEFT JOIN tbl_members AS m ON (a.acct_uuid=m.act_id)
                     LEFT JOIN tbl_department AS d ON (m.department=d.department_id)
@@ -199,6 +199,18 @@
             }else{
                 return false;
             }
+        }
+
+        public function change_password($acct_uuid, $password){
+
+            $sql = "UPDATE tbl_acct SET password = :password WHERE acct_uuid = :acct_uuid";
+            $res = $this->db->prepare($sql);
+            $res->bindParam(":password", $password, PDO::PARAM_STR);
+            $res->bindParam(":acct_uuid", $acct_uuid, PDO::PARAM_STR);
+            $res->execute();
+
+            return true;
+
         }
 
     }

@@ -1,6 +1,6 @@
 <?php 
-  include_once 'auth.php';
-  $page = "dashboard";
+    include_once 'auth.php';
+    $page = "dashboard";
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -21,10 +21,27 @@
   <link rel="shortcut icon" href="../../<?= FAV_ICO; ?>" type="image/x-icon">
 </head>
 <body>
-    <?php include_once 'nav.php'; ?>
+  <?php include_once 'nav.php'; ?>
     <div class="container">
+      <div class="row mt-3 pt-3">
+        <div class="col-lg-12 col-sm-12 col-md-12">
+          <h1 class="text-center">
+            WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEMS
+          </h1>
+          <hr class="shadow p-1">
+          <h5 class="text-center mb-3">
+            It’s fast, eco-friendly, and convenient. Let’s go paperless together—start borrowing today!
+          </h5>
+        </div>
+      </div>
+
       <div class="row">
-       
+        <div class="col-sm-12 col-md-12 col-lg-6 offset-5">
+          <a class="btn btn-primary btn-lg rounded-0" href="borrow">
+            Borrow Item 
+            <i class="bi bi-arrow-right-short"></i>
+          </a>
+        </div>
       </div>
     </div>
 
