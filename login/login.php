@@ -31,7 +31,7 @@
         $payload = [
             'iss' => ISS,
             'aud' => AUD,
-            'exp' => time() * 60 * 60,
+            'exp' => time() + (60 * 60),
             'data' => array(
                 'username' => $username,
                 'user_type' =>  $data->user_type,

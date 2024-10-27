@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
-    <title>Login - <?= TITLE; ?></title>
+    <title>Forgot Password - <?= TITLE; ?></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
@@ -26,31 +26,27 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-7 col-sm-12 col-md-12 text-center">
-                                <img src="./assets/img/login.svg" class="img-fluid login_img" draggable="false" alt="Person's image using a laptop trying to login">
+                                <img src="./assets/img/forgot-password.svg" class="img-fluid login_img" draggable="false" alt="Person's image using a laptop trying to login">
                             </div>
                             <div class="col-lg-5 col-sm-12 col-md-12">
                                 <div class="pt-3 mt-3">
                                     <img src="./assets/img/pairs-banner.png" class="img-fluid mt-3 pt-3">
                                 </div>
-                                <!-- <div class="separator"></div> -->
-                                <div class="login_form">
+                                <div class="alert alert-info mt-3">
+                                    <h6>
+                                        Oops! Forgot your password? No worries! Just enter your email or username, and we'll help you get back on track in a snap!
+                                    </h6>
+                                </div>
+                                <form method="POST">
                                     <div class="mb-3">
-                                        <label for="username">Username</label>
+                                        <label for="username">Username / Email Address</label>
                                         <input type="text" class="form-control-lg form-control" id="username">
                                     </div>
-                                    <div class="mb-1">
-                                        <label for="password">Password</label>
-                                        <input type="password" class="form-control-lg form-control" id="password">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="show_password" id="password_show">
-                                            <input type="checkbox" id="show_password">
-                                            Show Password
-                                        </label>
-                                    </div>
-                                    <button class="btn btn-primary btn-lg w-100" type="submit" id="onLogin" name="btnLogin">Login</button>
-                                    <a href="forgot-password" class="btn btn-link float-end mt-4 mb-4">Forgot Password?</a>
-                                </div>
+                                    <button class="btn btn-primary btn-lg w-100" type="submit" id="onReset" name="btnLogin">
+                                        Reset Password
+                                    </button>
+                                    <a href="index" class="btn btn-outline-secondary w-100 mt-3">Login</a>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -67,49 +63,35 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).ready(function(){
-            $('#show_password').on('click', function(){
-                // console.log('checked')
-                if($('input[type="checkbox"]').is(':checked')){
-                    // console.log('checked')
-                    $('#password').attr('type', 'text');
-                }else{
-                    $('#password').attr('type', 'password');
-                }
-            });
 
-            $('#onLogin').on('click', (e)=>{
+        $(document).ready(function(){
+            
+
+            $('#onReset').on('click', (e)=>{
                 e.preventDefault();
 
                 var username = $('#username').val();
-                var password = $('#password').val();
 
                 $.ajax({
-                    url: "./login/login",
+                    url: "reset-password-req",
                     method: "POST",
-                    data: { 
-                        username: username,
-                        password: password,
-                    },
-                    dataType: 'json',
+                    data: { username: username },
+                    dataType: "JSON",
                     cache: false,
-                    beforeSend: function(){
-                        $('#onLogin').html(`
+                    beforeSend:function(){
+                        $('#onReset').html(`
                             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                            <span role="status">Loading...</span>`)
-                        .attr('disabled', 'disabled');
+                            <span role="status">Requesting...</span>
+                        `).prop('disabled', true);
                     },
                     success:function(data){
-
-                        // console.log(data);
                         if(data.success === false){
                             Swal.fire({
                                 title: "Error",
                                 text: data.result,
                                 icon: "error"
-                            }).then(()=>{
-                                $('#onLogin').html(`Login`)
-                                .removeAttr('disabled', 'disabled');
+                            }).then(()=> {
+                                $('#onReset').html(`Reset Password`).prop('disabled', false);
                             });
 
                             return false;
@@ -120,11 +102,12 @@
                                 title: "Success",
                                 text: data.result,
                                 icon: "success"
-                            }).then( () => location.href = 'verify-login');
+                            }).then(()=> {
+                                $('#onReset').html(`Reset Password`).prop('disabled', false);
+                            }).then(()=> location.href="index");
 
                             return false;
                         }
-                        
                     }
                 })
             })

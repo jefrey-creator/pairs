@@ -21,8 +21,8 @@
             <span class="max button"></span>
         </div>
         <div class="text fs-2">
-            Oops! Unauthorized Access. <br />
-            
+            <?= (isset($_GET['invalid'])) ? $_GET['invalid'] : "Oops! Unauthorized Access";  ?>
+            <br />
         </div>
         "Go back <a href='../index'>home</a> and start over."
     </div>

@@ -213,4 +213,34 @@
 
         }
 
+        public function find_user($username){
+            $sql = "SELECT a.username, a.acct_uuid, a.reset_token,
+                            m.email_address, CONCAT(m.f_name, ' ', m.m_name, ' ', m.l_name) AS full_name
+                            
+                    FROM tbl_acct AS a
+                    LEFT JOIN tbl_members AS m ON (a.acct_uuid=m.act_id)
+                    WHERE a.username = :username OR m.email_address = :email_address
+                    ";
+
+            $res = $this->db->prepare($sql);
+            $res->execute($username);
+
+            if($res->rowCount() > 0){
+                return $res->fetch(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+
+        }
+
+        public function update_reset_token($data){
+
+            $sql = "UPDATE tbl_acct SET reset_token = :reset_token WHERE acct_uuid = :acct_uuid";
+            $res = $this->db->prepare($sql);
+            $res->execute($data);
+
+            return true;
+        }
+        
+
     }
