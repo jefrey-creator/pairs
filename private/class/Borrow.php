@@ -87,11 +87,12 @@
 
         }
 
-        public function list_borrowed_items($order_num){
+        public function list_borrowed_items($order_num, $status){
             $sql = "select i.item_name, b.borrowed_qty, b.status FROM tbl_borrow AS b 
-                    LEFT JOIN tbl_item AS i ON (b.item_id=i.item_uuid) WHERE b.order_num = :order_num";
+                    LEFT JOIN tbl_item AS i ON (b.item_id=i.item_uuid) WHERE b.order_num = :order_num AND b.status = :status";
             $res = $this->db->prepare($sql);
             $res->bindParam(":order_num", $order_num, PDO::PARAM_INT);
+            $res->bindParam(":status", $status, PDO::PARAM_INT);
             $res->execute();
 
             if($res->rowCount() > 0){

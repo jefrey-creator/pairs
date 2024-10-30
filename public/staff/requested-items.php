@@ -92,7 +92,6 @@
     <script>
         $(document).ready(function(){
             
-
             $('#status').on('change', ()=>{
 
                 let status_req = $('#status').val();
@@ -125,6 +124,7 @@
 
                             $('label').html('Item Status');
                             $('.result').css('display', 'block');
+                            $('#order_number').html('');
 
                             Array.isArray(data.result) ? data.result.map((item, index)=>{
                                 $('#order_number').append(`
@@ -162,14 +162,15 @@
                         
                     }
                 })
-            })
+            });
         });
 
         const getItems = (order_num) =>{
+            let status_req = $('#status').val();
             $.ajax({
                 url: "get-ordered-item",
                 method: "GET",
-                data: { order_num: order_num},
+                data: { order_num: order_num, status_req: status_req},
                 dataType: "json",
                 cache:false,
                 beforeSend:function(){

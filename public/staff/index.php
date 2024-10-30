@@ -26,7 +26,7 @@
       <div class="row mt-3 pt-3">
         <div class="col-lg-12 col-sm-12 col-md-12">
           <h1 class="text-center">
-            WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEMS
+            WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM
           </h1>
           <hr class="shadow p-1">
           <h5 class="text-center mb-3">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 26, 2024 at 10:38 PM
+-- Generation Time: Oct 30, 2024 at 08:22 PM
 -- Server version: 8.0.39-0ubuntu0.22.04.1
 -- PHP Version: 8.1.2-1ubuntu2.19
 
@@ -45,7 +45,7 @@ CREATE TABLE `tbl_acct` (
 
 INSERT INTO `tbl_acct` (`acct_id`, `username`, `password`, `user_type`, `acct_status`, `reset_token`, `login_token`, `reg_token`, `acct_uuid`) VALUES
 (3, 'admin', '$2y$10$QUpQKOFMIvGliLl7Q6XrceMevdsKTqmtpBemYClhxA9obkohjbc0u', 2, 0, NULL, '', NULL, '8c31980ab8641a4d5d0e5f9b347a1dd4'),
-(7, 'agbubulud', '$2y$10$QUpQKOFMIvGliLl7Q6XrceMevdsKTqmtpBemYClhxA9obkohjbc0u', 1, 0, NULL, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3BhaXJzLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvcGFpcnMvIiwiZXhwIjo2MjI3NDg1MjI4ODAwLCJkYXRhIjp7InVzZXJuYW1lIjoiYWdidWJ1bHVkIiwidXNlcl90eXBlIjoxLCJhY2N0X3N0YXR1cyI6MCwiYWNjdF9pZCI6NywiYWNjdF91dWlkIjoiOWFiZWI3MzNlYmNjNjUzMGYwMmM4MGUwNmJlYTBlZWUifX0.rsTlO30L4YXk1CE5pl03843FwvSUaPlAunLLZjtQ6Fc', NULL, '9abeb733ebcc6530f02c80e06bea0eee'),
+(7, 'agbubulud', '$2y$10$bPQUaeDDW4ix5JPOuxWoPuqh1aiwHgcCP4hA5J.vSnlwLQ60zoCQK', 1, 0, NULL, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3BhaXJzLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvcGFpcnMvIiwiZXhwIjoxNzMwMjk0MTEzLCJkYXRhIjp7InVzZXJuYW1lIjoiYWdidWJ1bHVkIiwidXNlcl90eXBlIjoxLCJhY2N0X3N0YXR1cyI6MCwiYWNjdF9pZCI6NywiYWNjdF91dWlkIjoiOWFiZWI3MzNlYmNjNjUzMGYwMmM4MGUwNmJlYTBlZWUifX0._uSUGd0Dwv3hRu7bBkHBUsdWabqQ82yA3fA7wvj40c8', NULL, '9abeb733ebcc6530f02c80e06bea0eee'),
 (8, 'loki', '$2y$10$x4EPt3Hko9bD8QyYkvmII.H76NcpDXaXVbuP3Kb7ndMGs8uXzzBce', 1, 0, NULL, '', NULL, 'ffdaa5a933893a9c31575751f8e56153');
 
 -- --------------------------------------------------------
@@ -172,9 +172,9 @@ INSERT INTO `tbl_department` (`department_id`, `department`, `department_head`) 
 
 CREATE TABLE `tbl_email_config` (
   `config_id` int NOT NULL,
-  `tag` varchar(255) NOT NULL,
-  `message` longtext NOT NULL,
-  `subject` varchar(255) NOT NULL
+  `tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -187,7 +187,8 @@ INSERT INTO `tbl_email_config` (`config_id`, `tag`, `message`, `subject`) VALUES
 (6, 'req_approved', '<h2 align=\"center\" style=\"\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</h2><p style=\"color: rgb(0, 0, 0);\"><br></p><p style=\"\">Dear [name],</p><p style=\"\"><br></p><p style=\"\"><br></p><p style=\"\">We are pleased to inform you that your request for the item&nbsp;<span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">with reference number<font color=\"#6ba54a\">&nbsp;</font></span><span style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align); font-weight: bolder;\">[order_num]&nbsp;</span><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">has been approved.</span></p>\n\n<table style=\"\\&quot;border-collapse:\" collapse\\\"=\"\"><thead><tr><th>Item</th><th>Requested Quantity</th><th>Approved Quantity</th><th>Purpose</th><th><p>Expected Date of Return</p></th></tr></thead><tbody><tr></tr></tbody></table><p style=\"\"><b style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align);\"><br></b></p><p style=\"\">You may now pickup the item(s) at the [office] office. If you have any questions or need further assistance, feel free to reach out.</p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\"><br></span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Thank you for your request.</span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\"><br></span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align);\"><b>Note: Please show this email to the management as evidence.</b></span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Best Regards,</span></p><p style=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">- PAIRS Management</span></p>', 'Your Item Request Has Been Approved!'),
 (7, 'req_denied', '<h2 class=\"\" style=\"text-align: center; \"><span style=\"text-align: var(--bs-body-text-align);\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</span><span style=\"text-align: var(--bs-body-text-align);\">S</span></h2><h2 class=\"\" style=\"text-align: left;\"><span style=\"text-align: var(--bs-body-text-align);\"><br></span></h2><p style=\"text-align: left;\" class=\"\"><span style=\"text-align: var(--bs-body-text-align);\">Dear [name],</span></p><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\">Thank you for your recent item request. Request number <b>[order_num]</b>.&nbsp;</p><p style=\"text-align: left;\" class=\"\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">After careful consideration, we regret to inform you that your request has been declined.</span></p><p style=\"text-align: left;\" class=\"\">This decision was made due to [reason].</p><p style=\"text-align: left;\" class=\"\"><br></p><p>We appreciate your understanding and encourage you to reach out if you have any questions or if there\'s anything else we can assist you with.</p><p>Thank you for your interest.</p><p><br></p><p><br></p><p style=\"text-align: left;\" class=\"\">Best regards,</p><p style=\"text-align: left;\" class=\"\">- PAIRS Management</p>', 'Update on Your Item Request'),
 (8, 'item_delivered', '<p></p><h2 class=\"\" style=\"text-align: center; \"><span style=\"text-align: var(--bs-body-text-align);\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</span><span style=\"text-align: var(--bs-body-text-align);\">S</span></h2><p style=\"text-align: left;\" class=\"\"><span style=\"text-align: var(--bs-body-text-align);\"><br></span></p><p style=\"text-align: left;\" class=\"\">Dear [name],</p><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\">Your item request with a reference number&nbsp;<span style=\"font-weight: 700; font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align);\">[order_num]&nbsp;</span><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">&nbsp;has been successfully delivered.</span></p><table style=\"\\&quot;border-collapse:\" collapse\\\"=\"\"><thead><tr><th>Item</th><th>Borrowed Qty</th><th>Approved Qty</th><th><p>Expected Date of Return</p></th></tr></thead><tbody><tr></tr></tbody></table>\n\n\n<p></p><p><br></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Thank you!</span></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\"><br></span></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Best regards,</span></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">- PAIRS Management</span></p>', 'Item Delivered'),
-(9, 'item_returned', '<p></p><h2 class=\"\" style=\"text-align: center; \"><span style=\"text-align: var(--bs-body-text-align);\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</span><span style=\"text-align: var(--bs-body-text-align);\">S</span></h2><p style=\"text-align: left;\" class=\"\"><span style=\"text-align: var(--bs-body-text-align);\"><br></span></p><p style=\"text-align: left;\" class=\"\"><span style=\"text-align: var(--bs-body-text-align);\">Dear [name],</span></p><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\">We are writing to confirm that the item<span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">&nbsp;you borrowed&nbsp;</span><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">with reference number&nbsp;</span><span style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align); font-weight: 700;\">[order_num]</span><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">&nbsp;</span><span style=\"text-align: var(--bs-body-text-align); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">has been successfully returned.</span></p>\n\n\n<table style=\"\\&quot;border-collapse:\" collapse\\\"=\"\"><thead><tr><th>Item</th><th>Borrowed</th><th>Returned</th><th><p>Expected Date of Return</p></th><td><span style=\"font-weight: 700;\">Date of Return</span></td><td><span style=\"font-weight: 700;\">Remarks</span></td></tr></thead><tbody><tr></tr></tbody></table>\n\n<p></p><p><br></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Thank you!</span></p><p><br></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Best regards,</span></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">- PAIRS Management</span></p>', 'Item Returned');
+(9, 'item_returned', '<p></p><h2 class=\"\" style=\"text-align: center; \"><span style=\"text-align: var(--bs-body-text-align);\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</span><span style=\"text-align: var(--bs-body-text-align);\">S</span></h2><p style=\"text-align: left;\" class=\"\"><span style=\"text-align: var(--bs-body-text-align);\"><br></span></p><p style=\"text-align: left;\" class=\"\"><span style=\"text-align: var(--bs-body-text-align);\">Dear [name],</span></p><p style=\"text-align: left;\" class=\"\"><br></p><p style=\"text-align: left;\" class=\"\">We are writing to confirm that the item<span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">&nbsp;you borrowed&nbsp;</span><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">with reference number&nbsp;</span><span style=\"font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align); font-weight: 700;\">[order_num]</span><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">&nbsp;</span><span style=\"text-align: var(--bs-body-text-align); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight);\">has been successfully returned.</span></p>\n\n\n<table style=\"\\&quot;border-collapse:\" collapse\\\"=\"\"><thead><tr><th>Item</th><th>Borrowed</th><th>Returned</th><th><p>Expected Date of Return</p></th><td><span style=\"font-weight: 700;\">Date of Return</span></td><td><span style=\"font-weight: 700;\">Remarks</span></td></tr></thead><tbody><tr></tr></tbody></table>\n\n<p></p><p><br></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Thank you!</span></p><p><br></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Best regards,</span></p><p><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">- PAIRS Management</span></p>', 'Item Returned'),
+(13, 'forgot_password', '<h2 class=\"\" style=\"color: rgb(0, 0, 0); text-align: center;\"><span style=\"text-align: var(--bs-body-text-align);\">WELCOME TO PAPERLESS ASSESSMENT INVENTORY MANAGEMENT SYSTEM</span><span style=\"text-align: var(--bs-body-text-align);\">S</span></h2><h2 class=\"\" style=\"color: rgb(0, 0, 0); text-align: center;\"><span style=\"text-align: var(--bs-body-text-align);\"><br></span></h2><p>Dear [username],</p><p><br></p><p>We received a request to reset your password. To proceed, please click the link below:</p><p><a href=\"http://localhost/pairs/reset-password?token=[token]\" target=\"_blank\">http://localhost/pairs/reset-password?token=[token]</a><br></p><p>If you did not request this change, you can ignore this email. Your password will remain unchanged.</p><p>For security purposes, this link will expire in 1 hour.</p><p><br></p><p>Best Regards,</p><p>- PAIRS Management</p>', 'Password Reset Request');
 
 -- --------------------------------------------------------
 
@@ -360,7 +361,37 @@ INSERT INTO `tbl_logs` (`id`, `user_id`, `action`, `time_stamp`, `ip_address`, `
 (81, 'loki', 'Change Password', '2024-10-26 14:35:25', '::1', 'Password successfully updated.[ID: ffdaa5a933893a9c31575751f8e56153][Success: 1]'),
 (82, 'loki', 'Log in', '2024-10-26 14:35:48', '::1', 'Incorrect username or password.'),
 (83, 'loki', 'Log in', '2024-10-26 14:35:51', '::1', 'Successfully logged in.'),
-(84, 'admin', 'Log in', '2024-10-26 14:36:54', '::1', 'Successfully logged in.');
+(84, 'admin', 'Log in', '2024-10-26 14:36:54', '::1', 'Successfully logged in.'),
+(85, 'admin', 'Log in', '2024-10-27 02:31:33', '::1', 'Successfully logged in.'),
+(86, 'admin', 'Add email config', '2024-10-27 02:35:23', '::1', 'Data:[ Subject: Password Reset Request]'),
+(87, 'admin', 'Add email config', '2024-10-27 02:35:36', '::1', 'Data:[ Subject: Password Reset Request]'),
+(88, 'admin', 'Update email config', '2024-10-27 02:36:23', '::1', 'Data: [ID: 13]'),
+(89, 'admin', 'Log in', '2024-10-27 03:39:51', '127.0.0.1', 'Successfully logged in.'),
+(90, 'admin', 'Update email config', '2024-10-27 03:41:46', '127.0.0.1', 'Data: [ID: 13]'),
+(91, 'admin', 'Password Reset Request', '2024-10-27 03:45:31', '::1', ' [Data: [Username: admin]] [Success: 1]'),
+(92, 'jefrey.mis@csu.edu.ph', 'Password Reset Request', '2024-10-27 03:46:42', '::1', ' [Data: [Username: jefrey.mis@csu.edu.ph]] [Success: 1]'),
+(93, 'admin', 'Log in', '2024-10-27 05:27:12', '127.0.0.1', 'Successfully logged in.'),
+(94, 'admin', 'Update email config', '2024-10-27 05:28:05', '127.0.0.1', 'Data: [ID: 13]'),
+(95, 'admin', 'Password Reset Request', '2024-10-27 05:29:17', '::1', ' [Data: [Username: admin]] [Success: 1]'),
+(96, 'jefrey.mis@csu.edu.ph', 'Password Reset Request', '2024-10-27 05:29:51', '::1', ' [Data: [Username: jefrey.mis@csu.edu.ph]] [Success: 1]'),
+(97, 'jefrey.mis@csu.edu.ph', 'Reset Password', '2024-10-27 06:01:14', '::1', 'Password successfully changed.[ID: 9abeb733ebcc6530f02c80e06bea0eee][Success: 1]'),
+(98, 'jefrey.mis@csu.edu.ph', 'Reset Password', '2024-10-27 06:01:54', '::1', 'Password successfully changed.[ID: 9abeb733ebcc6530f02c80e06bea0eee][Success: 1]'),
+(99, 'jefrey.mis@csu.edu.ph', 'Reset Password', '2024-10-27 06:08:56', '::1', '[ID: 9abeb733ebcc6530f02c80e06bea0eee][Success: ]'),
+(100, 'jefrey.mis@csu.edu.ph', 'Reset Password', '2024-10-27 06:09:32', '::1', 'Link expired.[ID: 9abeb733ebcc6530f02c80e06bea0eee][Success: ]'),
+(101, 'admin', 'Log in', '2024-10-27 06:09:58', '::1', 'Incorrect username or password.'),
+(102, 'admin', 'Log in', '2024-10-27 06:10:04', '::1', 'Successfully logged in.'),
+(103, 'jefrey.mis@csu.edu.ph', 'Reset Password', '2024-10-27 06:10:48', '::1', 'Link expired.[ID: 9abeb733ebcc6530f02c80e06bea0eee][Success: ]'),
+(104, 'jefrey.mis@csu.edu.ph', 'Reset Password', '2024-10-27 06:11:07', '::1', 'Link expired.[ID: 9abeb733ebcc6530f02c80e06bea0eee][Success: ]'),
+(105, 'jefrey.mis@csu.edu.ph', 'Reset Password', '2024-10-27 06:11:59', '::1', 'Link expired.[ID: 9abeb733ebcc6530f02c80e06bea0eee][Success: ]'),
+(106, 'jefrey.mis@csu.edu.ph', 'Reset Password', '2024-10-27 06:18:31', '::1', 'Link expired.[ID: 9abeb733ebcc6530f02c80e06bea0eee]'),
+(107, 'jefrey', 'Log in', '2024-10-30 12:12:22', '::1', 'Incorrect username or password.'),
+(108, 'jefrey', 'Log in', '2024-10-30 12:12:32', '::1', 'Incorrect username or password.'),
+(109, 'admin', 'Log in', '2024-10-30 12:12:43', '::1', 'Successfully logged in.'),
+(110, 'agbubulud', 'Log in', '2024-10-30 12:14:30', '::1', 'Incorrect username or password.'),
+(111, 'agbubulud', 'Log in', '2024-10-30 12:14:35', '::1', 'Incorrect username or password.'),
+(112, 'admin', 'Log in', '2024-10-30 12:14:42', '::1', 'Successfully logged in.'),
+(113, 'admin', 'Password Reset', '2024-10-30 12:15:06', '::1', 'Account password successfully reset.[ID: 7][Success: 1]'),
+(114, 'agbubulud', 'Log in', '2024-10-30 12:15:13', '::1', 'Successfully logged in.');
 
 -- --------------------------------------------------------
 
@@ -573,7 +604,7 @@ ALTER TABLE `tbl_department`
 -- AUTO_INCREMENT for table `tbl_email_config`
 --
 ALTER TABLE `tbl_email_config`
-  MODIFY `config_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `config_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tbl_item`
@@ -591,7 +622,7 @@ ALTER TABLE `tbl_item_handler`
 -- AUTO_INCREMENT for table `tbl_logs`
 --
 ALTER TABLE `tbl_logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT for table `tbl_members`
