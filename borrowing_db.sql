@@ -175,7 +175,7 @@ CREATE TABLE `tbl_email_config` (
   `tag` varchar(255) NOT NULL,
   `message` longtext NOT NULL,
   `subject` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_email_config`
