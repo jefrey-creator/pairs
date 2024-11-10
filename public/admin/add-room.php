@@ -11,10 +11,14 @@
 
     $room_num = trim($_POST['room_num']);
     $room_name = trim($_POST['room_name']);
-    $room_id = trim($_POST['room_id']);
+    $room_id = isset($_POST['room_id']) ? trim($_POST['room_id']) : "";
 
-    $old_room = $room->select_room($room_id);
-    $old_room_name = $old_room->room_name;
+    $old_room = "";
+    $old_room_name = "";
+    if(isset($_POST['room_id']) && $room_id != ""){
+        $old_room = $room->select_room($room_id);
+        $old_room_name = $old_room->room_name;
+    }
 
     if(empty($room_num)){
         $result = "Please enter a room number.";

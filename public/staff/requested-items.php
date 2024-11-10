@@ -37,7 +37,7 @@
                                 <a class="nav-link " href="borrow">Borrow Item(s)</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="borrowed-items">Requested Item(s)</a>
+                                <a class="nav-link active" href="requested-items">Requested Item(s)</a>
                             </li>
                         </ul>
                     </div>

@@ -63,7 +63,7 @@
                             <div class="row mb-3">
                                 <h5>Account Details</h5>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
-                                    <label for="user_type">User Type</label>
+                                    <label for="user_type">User Type (Required)</label>
                                     <select id="user_type" class="form-control form-select mb-3">
                                         <option value="">--select--</option>
                                         <option value="2">Admin</option>
@@ -71,11 +71,11 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4 username">
-                                    <label for="username">Username</label>
+                                    <label for="username">Username (Required)</label>
                                     <input type="text" id="username" class="form-control mb-3">
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4 password">
-                                    <label for="password">Password</label>
+                                    <label for="password">Password (Required)</label>
                                     <div class="input-group">
                                         <input type="password" id="password" class="form-control">
                                         <div class="input-group-text" style="cursor: pointer;">
@@ -89,12 +89,12 @@
                             <div class="row mb-3">
                                 <h5>Profile Information</h5>
                                 <div class="col-lg-12 col-sm-12 col-md-12">
-                                    <label for="email">Email Address</label>
+                                    <label for="email">Email Address (Required)</label>
                                     <input type="email" id="email" class="form-control mb-3">
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <label for="member_type">
-                                        Member Type
+                                        Member Type (Required)
                                     </label>
                                     <select id="member_type" class="form-control form-select mb-3">
                                         <option value="">--select--</option>
@@ -103,12 +103,12 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
-                                    <label for="id_number">ID Number</label>
+                                    <label for="id_number">ID Number (Required)</label>
                                     <input type="text" id="id_number" class="form-control mb-3">
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <label for="member_type">
-                                        Sex
+                                        Sex (Required)
                                     </label>
                                     <select id="sex" class="form-control form-select mb-3">
                                         <option value="">--select--</option>
@@ -118,7 +118,7 @@
                                 </div>
                                 <!-- name info  -->
                                 <div class="col-sm-12 col-md-12 col-lg-4">
-                                    <label for="f_name">First Name</label>
+                                    <label for="f_name">First Name (Required)</label>
                                     <input type="text" id="f_name" class="form-control mb-3">
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
@@ -126,7 +126,7 @@
                                     <input type="text" id="m_name" class="form-control mb-3">
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
-                                    <label for="l_name">Last Name</label>
+                                    <label for="l_name">Last Name (Required)</label>
                                     <input type="text" id="l_name" class="form-control mb-3">
                                 </div>
 
@@ -135,12 +135,13 @@
                                     <input type="number" id="yr_level" class="form-control mb-3" min="1" max="4">
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
-                                    <label for="id_number">Contact Number</label>
-                                    <input type="text" id="contact" class="form-control mb-3">
+                                    <label for="id_number">Contact Number (Required)</label>
+                                    <input type="text" id="contact" class="form-control">
+                                    <div id="contact_err" class="mb-3"></div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <label for="member_type">
-                                        Department / Office / College
+                                        Department / Office / College (Required)
                                     </label>
                                     <div class="input-group mb-3">
                                         <select id="department" class="form-control form-select">
@@ -310,6 +311,7 @@
                 var acct_id = $('#acct_id').val();
                 var email = $('#email').val();
 
+
                 $.ajax({
                     url: "add-account",
                     method: "POST",
@@ -377,6 +379,24 @@
                 }
                 
             });
+
+            $('#contact').on('keyup', ()=>{
+
+                var contact = $('#contact').val();
+
+                if(!(contact.startsWith('+639') && contact.length === 13) && 
+                    !(contact.startsWith('09') && contact.length === 11)){
+                    
+                    $('#contact_err').html(`
+                        <span class="text-danger">Invalid contact number. Must starts with 09 or +639 followed by the 9 digit mobile number.</span>
+                    `)
+                    return false;
+                }
+                
+                $('#contact_err').html(`
+                    <span class="text-success">Nice! You have a valid contact number</span>
+                `)
+            })
         });
 
         const passwGen = () =>{

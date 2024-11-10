@@ -140,8 +140,11 @@
                                     echo "No data available.";
                                 }
                                 
-                                foreach($selected_filter as $rn){
-                                ?>
+                                if(!$selected_filter){
+                                    echo "No data available.";
+                                }else{
+                                    foreach($selected_filter as $rn){
+                                        ?>
                                     <tr oncontextmenu="Option(<?= $rn->item_id; ?>)" data-bs-toggle="tooltip" title="Click to update">
                                         <td><?=$rn->item_name; ?></td>
                                         <td><?=$rn->item_desc; ?></td>
@@ -156,6 +159,7 @@
                                         <td><?=$rn->condition; ?></td>
                                     </tr>
                                 <?php
+                                    }
                                 }
                             ?>
                             </tbody>

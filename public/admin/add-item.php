@@ -42,28 +42,28 @@
                         <form method="post">
                             <div class="row">
                                 <div class="col-sm-12 col-lg-12 col-md-12">
-                                    <label for="i_name">Item Name</label>
+                                    <label for="i_name">Item Name (Required)</label>
                                     <input type="text" class="form-control mb-3" id="i_name">
                                 </div>
                                 
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 col-lg-6 col-md-12">
-                                    <label for="i_brand">Brand</label>
+                                    <label for="i_brand">Brand (Required)</label>
                                     <input type="text" class="form-control mb-3" id="i_brand">
                                 </div>
                                 <div class="col-sm-12 col-lg-6 col-md-12">
-                                    <label for="i_model">Model</label>
+                                    <label for="i_model">Model (Required)</label>
                                     <input type="text" class="form-control mb-3" id="i_model">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 col-lg-6 col-md-12">
-                                    <label for="i_price">Unit Price</label>
+                                    <label for="i_price">Unit Price (Required)</label>
                                     <input type="text" class="form-control mb-3" id="i_price" data-type="currency" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$">
                                 </div>
                                 <div class="col-sm-12 col-lg-6 col-md-12">
-                                    <label for="i_handler">MR / Handler</label>
+                                    <label for="i_handler">End-User / Handler (Required)</label>
                                     <div class="input-group mb-3">
                                         <select id="i_handler" class="form-control form-select">
                                             <option value="">---</option>
@@ -79,7 +79,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 col-lg-6 col-md-12">
-                                    <label for="i_status">Item Status</label>
+                                    <label for="i_status">Item Status (Required)</label>
                                     <div class="input-group mb-3">
                                         <select id="i_status" class="form-control form-select">
                                             <option value="">---</option>
@@ -93,14 +93,14 @@
                                 
                                 </div>
                                 <div class="col-sm-12 col-lg-6 col-md-12">
-                                    <label for="i_date_acquired">Date Acquired</label>
+                                    <label for="i_date_acquired">Date Acquired (Required)</label>
                                     <input type="date" class="form-control mb-3" id="i_date_acquired">
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-12 col-lg-6 col-md-12">
-                                    <label for="i_assign_room">Assign Room</label>
+                                    <label for="i_assign_room">Assign Room (Required)</label>
                                     <div class="input-group mb-3">
                                         <select id="i_assign_room" class="form-control form-select">
                                             <option value="">---</option>
@@ -114,7 +114,7 @@
                                 
                                 </div>
                                 <div class="col-sm-12 col-lg-6 col-md-12">
-                                    <label for="i_category">Category</label>
+                                    <label for="i_category">Category (Required)</label>
                                     <div class="input-group mb-3">
                                         <select id="i_category" class="form-control form-select">
                                             <option value="">---</option>
@@ -130,7 +130,7 @@
 
                             <div class="row">
                                 <div class="col-sm-12 col-lg-6 col-md-12">
-                                    <label for="i_type">Type</label>
+                                    <label for="i_type">Type (Required)</label>
                                     <select id="i_type" class="form-control form-select mb-3">
                                         <option value="">--select--</option>
                                         <option value="1">Consumable</option>
@@ -138,14 +138,14 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-lg-6 col-md-12">
-                                    <label for="i_name">Quantity</label>
+                                    <label for="i_name">Quantity (Required)</label>
                                     <input type="number" class="form-control mb-3" id="i_qty">
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-12 col-lg-12 col-md-12">
-                                    <label for="i_desc">Description</label>
+                                    <label for="i_desc" class="mb-2">Description (Required)</label>
                                     <textarea id="i_desc" class="form-control mb-3" rows="4" cols="5"></textarea>
                                 </div>
                             </div>

@@ -36,6 +36,10 @@
   background-color: #fff !important; /* Set to white or your desired color */
 }
 
+nav{
+  background-color: inherit
+}
+
 
 :root,
 [data-bs-theme=light] {

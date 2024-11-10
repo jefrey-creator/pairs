@@ -21,11 +21,16 @@
     $i_brand = trim($_POST['i_brand']);
     $i_name = trim($_POST['i_name']);
     $i_type = trim($_POST['i_type']);
-    $item_id = trim($_POST['item_id']);
-    $item_uuid = (isset($_POST['item_uuid'])) ? trim($_POST['item_uuid']) : base64_encode(uniqid().time());
     
-    $old_item = $item->get_item_old_data($item_uuid);
-    $old_item_name = $old_item->item_name;
+    $item_id = (isset($_POST['item_id'])) ? trim($_POST['item_id']) : "";
+    $item_uuid = (isset($_POST['item_uuid'])) ? trim($_POST['item_uuid']) : base64_encode(uniqid().time());
+    $old_item = "";
+    $old_item_name = "";
+
+    if(isset($_POST['item_id']) && $item_id != ""){
+        $old_item = $item->get_item_old_data($item_uuid);
+        $old_item_name = $old_item->item_name;
+    }
 
     if($i_qty == ""){
         $result = "Quantity must be at least 1.";

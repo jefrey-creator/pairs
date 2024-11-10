@@ -52,7 +52,11 @@
             $result = "Last name must be at least 2 characters long.";
         }elseif(empty($contact)){
             $result = "Contact number is required.";
-        }elseif(empty($department)){
+        }elseif (!(strpos($contact, '+639') === 0 && strlen($contact) === 13) && 
+            !(strpos($contact, '09') === 0 && strlen($contact) === 11)) {
+            $result = "Invalid contact number. Must starts with 09 or +639 followed by the 9 digit mobile number.";
+        }
+        elseif(empty($department)){
             $result = "Please select a department.";
         }elseif(empty($user_type)){
             $result = "Please select a user type.";
@@ -118,8 +122,6 @@
             $result = "Email address already exist.";
         }elseif(empty($id_number)){
             $result = "ID number is required.";
-        }elseif(empty($sex)){
-            $result = "Please select a gender preference.";
         }elseif ($sex > 1 && $sex < 0) {
             $result = "Invalid sex preference selected.";
         }elseif (empty($f_name) || strlen($f_name) < 2) {
@@ -128,7 +130,11 @@
             $result = "Last name must be at least 2 characters long.";
         }elseif(empty($contact)){
             $result = "Contact number is required.";
-        }elseif(empty($department)){
+        }elseif (!(strpos($contact, '+639') === 0 && strlen($contact) === 13) && 
+            !(strpos($contact, '09') === 0 && strlen($contact) === 11)) {
+            $result = "Invalid contact number. Must starts with 09 or +639 followed by the 9 digit mobile number.";
+        }
+        elseif(empty($department)){
             $result = "Please select a department.";
         }elseif(empty($user_type)){
             $result = "Please select a user type.";
