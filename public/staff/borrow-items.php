@@ -105,9 +105,9 @@
             } 
         }
     }
-    // else{
-    //     $result = "Error connecting database.";
-    // }
+    else{
+        $result = "Error connecting database.";
+    }
 
     // Return a JSON response
     echo json_encode([
