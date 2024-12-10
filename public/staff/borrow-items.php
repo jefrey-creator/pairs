@@ -23,17 +23,28 @@
     $arr_purpose = $_POST['arr_purpose'];
     $date_borrowed = $borrow->get_server_time();
     $order_num = time();
-    
-    $date_created = date_create($date_borrowed->server_time);
-    $formatted_date_today = date_format($date_created, "Y-m-d");
-    $admin_emails = $account->select_admins();
 
-    $email_conf = $config->set_config("borrow_item");
+    $today = new DateTime($date_borrowed->server_time);
+    $formattedDateToday = $today->format("Y-m-d");
+  
+    // $date_created = date_create($date_borrowed->server_time);
+    // $formatted_date_today = date_format($date_created, "Y-m-d");
+    // $admin_emails = $account->select_admins();
+
+    // $email_conf = $config->set_config("borrow_item");
     $mail_subject = $email_conf->subject;
     $table_data = [];
     $hasDuplicate = [];
+    $years_interval = [];
 
     for ($i = 0; $i < count($arr_item_uuid); $i++) {
+
+       
+        $arr_item_return_date_obj = new DateTime($arr_item_return_date[$i]);
+
+        $interval[$i] = $today->diff($arr_item_return_date_obj);
+
+        $years_interval[] = $interval[$i]->y;
 
         $available_qty = $storage->check_available_qty($arr_item_uuid[$i]);
 
@@ -75,7 +86,12 @@
             $success = false;
             break;
             
-        } elseif (empty($arr_purpose[$i])) {
+        }elseif($years_interval[$i] >= 9){
+            $result = "Cannot borrow 10 years span time.";
+            $success = false;
+            break;
+        }
+         elseif (empty($arr_purpose[$i])) {
 
             $result = "You must provide a purpose for each requesting item.";
             $success = false;
@@ -95,7 +111,7 @@
             
         } 
     }
-
+    
     if($success === false){
         // Return a JSON response
         echo json_encode([

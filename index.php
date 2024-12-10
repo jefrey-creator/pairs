@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/login.css">
     <link rel="shortcut icon" href="<?= FAV_ICO; ?>" type="image/x-icon">
-    
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
     <div class="container">
@@ -48,7 +48,10 @@
                                             Show Password
                                         </label>
                                     </div>
-                                    <button class="btn btn-primary btn-lg w-100" type="submit" id="onLogin" name="btnLogin">Login</button>
+                                    <div class="mb-3">
+                                        <div class="g-recaptcha" data-sitekey="6Lf1e3oqAAAAAPhU6_4MoadTgX-fua76C1AK3P-N" data-callback="enableLogin"></div>
+                                    </div>
+                                    <button class="btn btn-primary btn-lg w-100" type="submit" id="onLogin" name="btnLogin" disabled="disabled">Login</button>
                                     <a href="forgot-password" class="btn btn-link float-end mt-4 mb-4">Forgot Password?</a>
                                 </div>
                             </div>
@@ -65,9 +68,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
         $(document).ready(function(){
+
             $('#show_password').on('click', function(){
                 // console.log('checked')
                 if($('input[type="checkbox"]').is(':checked')){
@@ -83,6 +86,7 @@
 
                 var username = $('#username').val();
                 var password = $('#password').val();
+                var recaptcha = $('.g-recaptcha-response').val();
 
                 $.ajax({
                     url: "./login/login",
@@ -90,6 +94,7 @@
                     data: { 
                         username: username,
                         password: password,
+                        recaptcha: recaptcha
                     },
                     dataType: 'json',
                     cache: false,
@@ -130,7 +135,9 @@
             })
         });
 
-
+        function enableLogin(){
+            document.getElementById("onLogin").disabled = false;
+        }
     </script>
 </body>
 </html>

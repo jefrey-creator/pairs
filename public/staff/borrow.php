@@ -55,19 +55,19 @@
                             <div id="row-container">
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
-                                        <label for="item_uuid">Item/Equipment</label>
+                                        <label for="item_uuid">Item/Equipment (Required)</label>
                                         <select name="item_uuid[]" id="item_uuid" class="form-control form-select mb-3"></select>
                                     </div>
                                     <div class="col-sm-2">
-                                        <label for="qty">Quantity</label>
+                                        <label for="qty">Quantity (Required)</label>
                                         <input type="number" id="qty" name="qty[]" class="form-control mb-3" min="1">
                                     </div>
                                     <div class="col-sm-3">
-                                        <label for="date_returned">Expected Date of Return</label>
+                                        <label for="date_returned">Expected Date of Return (Required)</label>
                                         <input type="date" id="date_returned" name="date_returned[]" class="form-control mb-3">
                                     </div>
                                     <div class="col-sm-3">
-                                        <label for="purpose">Purpose</label>
+                                        <label for="purpose">Purpose (Required)</label>
                                         <textarea id="purpose" name="purpose[]" class="form-control mb-3"></textarea>
                                     </div>
                                     <div class="col-sm-1 pt-3 mt-3">
