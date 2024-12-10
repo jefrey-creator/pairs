@@ -60,6 +60,12 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item">
+                <a class="nav-link btn btn-light <?= ($page == "reports") ? 'active' : '' ?>" href="reports">
+                    <i class="bi bi-graph-up"></i>
+                    Report
+                </a>
+            </li>
         </ul>
         <ul class="navbar-nav ml-auto">
             

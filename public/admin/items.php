@@ -90,7 +90,6 @@
                                 <li class="nav-item">
                                     <a class="nav-link" aria-current="page" href="add-item">Add New</a>
                                 </li>
-                               
                             </ul>
                         </form>
                     </div>

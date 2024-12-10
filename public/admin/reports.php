@@ -1,12 +1,17 @@
 <?php 
-    include_once 'auth.php';
-    $page = "dashboard";
+  include_once 'auth.php';
+  $page = "reports";
+  
+  $item = new Item();
+
+  $items = $item->dropdown_condition();
+ 
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <title><?= TITLE ?> - Borrower Dashboard</title>
+  <title><?= TITLE ?> - Admin Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -17,30 +22,32 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="../../assets/css/dashboard.css">
   <link rel="shortcut icon" href="../../<?= FAV_ICO; ?>" type="image/x-icon">
 </head>
 <body>
-  <?php include_once 'nav.php'; ?>
+    <?php include_once 'nav.php'; ?>
     <div class="container">
-      <div class="row mt-3 pt-3">
-        <div class="col-lg-12 col-sm-12 col-md-12">
-          <h1 class="text-center text-uppercase">
-            WELCOME TO Paperless Asset and Inventory Management System 
-          </h1>
-          <hr class="shadow p-1">
-          <h5 class="text-center mb-3">
-            It’s fast, eco-friendly, and convenient. Let’s go paperless together—start borrowing today!
-          </h5>
-        </div>
-      </div>
-
       <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-6 offset-5">
-          <a class="btn btn-primary btn-lg rounded-0" href="borrow">
-            Borrow Item 
-            <i class="bi bi-arrow-right-short"></i>
-          </a>
+        <div class="col-sm-12 col-lg-4 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="generate-reports" method="get" target="_blank">
+                        <div class="h4 mb-3">Filter Inventory Report</div>
+                        <select name="status" id="" class="form-control form-control-lg form-select mb-3">
+                            <option value="">All</option>
+                            <?php 
+                                foreach($items as $i){
+                                ?>
+                                    <option value="<?= $i->condition_id ?>"><?= $i->condition ?></option>
+                                <?php
+                                }
+                            ?>
+                        </select>
+                        <hr>
+                        <button type="submit" class="btn btn-success" name="btn-generate">Generate Report</button>
+                    </form>
+                </div>
+            </div>
         </div>
       </div>
     </div>

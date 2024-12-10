@@ -172,7 +172,7 @@
                               </div>
                               <div class="text-end">
                                 <button class="btn btn-primary" type="button" onclick="deliveredItem(${item.order_num})" id="deliveredItem${item.order_num}">
-                                  Deliver Item
+                                  Release Item
                                 </button>
                               </div>
                             </div>
@@ -246,7 +246,7 @@
                           </div>
                           <div class="text-end">
                             <button class="btn btn-primary" type="button" onclick="deliveredItem(${item.order_num})" id="deliveredItem${item.order_num}">
-                              Deliver Item
+                              Release Item
                             </button>
                           </div>
                         </div>
